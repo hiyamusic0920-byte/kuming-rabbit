@@ -27,31 +27,91 @@
       <details class="portfolio-card" open>
         <summary>🐰 作者後記</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <p>改成 Prompt Chaining 之後，我終於比較容易看見每個步驟到底發生了什麼事。</p>
+          <p>也因此，我開始發現一些以前藏在黑盒子裡的問題。</p>
+          <p>這次出問題的是：</p>
+          <p>Flaky Test。</p>
+          <p>原本我只是希望苦命兔幫我修自動化測試。</p>
+          <p>結果牠非常努力，努力到讓人害怕。</p>
         </div>
       </details>
       <details class="portfolio-card">
         <summary>🔥 真實案例</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <p>當自動化測試失敗時，苦命兔會很認真地嘗試修正。</p>
+          <p>但問題是：</p>
+          <p>我沒有告訴它該怎麼處理 Flaky Test。</p>
+          <p>於是它開始用最直覺的方法修：</p>
+          <p>加 sleep。</p>
+          <p>加 wait。</p>
+          <p>再加 sleep。</p>
+          <p>再加 wait。</p>
+          <p>只要測試失敗，它就覺得是不是等不夠久？</p>
+          <p>是不是再等一下就好了？</p>
+          <p>結果腳本越修越慢、越修越不穩。</p>
+          <p>原本要解決 flaky test，最後變成把不穩定包進更多等待時間裡。</p>
+          <p>這時候我才意識到：</p>
+          <p>AI 很努力。</p>
+          <p>但如果方向錯了，它只是更有效率地製造新的問題。</p>
         </div>
       </details>
       <details class="portfolio-card">
         <summary>🛠 解決方案</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <p>我趕快把 Flaky Test 的處理規則補進家規。</p>
+          <h3>1. 失敗三次後停止</h3>
+          <p>測試失敗時，最多 retry 三次。</p>
+          <p>如果仍然失敗，不要繼續硬修。</p>
+          <p>先標註為 Flaky Test，然後執行下一個案例。</p>
+          <p>最後把 Flaky Test 清單提交給我。</p>
+          <h3>2. 先分析，再修正</h3>
+          <p>針對 Flaky Test，不能直接動手改腳本。</p>
+          <p>要先分析可能原因：</p>
+          <ul>
+            <li>等待條件不正確</li>
+            <li>Selector 不穩定</li>
+            <li>資料狀態不一致</li>
+            <li>非同步流程尚未完成</li>
+            <li>測試環境不穩</li>
+          </ul>
+          <p>確認可能原因後，再提出修正方案。</p>
+          <h3>3. 修正後第一次失敗就停下</h3>
+          <p>修正後，如果第一次執行又失敗，不要繼續反覆修改。</p>
+          <p>停下來。</p>
+          <p>回報給我。</p>
+          <p>由人類判斷下一步。</p>
         </div>
       </details>
       <details class="portfolio-card">
         <summary>💡 我學到什麼</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <p>這一話讓我理解到：</p>
+          <p>AI 需要的不只是任務目標。</p>
+          <p>還需要停止條件。</p>
+          <p>如果只告訴它：</p>
+          <blockquote>把測試修好。</blockquote>
+          <p>它就會想盡辦法讓測試通過。</p>
+          <p>但測試通過，不一定代表測試變好。</p>
+          <p>有時候只是問題被掩蓋了。</p>
+          <p>從這一話開始，我更明確地意識到：</p>
+          <p>治理 AI 不只是告訴它該做什麼，也要告訴它：</p>
+          <ul>
+            <li>什麼時候該停下</li>
+            <li>什麼情況要回報</li>
+            <li>哪些修法是不允許的</li>
+          </ul>
+          <p>這些規則，比單純要求它完成任務更重要。</p>
         </div>
       </details>
       <details class="portfolio-card">
         <summary>🏷 關鍵能力</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <ul>
+            <li>Flaky Test Management</li>
+            <li>Stop Condition Design</li>
+            <li>Test Automation Governance</li>
+            <li>Failure Analysis</li>
+          </ul>
         </div>
       </details>
     </section>
