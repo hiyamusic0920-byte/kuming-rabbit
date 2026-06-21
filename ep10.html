@@ -27,31 +27,103 @@
       <details class="portfolio-card" open>
         <summary>🐰 作者後記</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <p>用文字描述需求，其實是一件很專業的事。</p>
+          <p>因為有些句子看起來非常簡單。</p>
+          <p>簡單到你根本不會懷疑它。</p>
+          <p>甚至覺得：</p>
+          <blockquote>這有什麼好討論的？</blockquote>
+          <p>直到有一天，苦命兔開始認真讀需求。</p>
         </div>
       </details>
       <details class="portfolio-card">
         <summary>🔥 真實案例</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <p>最近有一張票寫著：</p>
+          <blockquote>新增平日／假日客房住用數及收入欄位</blockquote>
+          <p>看到的瞬間，我心裡想：</p>
+          <p>「喔，很簡單啊。」</p>
+          <p>結果事情很快就不簡單了。</p>
+          <p>被苦命兔追問幾次之後，我才真的停下來拆這句話。</p>
+          <p>然後發現：</p>
+          <p>光是我自己，就能理解出三種意思。</p>
+          <h3>解讀一</h3>
+          <p>（平日／假日客房住用數）及（收入）</p>
+          <p>共 2 個欄位</p>
+          <h3>解讀二</h3>
+          <p>（平日客房住用數）</p>
+          <p>（假日客房住用數）</p>
+          <p>（收入）</p>
+          <p>共 3 個欄位</p>
+          <h3>解讀三</h3>
+          <p>（平日客房住用數）</p>
+          <p>（假日客房住用數）</p>
+          <p>（平日收入）</p>
+          <p>（假日收入）</p>
+          <p>共 4 個欄位</p>
+          <p>然後我突然發現：</p>
+          <blockquote>靠北，我自己也看不太懂。</blockquote>
+          <p>所以到底是要新增幾個欄位？</p>
         </div>
       </details>
       <details class="portfolio-card">
         <summary>🛠 解決方案</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <p>更慘的是：</p>
+          <p>這個需求其實有機會更早被發現。</p>
+          <p>因為我當時已經有 Test Case Audit。</p>
+          <p>但我在 Review 的時候沒有仔細拆解需求。</p>
+          <p>直接放過去了。</p>
+          <p>於是後面開始發生：</p>
+          <div class="workflow-flow" aria-label="需求誤解造成的返工流程">
+            <span>需求理解</span><span aria-hidden="true">↓</span>
+            <span>寫 Test Case</span><span aria-hidden="true">↓</span>
+            <span>寫腳本</span><span aria-hidden="true">↓</span>
+            <span>跑自動化</span><span aria-hidden="true">↓</span>
+            <span>出報告</span><span aria-hidden="true">↓</span>
+            <span>全部重來</span>
+          </div>
+          <p>問題其實從第一步就存在。</p>
+          <p>只是一路被帶到最後。</p>
+          <p>從那次之後，我開始建立 Requirements Audit。</p>
+          <p>在真正開始設計測試之前，先檢查：</p>
+          <ul>
+            <li>是否存在多種解讀</li>
+            <li>是否缺少定義</li>
+            <li>是否有隱含規則</li>
+            <li>是否需要確認的地方</li>
+          </ul>
+          <p>先確認理解一致，再開始工作。</p>
         </div>
       </details>
       <details class="portfolio-card">
         <summary>💡 我學到什麼</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <p>這一話讓我第一次理解：</p>
+          <p>需求品質的重要性，遠遠超過測試品質。</p>
+          <p>以前需求模糊一點，人類通常會憑經驗補上。</p>
+          <p>甚至大家都沒發現自己在腦補。</p>
+          <p>但 AI 不一樣。</p>
+          <p>它會非常認真地執行你的需求。</p>
+          <p>而且會持續執行、反覆執行、大量執行。</p>
+          <p>如果需求本身存在歧義，AI 只會把錯誤放大。</p>
+          <p>所以後來我慢慢形成一個習慣：</p>
+          <p>不要急著寫 Test Case。</p>
+          <p>不要急著寫腳本。</p>
+          <p>甚至不要急著開始測試。</p>
+          <p>先確認大家理解的是同一件事。</p>
+          <p>因為有時候，真正昂貴的不是做錯。</p>
+          <p>而是把錯的事情做一百次。</p>
         </div>
       </details>
       <details class="portfolio-card">
         <summary>🏷 關鍵能力</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <ul>
+            <li>Requirements Audit</li>
+            <li>Test Case Review</li>
+            <li>Requirement Analysis</li>
+            <li>Context Validation</li>
+          </ul>
         </div>
       </details>
     </section>
