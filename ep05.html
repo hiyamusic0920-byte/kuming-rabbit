@@ -29,31 +29,121 @@
       <details class="portfolio-card" open>
         <summary>🐰 作者後記</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <p>有句話說：</p>
+          <p>好的 Prompt 帶你上天堂。</p>
+          <p>不好的 Prompt 讓你淚斷腸。</p>
+          <p>而這一話，就是我第一次真正體會到這句話的意思。</p>
+          <p>當時的我還沉浸在擁有 AI 助手的喜悅之中。</p>
+          <p>苦命兔已經能夠：</p>
+          <div class="workflow-flow" aria-label="當時的測試報告流程">
+            <span>輸入一張票</span><span aria-hidden="true">↓</span>
+            <span>分析需求</span><span aria-hidden="true">↓</span>
+            <span>產生測試報告</span>
+          </div>
+          <p>整個流程看起來越來越完整。</p>
+          <p>直到有一天，我打開 Repository。</p>
+          <p>然後開始懷疑人生。</p>
         </div>
       </details>
       <details class="portfolio-card">
         <summary>🔥 真實案例</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <p>我原本只是希望苦命兔：</p>
+          <p>幫我產生需要的測試腳本。</p>
+          <p>結果它做了什麼？</p>
+          <p>它開始窮舉排列組合，而且是非常認真的那種。</p>
+          <p>所有可能的組合。</p>
+          <p>所有可能的路徑。</p>
+          <p>所有可能的情境。</p>
+          <p>全部寫成測試案例。</p>
+          <p>再全部轉成 E2E 腳本。</p>
+          <p>於是：</p>
+          <p>原本一張票。</p>
+          <p>最後變成數百個測試情境。</p>
+          <p>整個 Repository 像被千軍萬馬輾過一樣。</p>
+          <p>花 Token。</p>
+          <p>花時間。</p>
+          <p>花維護成本。</p>
+          <p>最後還得到一堆根本不值得維護的測試。</p>
+          <p>這時候我才意識到：</p>
+          <p>我從來沒有告訴它：</p>
+          <blockquote>哪些情境值得變成 E2E。</blockquote>
         </div>
       </details>
       <details class="portfolio-card">
         <summary>🛠 解決方案</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <p>後來我開始研究 Prompt Chaining。</p>
+          <p>把一個巨大的 Prompt，拆成多個可觀察的步驟。</p>
+          <p>原本流程：</p>
+          <div class="workflow-flow" aria-label="原本的測試產生流程">
+            <span>Ticket Analysis</span><span aria-hidden="true">↓</span>
+            <span>Write Test Case</span><span aria-hidden="true">↓</span>
+            <span>Report Runner</span>
+          </div>
+          <p>其中的 Write Test Case 實際上是一個巨大的黑盒子。</p>
+          <p>它負責：</p>
+          <ul>
+            <li>決定測試範圍</li>
+            <li>設計測試情境</li>
+            <li>產生腳本</li>
+          </ul>
+          <p>全部混在一起。</p>
+          <p>如果最後結果有問題，根本不知道是哪個步驟出了錯。</p>
+          <p>於是我把它拆成三層：</p>
+          <h3>1. Test Plan</h3>
+          <p>決定：</p>
+          <ul>
+            <li>測什麼</li>
+            <li>不測什麼</li>
+            <li>決定使用什麼測試方法</li>
+          </ul>
+          <h3>2. Write Test Case</h3>
+          <p>根據 Test Plan 列出測試情境。</p>
+          <h3>3. Script Generator</h3>
+          <p>最後才產生腳本。</p>
+          <p>流程變成：</p>
+          <div class="workflow-flow" aria-label="拆分後的測試產生流程">
+            <span>Ticket Analysis</span><span aria-hidden="true">↓</span>
+            <span>Test Plan</span><span aria-hidden="true">↓</span>
+            <span>Write Test Case</span><span aria-hidden="true">↓</span>
+            <span>Script Generator</span><span aria-hidden="true">↓</span>
+            <span>Report Runner</span>
+          </div>
+          <p>每一層都可以獨立驗證。</p>
+          <p>每一層都可以獨立調整。</p>
         </div>
       </details>
       <details class="portfolio-card">
         <summary>💡 我學到什麼</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <p>這一話讓我第一次理解：</p>
+          <p>Prompt 並不是程式碼。</p>
+          <p>但它需要和程式碼一樣被拆分。</p>
+          <p>當所有事情都塞進同一個 Prompt 時，你得到的是：</p>
+          <p>一個無法理解、無法除錯的黑盒子。</p>
+          <p>而當流程被拆開之後，我終於開始能夠回答：</p>
+          <ul>
+            <li>哪一步出了問題？</li>
+            <li>為什麼會出問題？</li>
+            <li>該修改哪個環節？</li>
+          </ul>
+          <p>後來我才知道，這個概念有個很正式的名字：</p>
+          <p><strong>Observability（可觀測性）</strong></p>
+          <p>而這個思維，也逐漸影響了我後面設計 Agent Workflow 的方式。</p>
         </div>
       </details>
       <details class="portfolio-card">
         <summary>🏷 關鍵能力</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <ul>
+            <li>Prompt Chaining</li>
+            <li>Workflow Design</li>
+            <li>Observability</li>
+            <li>Test Strategy Design</li>
+            <li>E2E Testing</li>
+            <li>AI Pipeline Architecture</li>
+          </ul>
         </div>
       </details>
     </section>
