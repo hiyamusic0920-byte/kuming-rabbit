@@ -29,31 +29,95 @@
       <details class="portfolio-card" open>
         <summary>🐰 作者後記</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <p>接續前一話，在建立長期知識庫、回饋機制與禁止行為之後，苦命兔終於沒那麼容易 20 分鐘就把額度燒光。</p>
+          <p>既然整條流程都跑通了，我開始有一個新的想法：</p>
+          <p>如果一隻 AI 可以幫忙工作，那兩隻呢？</p>
+          <p>於是，苦力怕（Codex）正式加入團隊。</p>
         </div>
       </details>
       <details class="portfolio-card">
         <summary>🔥 真實案例</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <p>我當時的想法其實很單純。</p>
+          <p>把苦命兔的 Skill、Command 全部複製一份給苦力怕。</p>
+          <p>然後：</p>
+          <p>苦命兔做 A 票。</p>
+          <p>苦力怕做 B 票。</p>
+          <p>效率直接翻倍。</p>
+          <p>聽起來超合理。</p>
+          <p>結果沒多久，我就發現事情開始變得奇怪。</p>
+          <p>同一份 Skill，要維護兩份。</p>
+          <p>同一份 Command，也要維護兩份。</p>
+          <p>更麻煩的是：</p>
+          <p>苦命兔做到一半剛好燒完額度。</p>
+          <p>苦力怕接手後，又從頭開始做一次。</p>
+          <p>明明有兩個 Agent。</p>
+          <p>結果工作量反而增加了。</p>
         </div>
       </details>
       <details class="portfolio-card">
         <summary>🛠 解決方案</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <p>這時候我第一次開始思考：</p>
+          <p>如果 Agent 變多，該怎麼協作？</p>
+          <p>於是我做了兩件事。</p>
+          <h3>1. 工作手冊（PROJECT_RULES.md）</h3>
+          <p>原本：</p>
+          <p>Claude 有自己的規則。</p>
+          <p>Codex 有自己的規則。</p>
+          <p>後來改成兩個Skill都指向PROJECT_RULES.md：</p>
+          <div class="workflow-flow" aria-label="Claude 共用規則流程">
+            <span>Claude.md</span><span aria-hidden="true">↓</span>
+            <span>PROJECT_RULES.md</span>
+          </div>
+          <div class="workflow-flow" aria-label="Codex 共用規則流程">
+            <span>Codex.md</span><span aria-hidden="true">↓</span>
+            <span>PROJECT_RULES.md</span>
+          </div>
+          <p>所有 Agent 共用同一份規則，可以只維護一份檔案，也避免規則漂移。</p>
+          <h3>2. 交接文件（handoff.md）</h3>
+          <p>當流程被中斷時：</p>
+          <p>不要讓下一個 Agent 猜。</p>
+          <p>而是留下交接資訊。</p>
+          <p>記錄：</p>
+          <ul>
+            <li>做到哪裡</li>
+            <li>發現什麼問題</li>
+            <li>下一步是什麼</li>
+          </ul>
+          <p>讓另一個 Agent 可以直接接手。</p>
         </div>
       </details>
       <details class="portfolio-card">
         <summary>💡 我學到什麼</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <p>這一話讓我第一次意識到：</p>
+          <p>多 Agent 的問題，其實和多人團隊非常像。</p>
+          <p>當團隊只有一個人時，很多問題根本不存在。</p>
+          <p>但當成員增加之後：</p>
+          <ul>
+            <li>規則同步</li>
+            <li>知識共享</li>
+            <li>工作交接</li>
+          </ul>
+          <p>都會變成新的挑戰。</p>
+          <p>我原本以為：</p>
+          <p>增加 Agent 就等於增加產能。</p>
+          <p>後來才發現：</p>
+          <p>如果沒有共同規則與協作機制，增加的不是效率，是混亂。</p>
         </div>
       </details>
       <details class="portfolio-card">
         <summary>🏷 關鍵能力</summary>
         <div class="portfolio-card-content">
-          <p>（待補內容）</p>
+          <ul>
+            <li>Multi-Agent Collaboration</li>
+            <li>Shared Knowledge Base</li>
+            <li>Agent Handoff Design</li>
+            <li>Documentation Strategy</li>
+            <li>Workflow Standardization</li>
+            <li>Knowledge Synchronization</li>
+          </ul>
         </div>
       </details>
     </section>
