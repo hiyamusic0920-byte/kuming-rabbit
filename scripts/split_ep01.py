@@ -7,7 +7,7 @@ from PIL import Image
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 EPISODE_DIR = ROOT_DIR / "assets" / "ep01"
-SOURCE_IMAGE = EPISODE_DIR / "full.png"
+SOURCE_IMAGE = EPISODE_DIR / "full.jpg"
 
 
 def split_image() -> None:

@@ -27,7 +27,7 @@ The true story of a QA, a rabbit, and two AI agents learning how to work togethe
 ## 漫畫切圖
 
 安裝 [Pillow](https://pillow.readthedocs.io/) 後，把完整的 2 欄 × 3 列漫畫圖放在
-`assets/ep01/full.png`，再執行：
+`assets/ep01/full.jpg`，再執行：
 
 ```bash
 python3 scripts/split_ep01.py
