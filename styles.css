@@ -275,6 +275,15 @@ body {
   padding-left: 1.5em;
 }
 
+.portfolio-card-content blockquote {
+  margin: 18px 0;
+  padding: 14px 18px;
+  border-left: 4px solid #b87955;
+  color: #f1d6b8;
+  background: #0f0c0a;
+  font-weight: 700;
+}
+
 .workflow-flow {
   display: grid;
   justify-items: center;

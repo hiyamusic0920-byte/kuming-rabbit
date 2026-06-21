@@ -84,7 +84,78 @@ EPISODE_PORTFOLIO_CONTENT = {
           <p>真正困難的不是產生結果。</p>
           <p>而是讓 AI 理解脈絡。</p>
           <p>而這個問題，正是後面整個苦命兔系列不斷在面對的核心課題。</p>""",
-    }
+    },
+    2: {
+        "🐰 作者後記": """<p>接續前一話，我完成了一件原本覺得有點科幻的事：</p>
+          <p>「輸入一張票，直接產出測試報告。」</p>
+          <p>那時候的我真的非常興奮。</p>
+          <p>我甚至開始幻想：</p>
+          <p>如果 AI 可以直接處理整個 Sprint 的測試報告，那我是不是只要輸入 Sprint 編號，剩下的事情全部交給苦命兔就好了？</p>
+          <p>感覺離真・薪水小偷的人生不遠了。</p>
+          <p>結果當我打開第一份報告的時候......</p>
+          <p>嗯。</p>
+          <p>是一團屎。</p>
+          <p>而且不是那種修修格式就能解決的問題。</p>
+          <p>是整個理解都不對。</p>""",
+        "🔥 真實案例": """<p>我後來發現：</p>
+          <p>問題根本不在報告。</p>
+          <p>而是在於：</p>
+          <blockquote>我們的一張票，從來不是真的只有一張票。</blockquote>
+          <p>對人類來說很自然的事情，對 AI 卻不一定成立。</p>
+          <p>因為一個需求的完整脈絡，經常散落在不同地方：</p>
+          <ul>
+            <li>Redmine 上有原始需求</li>
+            <li>Jira Story 裡有補充背景</li>
+            <li>Sub-task 裡藏著工程實作細節</li>
+            <li>Comment 裡又補了一堆後續決議</li>
+          </ul>
+          <p>而我當時做的事情其實是：</p>
+          <p>把其中一部分資訊丟給 AI，然後期待它理解全部。</p>
+          <p>現在回頭看，確實有點天真。</p>""",
+        "🛠 解決方案": """<p>於是我新增了一個新的 Skill：</p>
+          <p><strong>Ticket Analysis</strong></p>
+          <p>在產生測試報告之前，先讓 AI 做一次資訊收集與整理。</p>
+          <p>流程從：</p>
+          <div class="workflow-flow" aria-label="原本的測試報告流程">
+            <span>輸入一張票</span><span aria-hidden="true">↓</span>
+            <span>直接產生測試報告</span>
+          </div>
+          <p>變成：</p>
+          <div class="workflow-flow" aria-label="加入 Ticket Analysis 的測試報告流程">
+            <span>輸入一張票</span><span aria-hidden="true">↓</span>
+            <span>Ticket Analysis</span><span aria-hidden="true">↓</span>
+            <span>產生測試報告</span>
+          </div>
+          <p>Ticket Analysis 主要負責：</p>
+          <ul>
+            <li>資訊整理</li>
+            <li>範圍分析</li>
+            <li>邏輯缺口檢查</li>
+            <li>邊界條件分析</li>
+            <li>風險分析</li>
+            <li>測試案例設計</li>
+          </ul>
+          <p>簡單來說，先把資訊收集完，理解問題，再開始工作。</p>""",
+        "💡 我學到什麼": """<p>這一話是我第一次意識到：</p>
+          <p>問題不一定是 AI 太笨。</p>
+          <p>有時候是我給它的 Context 太少。</p>
+          <p>當時的我以為：</p>
+          <p>只要把任務交給 AI，它自然會知道該怎麼做。</p>
+          <p>後來才發現：</p>
+          <p>AI 的品質，往往取決於它看到多少資訊。</p>
+          <p>而這個發現，也成為後面所有知識庫、Registry、Audit 與 Agent Governance 的起點。</p>
+          <p>因為我開始理解：</p>
+          <p>AI 並不是單純的執行者。</p>
+          <p>它需要被提供完整的工作脈絡。</p>""",
+        "🏷 關鍵能力": """<ul>
+            <li>Context Engineering</li>
+            <li>Ticket Analysis</li>
+            <li>Requirements Understanding</li>
+            <li>Risk Analysis</li>
+            <li>Test Design</li>
+            <li>AI Workflow Design</li>
+          </ul>""",
+    },
 }
 
 
