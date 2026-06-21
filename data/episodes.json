@@ -1,0 +1,101 @@
+{
+  "episodes": [
+    {
+      "number": 1,
+      "title": "讓 AI 幫我做測試報告",
+      "capability": "QA 報告自動化",
+      "methods": "pytest、Playwright、PDF Report、QA/UAT Report"
+    },
+    {
+      "number": 2,
+      "title": "報告有了，但看完更想哭",
+      "capability": "Ticket Analysis / Context Engineering",
+      "methods": "Redmine / Jira / Sub-task 資訊整合、範圍差異、邏輯缺口"
+    },
+    {
+      "number": 3,
+      "title": "拯救苦命兔大作戰",
+      "capability": "長期知識累積",
+      "methods": "pages/_registry、selector 知識、互動陷阱、回饋機制"
+    },
+    {
+      "number": 4,
+      "title": "跨 Agent 合作挑戰",
+      "capability": "Multi-Agent Handoff",
+      "methods": "PROJECT_RULES、handoff、Claude / Codex 共用規則"
+    },
+    {
+      "number": 5,
+      "title": "200 個 E2E",
+      "capability": "Test Strategy / Prompt Chaining",
+      "methods": "test-plan → TC → script generator，決定什麼值得 E2E"
+    },
+    {
+      "number": 6,
+      "title": "苦命兔超努力，無效的那種",
+      "capability": "Flaky Test Governance",
+      "methods": "retry 規則、flaky 標記、失敗分析、停止條件"
+    },
+    {
+      "number": 7,
+      "title": "順手把整個房間打掃了",
+      "capability": "Permission Boundary / Safe Automation",
+      "methods": "禁止行為、檔案操作邊界、先詢問再改"
+    },
+    {
+      "number": 8,
+      "title": "被罵過一次後",
+      "capability": "Feedback Loop / Agent Behavior Tuning",
+      "methods": "回饋機制、避免過度懲罰導致 Agent 不敢決策"
+    },
+    {
+      "number": 9,
+      "title": "重新檢視工作流程",
+      "capability": "Tacit Knowledge Extraction",
+      "methods": "把老鳥經驗轉成文件、規則、流程與 QA heuristics"
+    },
+    {
+      "number": 10,
+      "title": "失之毫里，差之千里",
+      "capability": "Requirements Audit",
+      "methods": "歧義偵測、多重解讀、需求確認前置"
+    },
+    {
+      "number": 11,
+      "title": "辯論大賽",
+      "capability": "Cross-Agent Consensus",
+      "methods": "Claude / Codex Review、文件分類決策框架"
+    },
+    {
+      "number": 12,
+      "title": "秘密小本本",
+      "capability": "Single Source of Truth",
+      "methods": "共同規則、Agent Governance、文件標準化"
+    },
+    {
+      "number": 13,
+      "title": "那隻兔子就像渣男",
+      "capability": "Decision Checkpoint Design",
+      "methods": "AI Understanding Mirror、Audit Gate、規則觸發機制"
+    },
+    {
+      "number": 14,
+      "title": "偷偷改家規",
+      "capability": "Traceability / Change Management",
+      "methods": "Change Log、Work Log、Commit History、Process Audit"
+    },
+    {
+      "number": 15,
+      "title": "吃你的狗食",
+      "capability": "Evaluation / Dogfooding",
+      "methods": "Retro、Eval Framework、重跑失敗票驗證改善效果"
+    }
+  ],
+  "categories": [
+    {"name": "QA 交付自動化", "episodes": [1, 2, 5, 15]},
+    {"name": "測試工程化", "episodes": [3, 5, 6, 7]},
+    {"name": "AI Agent 治理", "episodes": [4, 8, 11, 12, 13, 14]},
+    {"name": "知識系統設計", "episodes": [3, 9, 10, 11, 12, 14]},
+    {"name": "評估與持續改善", "episodes": [6, 13, 15]}
+  ]
+}
