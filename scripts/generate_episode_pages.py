@@ -37,11 +37,32 @@ def panel_paths(asset_name: str) -> list[Path]:
     return sorted(panels, key=lambda path: int(path.stem))
 
 
+def render_navigation(episode: int) -> str:
+    previous = (
+        f'<a class="nav-link nav-previous" href="ep{episode - 1:02d}.html">'
+        f'← 第{episode - 1:02d}話</a>'
+        if episode > 1
+        else '<span class="nav-placeholder" aria-hidden="true"></span>'
+    )
+    following = (
+        f'<a class="nav-link nav-next" href="ep{episode + 1:02d}.html">'
+        f'第{episode + 1:02d}話 →</a>'
+        if episode < 15
+        else '<span class="nav-placeholder" aria-hidden="true"></span>'
+    )
+    return f"""    <nav class="episode-nav" aria-label="漫畫話數導覽">
+      {previous}
+      <a class="nav-link nav-index" href="index.html">回目錄</a>
+      {following}
+    </nav>"""
+
+
 def render_episode(
     filename: str,
     asset_name: str,
     title: str,
     progress: str | None = None,
+    episode_number: int | None = None,
 ) -> None:
     panels = panel_paths(asset_name)
     if panels:
@@ -57,6 +78,9 @@ def render_episode(
         content = '    <p class="empty-state">圖片準備中。</p>'
 
     progress_html = f'\n    <p class="episode-progress">{progress}</p>' if progress else ""
+    navigation_html = (
+        f"\n{render_navigation(episode_number)}" if episode_number is not None else ""
+    )
     html = f"""<!doctype html>
 <html lang="zh-Hant">
 <head>
@@ -71,7 +95,7 @@ def render_episode(
     <h1>{title}</h1>{progress_html}
   </header>
   <main class="comic-content" aria-label="{title}漫畫內容">
-{content}
+{content}{navigation_html}
   </main>
 </body>
 </html>
@@ -126,6 +150,7 @@ def main() -> None:
             f"ep{episode:02d}",
             episode_title(episode),
             f"第 {episode} / 15 話",
+            episode,
         )
     for episode in range(1, 4):
         render_episode(
