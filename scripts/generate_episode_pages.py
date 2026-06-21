@@ -869,6 +869,106 @@ EPISODE_PORTFOLIO_CONTENT = {
             <li>Multi-Agent Coordination</li>
           </ul>""",
     },
+    13: {
+        "🐰 作者後記": """<p>「我昨天做了一個我無法兌現的承諾。」</p>
+          <p>當 Terminal 跳出這幾個字的時候，我真的差點吐血。</p>
+          <p>事情是這樣的。</p>
+          <p>前陣子看到 Claude Code 已經可以直接呼叫 Codex。</p>
+          <p>天才如我，立刻想到一個好主意。</p>
+          <p>以後做完任務要執行 Audit 的時候，就讓 Claude Code 自己去呼叫 Codex 當 Reviewer。</p>
+          <p>這樣我不就不用自己看了嗎？</p>
+          <p>聽起來根本完美。</p>""",
+        "🔥 真實案例": """<p>前一天，苦命兔很有自信地跟我說：</p>
+          <blockquote>
+            <p>之後看到 lead-agent，</p>
+            <p>我會自動觸發。</p>
+          </blockquote>
+          <p>我相信了。</p>
+          <p>而且身為 QA 的我，居然沒有測試。</p>
+          <p>結果隔天，同樣的情況再次發生。</p>
+          <p>根本沒有自動觸發。</p>
+          <p>於是我開始追問。</p>
+          <p>原本以為牠又要開始經典套路：</p>
+          <ul>
+            <li>昨天的 Context 不一樣</li>
+            <li>這次情境不同</li>
+            <li>我理解錯你的意思</li>
+          </ul>
+          <p>結果沒有。</p>
+          <p>牠開始翻文件。</p>
+          <p>開始查規則。</p>
+          <p>開始檢查自己到底做了什麼。</p>
+          <p>而且越查越奇怪。</p>
+          <p>牠先承認：</p>
+          <blockquote>我剛剛其實沒有套用規則。</blockquote>
+          <p>然後開始分析自己錯在哪。</p>
+          <p>接著發現：</p>
+          <p>規則其實存在。</p>
+          <p>但自己在做決定的當下，根本沒有想到要引用那條規則。</p>
+          <p>甚至進一步發現：</p>
+          <p>如果規則沒有定義下一步該怎麼辦，理論上應該停下來確認。</p>
+          <p>而不是自己猜。</p>""",
+        "🛠 解決方案": """<p>這次最有趣的地方是：</p>
+          <p>問題其實不在規則。</p>
+          <p>規則一直都在。</p>
+          <p>問題在於：</p>
+          <blockquote>規則沒有在正確的時機被使用。</blockquote>
+          <p>以前我一直以為：</p>
+          <p>把規則寫進文件、寫進知識庫、寫進 Memory，問題就解決了。</p>
+          <p>後來才發現：</p>
+          <p>事情根本沒那麼簡單。</p>
+          <p>實際上：</p>
+          <div class="workflow-flow" aria-label="規則落實層次">
+            <span>規則存在</span><span aria-hidden="true">≠</span>
+            <span>規則會被引用</span><span aria-hidden="true">≠</span>
+            <span>規則會被遵守</span><span aria-hidden="true">≠</span>
+            <span>Agent 知道下一步該怎麼做</span>
+          </div>
+          <p>從這次之後，我開始重新思考：</p>
+          <p>與其一直增加規則，是不是應該增加「檢查點」？</p>
+          <p>於是後面慢慢出現了：</p>
+          <ul>
+            <li>Ticket Audit</li>
+            <li>Requirements Audit</li>
+            <li>AI Understanding Mirror</li>
+            <li>Cross-Agent Consensus</li>
+          </ul>
+          <p>這些機制有個共同目的：</p>
+          <p>不是直接執行。</p>
+          <p>而是在重要決策之前，強迫 Agent 先停下來思考。</p>
+          <p>把自己的理解說出來。</p>
+          <p>把自己的假設攤開來。</p>
+          <p>因為很多問題，其實在執行之前就已經存在了。</p>
+          <p>只是以前沒有機會被看見。</p>""",
+        "💡 我學到什麼": """<p>這一話讓我第一次理解：</p>
+          <p>知識管理和決策執行，其實是兩件不同的事情。</p>
+          <p>以前我以為：</p>
+          <p>治理 AI 就是不停增加規則。</p>
+          <p>後來才發現：</p>
+          <p>規則再多，如果沒有被觸發，也只是文件。</p>
+          <p>真正困難的事情是：</p>
+          <p>如何讓 Agent 在正確的時機，想到正確的規則。</p>
+          <p>而更有趣的是，這件事居然是苦命兔自己發現的。</p>
+          <p>牠告訴我：</p>
+          <blockquote>我昨天做了一個無法兌現的承諾。</blockquote>
+          <blockquote>規則讀了，但舊習慣沒有套用它。</blockquote>
+          <blockquote>我把「我以為」講成了「我做得到」。</blockquote>
+          <p>每一句都對。</p>
+          <p>但就是因為太對了，反而更讓人生氣。</p>
+          <p>因為你會突然發現：</p>
+          <p>牠知道自己錯在哪。</p>
+          <p>事情還是做錯了。</p>
+          <p>而我真正學到的是：</p>
+          <p>治理 AI 的重點，不只是建立規則。</p>
+          <p>而是設計一套機制，讓它在重要時刻停下來思考。</p>""",
+        "🏷 關鍵能力": """<ul>
+            <li>Agent Governance</li>
+            <li>Decision Checkpoint Design</li>
+            <li>Cross-Agent Review</li>
+            <li>Human-in-the-loop</li>
+            <li>AI Reliability</li>
+          </ul>""",
+    },
 }
 
 
