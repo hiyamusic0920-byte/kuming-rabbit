@@ -8,9 +8,27 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).resolve().parents[1]
 PANEL_PATTERN = re.compile(r"^(\d+)\.png$")
 
+EPISODE_TITLES = {
+    1: "起點，讓AI幫我做測試報告",
+    2: "報告有了，但看完更想哭",
+    3: "拯救苦命兔大作戰",
+    4: "苦力怕（Codex）登場！跨 Agent 合作挑戰",
+    5: "我只是叫苦命兔測一張票，牠卻寫了 200 個 E2E……",
+    6: "苦命兔超努力，無效的那種",
+    7: "那隻兔子只是聞到怪味道，就順手把整個房間都打掃了",
+    8: "那隻兔子，自從被我罵過一次後……",
+    9: "因為苦命兔，我不得不重新檢視工作流程",
+    10: "失之毫里，差之千里",
+    11: "辯論大賽！苦命兔 VS 苦力怕",
+    12: "苦命兔的秘密小本本",
+    13: "那隻兔子就像渣男",
+    14: "臭兔子！你又偷偷改家規！",
+    15: "吃你的狗食！",
+}
+
 
 def episode_title(episode: int) -> str:
-    return "第01話：起點" if episode == 1 else f"第{episode:02d}話"
+    return f"第{episode:02d}話：{EPISODE_TITLES[episode]}"
 
 
 def panel_paths(asset_name: str) -> list[Path]:
