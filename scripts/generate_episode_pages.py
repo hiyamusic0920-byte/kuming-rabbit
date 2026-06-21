@@ -37,7 +37,12 @@ def panel_paths(asset_name: str) -> list[Path]:
     return sorted(panels, key=lambda path: int(path.stem))
 
 
-def render_episode(filename: str, asset_name: str, title: str) -> None:
+def render_episode(
+    filename: str,
+    asset_name: str,
+    title: str,
+    progress: str | None = None,
+) -> None:
     panels = panel_paths(asset_name)
     if panels:
         image_lines = []
@@ -51,6 +56,7 @@ def render_episode(filename: str, asset_name: str, title: str) -> None:
     else:
         content = '    <p class="empty-state">圖片準備中。</p>'
 
+    progress_html = f'\n    <p class="episode-progress">{progress}</p>' if progress else ""
     html = f"""<!doctype html>
 <html lang="zh-Hant">
 <head>
@@ -62,7 +68,7 @@ def render_episode(filename: str, asset_name: str, title: str) -> None:
 <body class="comic-page">
   <header class="comic-header">
     <a href="index.html">← 回目錄</a>
-    <h1>{title}</h1>
+    <h1>{title}</h1>{progress_html}
   </header>
   <main class="comic-content" aria-label="{title}漫畫內容">
 {content}
@@ -119,6 +125,7 @@ def main() -> None:
             f"ep{episode:02d}.html",
             f"ep{episode:02d}",
             episode_title(episode),
+            f"第 {episode} / 15 話",
         )
     for episode in range(1, 4):
         render_episode(

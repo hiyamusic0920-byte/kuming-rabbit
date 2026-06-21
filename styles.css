@@ -103,6 +103,12 @@ body {
   font-size: clamp(1.5rem, 6vw, 2.25rem);
 }
 
+.episode-progress {
+  margin: 10px 0 0;
+  color: #aaa;
+  font-size: 0.95rem;
+}
+
 .comic-panel {
   display: block;
   width: 100%;
