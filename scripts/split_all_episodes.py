@@ -82,7 +82,7 @@ EPISODE_ROWS: dict[int, list[list[int]]] = {
     12: [[1, 2], [3, 4]],
     13: [[1, 2], [3, 4], [5, 6], [7, 8]],
     14: [[1, 2], [3, 4]],
-    15: [[1]],
+    15: [[1, 2], [3, 4]],
 }
 
 # Episode 13 spans two source images with different dimensions and coordinates.
@@ -103,6 +103,14 @@ EPISODE_13_PAGES: list[
             (11, 504, 734, 979), (744, 504, 1522, 979),
         ],
     ),
+]
+
+# Episode 15 is already split across four standalone source pages.
+EPISODE_15_PAGES: list[str] = [
+    "full.jpg",
+    "full-2.jpg",
+    "full-3.jpg",
+    "full-4.jpg",
 ]
 
 
@@ -190,10 +198,36 @@ def split_episode_13() -> list[Path]:
     return output_paths
 
 
+def split_episode_15() -> list[Path]:
+    episode = 15
+    episode_dir = ASSETS_DIR / "ep15"
+    panels: list[Image.Image] = []
+    output_paths: list[Path] = []
+
+    for panel_number, source_name in enumerate(EPISODE_15_PAGES, start=1):
+        source_path = episode_dir / source_name
+        if not source_path.is_file():
+            raise FileNotFoundError(f"Source image not found: {source_path}")
+        with Image.open(source_path) as source:
+            panel = source.copy()
+            output_path = episode_dir / f"{panel_number:02d}.png"
+            panel.save(output_path, "PNG")
+            panels.append(panel)
+            output_paths.append(output_path)
+
+    sheet_path = episode_dir / "contact_sheet.png"
+    create_contact_sheet(panels, EPISODE_ROWS[episode]).save(sheet_path, "PNG")
+    output_paths.append(sheet_path)
+    print(f"ep15: {len(panels)} panels")
+    return output_paths
+
+
 def main() -> None:
     for episode in range(2, 16):
         if episode == 13:
             split_episode_13()
+        elif episode == 15:
+            split_episode_15()
         elif episode in EPISODE_CROPS:
             split_episode(episode)
 
