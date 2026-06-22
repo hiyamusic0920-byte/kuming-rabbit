@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>幕後系統架構｜苦命兔 QA 日誌</title>
+  <title>苦命兔的秘密基地｜苦命兔 QA 日誌</title>
   <link rel="stylesheet" href="styles.css">
   <style>
     .arch-intro {
@@ -84,9 +84,15 @@
 </head>
 <body class="home-page">
   <main class="home-shell about-shell">
-    <a class="about-back-link" href="index.html">← 回目錄</a>
-    <h1>幕後系統架構</h1>
-    <p class="subtitle">OwlNest QA Automation ｜ AI-Native QA Operating System</p>
+    <nav class="breadcrumb" aria-label="麵包屑">
+      <a href="index.html">首頁</a>
+      <span aria-hidden="true">›</span>
+      <a href="about.html">幕後花絮</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">苦命兔的秘密基地</span>
+    </nav>
+    <h1>苦命兔的秘密基地</h1>
+    <p class="subtitle">幕後設定集：漫畫背後的真實 AI QA 系統</p>
 
     <p class="arch-intro">
       苦命兔的故事不是憑空想像。牠每天工作的地方，是一個叫
@@ -94,6 +100,24 @@
       這頁把幕後架構攤開，讓你看懂漫畫裡那些測試報告、跨 Agent 辯論、秘密小本本與家規，
       在真實系統裡分別對應到哪個角色與哪一條資訊流。
     </p>
+
+    <section class="setting-guide" aria-labelledby="setting-guide-title">
+      <h2 id="setting-guide-title">漫畫設定與真實系統對照</h2>
+      <div class="setting-table-wrap">
+        <table class="setting-table">
+          <thead>
+            <tr><th scope="col">漫畫設定</th><th scope="col">真實系統</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>苦命兔、苦力怕</td><td>Claude Code、Codex</td></tr>
+            <tr><td>秘密小本本</td><td>Knowledge Layer</td></tr>
+            <tr><td>家規</td><td>Governance Layer</td></tr>
+            <tr><td>十一道關卡</td><td>QA Workflow</td></tr>
+            <tr><td>交作業</td><td>QA／UAT PDF</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
     <figure class="arch-figure">
       <picture>
@@ -155,6 +179,11 @@
         </li>
       </ul>
     </section>
+    <nav class="backstage-nav" aria-label="幕後花絮導覽">
+      <a href="ep15.html">← 回第15話</a>
+      <a href="about.html">關於這個 AI QA Portfolio</a>
+      <a href="index.html">返回首頁</a>
+    </nav>
   </main>
 </body>
 </html>
