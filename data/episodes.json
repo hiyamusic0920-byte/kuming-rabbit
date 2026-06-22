@@ -92,10 +92,35 @@
     }
   ],
   "categories": [
-    {"name": "QA 交付自動化", "episodes": [1, 2, 5, 15]},
-    {"name": "測試工程化", "episodes": [3, 5, 6, 7]},
-    {"name": "AI Agent 治理", "episodes": [4, 8, 11, 12, 13, 14]},
-    {"name": "知識系統設計", "episodes": [3, 9, 10, 11, 12, 14]},
-    {"name": "評估與持續改善", "episodes": [6, 13, 15]}
+    {
+      "name": "QA 交付自動化",
+      "summary": "把需求理解、測試執行、證據收集與稽核報告串成可重複交付的流程。",
+      "methods": "Ticket Analysis、Playwright、pytest、QA / UAT PDF、Dogfooding",
+      "episodes": [1, 2, 5, 15]
+    },
+    {
+      "name": "測試工程化",
+      "summary": "決定值得自動化的測試層級，控制 flaky test，並建立安全的執行邊界。",
+      "methods": "Test Strategy、POM、retry / stop rules、Permission Boundary",
+      "episodes": [3, 5, 6, 7]
+    },
+    {
+      "name": "AI Agent 治理",
+      "summary": "讓多個 Agent 在共用規則、權限與決策節點下協作，而不是各自自由發揮。",
+      "methods": "Multi-Agent Handoff、Consensus、Feedback Loop、Governance、Audit Gate",
+      "episodes": [4, 8, 11, 12, 13, 14]
+    },
+    {
+      "name": "知識系統設計",
+      "summary": "把 QA 的隱性經驗轉成可搜尋、可追蹤、可被不同 Agent 重複使用的知識。",
+      "methods": "Single Source of Truth、Registry、Requirements Audit、Change Log",
+      "episodes": [3, 9, 10, 11, 12, 14]
+    },
+    {
+      "name": "評估與持續改善",
+      "summary": "用失敗案例、回顧與評估框架驗證流程改善是否真的產生效果。",
+      "methods": "Retro、Eval Framework、Dogfooding、Decision Checkpoint",
+      "episodes": [6, 13, 15]
+    }
   ]
 }

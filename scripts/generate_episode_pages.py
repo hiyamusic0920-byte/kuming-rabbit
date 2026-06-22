@@ -1263,20 +1263,12 @@ def render_index() -> None:
         f'        <li><a href="special{episode:02d}.html">特別篇 {episode:02d}</a></li>'
         for episode in range(1, 4)
     )
-    capability_cards = "\n".join(
-        f"""        <li class="capability-card">
-          <a href="ep{item['number']:02d}.html">
-            <span class="capability-card-number">第{item['number']:02d}話</span>
-            <h3>{item['title']}</h3>
-            <p><strong>展示能力：</strong>{item['capability']}</p>
-            <p><strong>對應產出 / 方法：</strong>{item['methods']}</p>
-          </a>
-        </li>"""
-        for item in episodes
-    )
     category_cards = "\n".join(
         f"""        <article class="category-card">
           <h3>{category['name']}</h3>
+          <p class="category-summary">{category['summary']}</p>
+          <p class="category-methods"><strong>方法 / 關鍵字：</strong>{category['methods']}</p>
+          <p class="category-episodes-label">相關話數</p>
           <div class="category-episodes">
             {''.join(f'<a href="ep{number:02d}.html" aria-label="{capability_by_number[number]["title"]}">{number:02d}</a>' for number in category['episodes'])}
           </div>
@@ -1324,15 +1316,9 @@ def render_index() -> None:
         </a>
       </div>
     </section>
-    <section class="capability-map" aria-labelledby="capability-map-title">
-      <h2 id="capability-map-title">苦命兔 QA 日誌｜能力地圖</h2>
-      <p class="capability-intro">這不是單純的漫畫專案，而是一份 AI Native QA Portfolio。<br>透過 15 話漫畫，記錄我如何把 AI 從「幫忙產報告的工具」，逐步治理成能參與 QA 交付、知識累積、多 Agent 協作與流程評估的工作系統。</p>
-      <ol class="capability-grid">
-{capability_cards}
-      </ol>
-    </section>
-    <section class="capability-categories" aria-labelledby="capability-categories-title">
-      <h2 id="capability-categories-title">能力分類</h2>
+    <section class="site-section capability-categories" aria-labelledby="capability-categories-title">
+      <h2 id="capability-categories-title">🧭 能力分類</h2>
+      <p class="capability-intro">如果你想快速理解這份作品集的技術重點，這裡將 15 話故事整理成五個 AI Native QA 能力面向。</p>
       <div class="category-grid">
 {category_cards}
       </div>
