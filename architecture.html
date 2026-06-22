@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>幕後系統架構｜苦命兔 QA 日誌</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .arch-intro {
+      max-width: 780px;
+      margin: 0 0 28px;
+      color: #6f5a4f;
+      line-height: 1.9;
+    }
+    .arch-figure {
+      margin: 0 0 16px;
+      padding: 16px;
+      border: 1px solid #ead8c2;
+      border-radius: 16px;
+      background: #fffaf4;
+      overflow-x: auto;
+    }
+    .arch-figure picture,
+    .arch-figure img {
+      display: block;
+      width: 100%;
+      min-width: 720px;
+      height: auto;
+    }
+    .arch-figcaption {
+      margin: 12px 4px 0;
+      color: #8c7467;
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+    .arch-roles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+      gap: 14px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .arch-role-card {
+      padding: 20px;
+      border: 1px solid #ead8c2;
+      border-radius: 14px;
+      background: #fffaf4;
+    }
+    .arch-role-card h3 {
+      margin: 0 0 10px;
+      color: #60483d;
+      font-size: 1rem;
+    }
+    .arch-role-card p {
+      margin: 0;
+      color: #735f54;
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+    .arch-role-card .tag {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: #fff8ed;
+      background: #7d4938;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .arch-callout {
+      max-width: 780px;
+      margin: 28px 0 0;
+      padding: 16px 20px;
+      border-left: 4px solid #b87955;
+      border-radius: 0 10px 10px 0;
+      background: #fff3e3;
+      color: #60483d;
+      font-weight: 700;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body class="home-page">
+  <main class="home-shell about-shell">
+    <a class="about-back-link" href="index.html">← 回目錄</a>
+    <h1>幕後系統架構</h1>
+    <p class="subtitle">OwlNest QA Automation ｜ AI-Native QA Operating System</p>
+
+    <p class="arch-intro">
+      苦命兔的故事不是憑空想像。牠每天工作的地方，是一個叫
+      <strong>owlnest-playwright</strong> 的真實 repo——一套用「系統角色 + 資訊流」運作的 AI-Native QA 系統。
+      這頁把幕後架構攤開，讓你看懂漫畫裡那些測試報告、跨 Agent 辯論、秘密小本本與家規，
+      在真實系統裡分別對應到哪個角色與哪一條資訊流。
+    </p>
+
+    <figure class="arch-figure">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="docs/assets/architecture-dark.svg">
+        <source media="(prefers-color-scheme: light)" srcset="docs/assets/architecture-light.svg">
+        <img alt="OwlNest QA Automation 系統角色與資訊流架構圖" src="docs/assets/architecture-light.svg">
+      </picture>
+      <figcaption class="arch-figcaption">
+        資訊流主軸：Sunny 下票 → Claude Code / Codex 協作執行 11 步 QA Workflow
+        → 由 Knowledge Layer 餵養、Governance Layer 約束 → 經 Evidence Board 決定落點
+        → 產出符合 KPMG 標準的 QA / UAT PDF。（圖會依系統深淺色主題自動切換）
+      </figcaption>
+    </figure>
+
+    <p class="arch-callout">核心原則：Agent 可換，repo 才是真理來源。Chat 與記憶都不是。</p>
+
+    <section aria-labelledby="arch-roles-title">
+      <h2 id="arch-roles-title">八種角色，一條資訊流</h2>
+      <ul class="arch-roles">
+        <li class="arch-role-card">
+          <span class="tag">Human</span>
+          <h3>Sunny · QA-PM</h3>
+          <p>下票、決策方向、高風險票審閱定稿，也是跨 Agent 討論的仲裁者與最終把關人。</p>
+        </li>
+        <li class="arch-role-card">
+          <span class="tag">Agent</span>
+          <h3>Claude Code · Codex</h3>
+          <p>對等的 AI 執行者。Claude Code 為預設 Lead、可呼叫 Codex；兩者提案、挑戰、收斂出共識。（對應第 04 / 11 話）</p>
+        </li>
+        <li class="arch-role-card">
+          <span class="tag">Knowledge</span>
+          <h3>真理來源層</h3>
+          <p>docs/product 商業規則、pages/_registry 的 UI 陷阱、seeds 測資、worklog 紀錄——苦命兔的「秘密小本本」。（第 03 / 12 話）</p>
+        </li>
+        <li class="arch-role-card">
+          <span class="tag">Workflow</span>
+          <h3>11 步主線</h3>
+          <p>採集 → TestPlan → TC → Feature → Explore → POM → BDD → pytest → Report → Worklog，固定交付物、可變測試深度。（第 05 話）</p>
+        </li>
+        <li class="arch-role-card">
+          <span class="tag">Test Execution</span>
+          <h3>pytest · Playwright</h3>
+          <p>跑 BDD scenario、走真實 API 造測資、selector 封裝進 Page Object，自動收集 step 截圖。（第 01 / 06 話）</p>
+        </li>
+        <li class="arch-role-card">
+          <span class="tag">Evidence</span>
+          <h3>Evidence Board</h3>
+          <p>JSON 合約 + step 截圖匯整成證據；Evidence Board 持久化 sprint↔ticket 對應，決定報告交付落點。</p>
+        </li>
+        <li class="arch-role-card">
+          <span class="tag">Report</span>
+          <h3>QA / UAT PDF</h3>
+          <p>統一 renderer 讀合約 JSON，產出符合 KPMG 稽核標準的 PDF，整包交付業務／稽核方。</p>
+        </li>
+        <li class="arch-role-card">
+          <span class="tag">Governance</span>
+          <h3>治理層</h3>
+          <p>PROJECT_RULES 硬規則、AGENT_GOVERNANCE 防漂移、Permission 把關、CONSENSUS 決策紀錄——苦命兔的「家規」。（第 07 / 13 / 14 話）</p>
+        </li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
