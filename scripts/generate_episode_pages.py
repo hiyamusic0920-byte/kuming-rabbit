@@ -1175,6 +1175,24 @@ def render_portfolio_framework(episode: int) -> str:
     </section>""".format("\n".join(cards))
 
 
+def render_episode_bonus(episode: int) -> str:
+    if episode != 15:
+        return ""
+    return """    <aside class="episode-bonus" aria-labelledby="episode-bonus-title">
+      <p class="episode-bonus-label">完結紀念</p>
+      <h2 id="episode-bonus-title">🎁 幕後特典</h2>
+      <div class="episode-bonus-dialogue">
+        <p><strong>🐰 苦命兔：</strong></p>
+        <p>主子……</p>
+        <p>大家都以為我只是在漫畫裡耍笨、踩雷，偶爾再被妳罵。</p>
+        <p>其實，那些報告、家規、秘密小本本，還有我跟苦力怕吵過的架……全部都真的存在。</p>
+        <p>我們還有一座秘密基地。</p>
+        <p>想看看這 15 話故事，在真實世界裡是怎麼運作的嗎？</p>
+      </div>
+      <a class="episode-bonus-cta" href="architecture.html">👉 進入苦命兔的秘密基地</a>
+    </aside>"""
+
+
 def render_episode(
     filename: str,
     asset_name: str,
@@ -1204,6 +1222,8 @@ def render_episode(
         if episode_number is not None
         else ""
     )
+    bonus = render_episode_bonus(episode_number) if episode_number is not None else ""
+    bonus_html = f"\n{bonus}" if bonus else ""
     html = f"""<!doctype html>
 <html lang="zh-Hant">
 <head>
@@ -1218,7 +1238,7 @@ def render_episode(
     <h1>{title}</h1>{progress_html}
   </header>
   <main class="comic-content" aria-label="{title}漫畫內容">
-{content}{navigation_html}{portfolio_html}
+{content}{navigation_html}{portfolio_html}{bonus_html}
   </main>
 </body>
 </html>
@@ -1275,17 +1295,35 @@ def render_index() -> None:
   <main class="home-shell">
     <h1>苦命兔 QA 日誌</h1>
     <p class="subtitle">一位 QA、一隻兔子，以及兩個 AI Agent 的真實故事。</p>
-    <a class="about-link" href="about.html">關於這個 AI QA Portfolio</a>
-    <nav aria-labelledby="episodes-title">
-      <h2 id="episodes-title">目錄</h2>
+    <a class="hero-cta" href="ep01.html">從第 1 話開始 →</a>
+    <nav class="site-section comic-main-section" aria-labelledby="episodes-title">
+      <h2 id="episodes-title">📖 漫畫正篇</h2>
       <ul class="episode-list">
 {regular_items}
       </ul>
-      <h2>特別篇</h2>
+      <h3 class="special-title">特別篇</h3>
       <ul class="episode-list">
 {special_items}
       </ul>
     </nav>
+    <section class="site-section backstage-section" aria-labelledby="backstage-title">
+      <h2 id="backstage-title">🎁 幕後花絮</h2>
+      <p class="section-intro">故事看完了嗎？接著認識創作背景，或走進漫畫背後真正運作的 AI QA 系統。</p>
+      <div class="backstage-grid">
+        <a class="backstage-card" href="about.html">
+          <span class="backstage-card-icon" aria-hidden="true">🐰</span>
+          <h3>關於這個 AI QA Portfolio</h3>
+          <p>故事背景、創作動機，以及這份作品集想記錄的事。</p>
+          <span class="backstage-card-cta">查看幕後故事 →</span>
+        </a>
+        <a class="backstage-card" href="architecture.html">
+          <span class="backstage-card-icon" aria-hidden="true">🔧</span>
+          <h3>苦命兔的秘密基地</h3>
+          <p>打開幕後設定集，看看漫畫角色與真實 AI QA 系統如何對應。</p>
+          <span class="backstage-card-cta">進入秘密基地 →</span>
+        </a>
+      </div>
+    </section>
     <section class="capability-map" aria-labelledby="capability-map-title">
       <h2 id="capability-map-title">苦命兔 QA 日誌｜能力地圖</h2>
       <p class="capability-intro">這不是單純的漫畫專案，而是一份 AI Native QA Portfolio。<br>透過 15 話漫畫，記錄我如何把 AI 從「幫忙產報告的工具」，逐步治理成能參與 QA 交付、知識累積、多 Agent 協作與流程評估的工作系統。</p>
@@ -1318,8 +1356,14 @@ def render_about() -> None:
 </head>
 <body class="home-page">
   <main class="home-shell about-shell">
-    <a class="about-back-link" href="index.html">← 回目錄</a>
-    <h1>苦命兔 QA 日誌</h1>
+    <nav class="breadcrumb" aria-label="麵包屑">
+      <a href="index.html">首頁</a>
+      <span aria-hidden="true">›</span>
+      <span>幕後花絮</span>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">關於</span>
+    </nav>
+    <h1>關於這個 AI QA Portfolio</h1>
     <p>這是一個記錄 QA 與 AI Agent 協作演化過程的作品集。</p>
     <p>內容包含：</p>
     <ul>
@@ -1329,6 +1373,13 @@ def render_about() -> None:
       <li>工作流程演化</li>
       <li>Agent 治理實驗</li>
     </ul>
+    <section class="backstage-next" aria-labelledby="backstage-next-title">
+      <p class="backstage-next-label">下一站</p>
+      <h2 id="backstage-next-title">苦命兔的秘密基地</h2>
+      <p>漫畫裡的角色、家規與秘密小本本，在真實世界裡都有對應的系統角色。</p>
+      <a class="primary-link" href="architecture.html">進入苦命兔的秘密基地 →</a>
+    </section>
+    <a class="about-back-link" href="index.html">← 返回首頁</a>
   </main>
 </body>
 </html>
