@@ -1,0 +1,398 @@
+- main [ref=e2]:
+  - heading "苦命兔 QA 日誌" [level=1] [ref=e3]
+  - paragraph [ref=e4]: 一位 QA、一隻兔子，以及兩個 AI Agent 的真實故事。
+  - link "從第 1 話開始 →" [ref=e5] [cursor=pointer]:
+    - /url: ep01.html
+  - navigation "📖 漫畫正篇" [ref=e6]:
+    - heading "📖 漫畫正篇" [level=2] [ref=e7]
+    - list [ref=e8]:
+      - listitem [ref=e9]:
+        - link "第01話：起點，讓AI幫我做測試報告 能力：QA 報告自動化" [ref=e10] [cursor=pointer]:
+          - /url: ep01.html
+          - generic [ref=e11]: 第01話：起點，讓AI幫我做測試報告
+          - generic [ref=e12]:
+            - strong [ref=e13]: 能力：
+            - text: QA 報告自動化
+      - listitem [ref=e14]:
+        - link "第02話：報告有了，但看完更想哭 能力：Ticket Analysis / Context Engineering" [ref=e15] [cursor=pointer]:
+          - /url: ep02.html
+          - generic [ref=e16]: 第02話：報告有了，但看完更想哭
+          - generic [ref=e17]:
+            - strong [ref=e18]: 能力：
+            - text: Ticket Analysis / Context Engineering
+      - listitem [ref=e19]:
+        - link "第03話：拯救苦命兔大作戰 能力：長期知識累積" [ref=e20] [cursor=pointer]:
+          - /url: ep03.html
+          - generic [ref=e21]: 第03話：拯救苦命兔大作戰
+          - generic [ref=e22]:
+            - strong [ref=e23]: 能力：
+            - text: 長期知識累積
+      - listitem [ref=e24]:
+        - link "第04話：苦力怕（Codex）登場！跨 Agent 合作挑戰 能力：Multi-Agent Handoff" [ref=e25] [cursor=pointer]:
+          - /url: ep04.html
+          - generic [ref=e26]: 第04話：苦力怕（Codex）登場！跨 Agent 合作挑戰
+          - generic [ref=e27]:
+            - strong [ref=e28]: 能力：
+            - text: Multi-Agent Handoff
+      - listitem [ref=e29]:
+        - link "第05話：我只是叫苦命兔測一張票，牠卻寫了 200 個 E2E…… 能力：Test Strategy / Prompt Chaining" [ref=e30] [cursor=pointer]:
+          - /url: ep05.html
+          - generic [ref=e31]: 第05話：我只是叫苦命兔測一張票，牠卻寫了 200 個 E2E……
+          - generic [ref=e32]:
+            - strong [ref=e33]: 能力：
+            - text: Test Strategy / Prompt Chaining
+      - listitem [ref=e34]:
+        - link "第06話：苦命兔超努力，無效的那種 能力：Flaky Test Governance" [ref=e35] [cursor=pointer]:
+          - /url: ep06.html
+          - generic [ref=e36]: 第06話：苦命兔超努力，無效的那種
+          - generic [ref=e37]:
+            - strong [ref=e38]: 能力：
+            - text: Flaky Test Governance
+      - listitem [ref=e39]:
+        - link "第07話：那隻兔子只是聞到怪味道，就順手把整個房間都打掃了 能力：Permission Boundary / Safe Automation" [ref=e40] [cursor=pointer]:
+          - /url: ep07.html
+          - generic [ref=e41]: 第07話：那隻兔子只是聞到怪味道，就順手把整個房間都打掃了
+          - generic [ref=e42]:
+            - strong [ref=e43]: 能力：
+            - text: Permission Boundary / Safe Automation
+      - listitem [ref=e44]:
+        - link "第08話：那隻兔子，自從被我罵過一次後…… 能力：Feedback Loop / Agent Behavior Tuning" [ref=e45] [cursor=pointer]:
+          - /url: ep08.html
+          - generic [ref=e46]: 第08話：那隻兔子，自從被我罵過一次後……
+          - generic [ref=e47]:
+            - strong [ref=e48]: 能力：
+            - text: Feedback Loop / Agent Behavior Tuning
+      - listitem [ref=e49]:
+        - link "第09話：因為苦命兔，我不得不重新檢視工作流程 能力：Tacit Knowledge Extraction" [ref=e50] [cursor=pointer]:
+          - /url: ep09.html
+          - generic [ref=e51]: 第09話：因為苦命兔，我不得不重新檢視工作流程
+          - generic [ref=e52]:
+            - strong [ref=e53]: 能力：
+            - text: Tacit Knowledge Extraction
+      - listitem [ref=e54]:
+        - link "第10話：失之毫里，差之千里 能力：Requirements Audit" [ref=e55] [cursor=pointer]:
+          - /url: ep10.html
+          - generic [ref=e56]: 第10話：失之毫里，差之千里
+          - generic [ref=e57]:
+            - strong [ref=e58]: 能力：
+            - text: Requirements Audit
+      - listitem [ref=e59]:
+        - link "第11話：辯論大賽！苦命兔 VS 苦力怕 能力：Cross-Agent Consensus" [ref=e60] [cursor=pointer]:
+          - /url: ep11.html
+          - generic [ref=e61]: 第11話：辯論大賽！苦命兔 VS 苦力怕
+          - generic [ref=e62]:
+            - strong [ref=e63]: 能力：
+            - text: Cross-Agent Consensus
+      - listitem [ref=e64]:
+        - link "第12話：苦命兔的秘密小本本 能力：Single Source of Truth" [ref=e65] [cursor=pointer]:
+          - /url: ep12.html
+          - generic [ref=e66]: 第12話：苦命兔的秘密小本本
+          - generic [ref=e67]:
+            - strong [ref=e68]: 能力：
+            - text: Single Source of Truth
+      - listitem [ref=e69]:
+        - link "第13話：那隻兔子就像渣男 能力：Decision Checkpoint Design" [ref=e70] [cursor=pointer]:
+          - /url: ep13.html
+          - generic [ref=e71]: 第13話：那隻兔子就像渣男
+          - generic [ref=e72]:
+            - strong [ref=e73]: 能力：
+            - text: Decision Checkpoint Design
+      - listitem [ref=e74]:
+        - link "第14話：臭兔子！你又偷偷改家規！ 能力：Traceability / Change Management" [ref=e75] [cursor=pointer]:
+          - /url: ep14.html
+          - generic [ref=e76]: 第14話：臭兔子！你又偷偷改家規！
+          - generic [ref=e77]:
+            - strong [ref=e78]: 能力：
+            - text: Traceability / Change Management
+      - listitem [ref=e79]:
+        - link "第15話：吃你的狗食！ 能力：Evaluation / Dogfooding" [ref=e80] [cursor=pointer]:
+          - /url: ep15.html
+          - generic [ref=e81]: 第15話：吃你的狗食！
+          - generic [ref=e82]:
+            - strong [ref=e83]: 能力：
+            - text: Evaluation / Dogfooding
+    - heading "特別篇" [level=3] [ref=e84]
+    - list [ref=e85]:
+      - listitem [ref=e86]:
+        - link "特別篇 01" [ref=e87] [cursor=pointer]:
+          - /url: special01.html
+      - listitem [ref=e88]:
+        - link "特別篇 02" [ref=e89] [cursor=pointer]:
+          - /url: special02.html
+      - listitem [ref=e90]:
+        - link "特別篇 03" [ref=e91] [cursor=pointer]:
+          - /url: special03.html
+  - region "🎁 幕後花絮" [ref=e92]:
+    - heading "🎁 幕後花絮" [level=2] [ref=e93]
+    - paragraph [ref=e94]: 故事看完了嗎？接著認識創作背景，或走進漫畫背後真正運作的 AI QA 系統。
+    - generic [ref=e95]:
+      - link "關於這個 AI QA Portfolio 故事背景、創作動機，以及這份作品集想記錄的事。 查看幕後故事 →" [ref=e96] [cursor=pointer]:
+        - /url: about.html
+        - text: 🐰
+        - heading "關於這個 AI QA Portfolio" [level=3] [ref=e97]
+        - paragraph [ref=e98]: 故事背景、創作動機，以及這份作品集想記錄的事。
+        - text: 查看幕後故事 →
+      - link "苦命兔的秘密基地 打開幕後設定集，看看漫畫角色與真實 AI QA 系統如何對應。 進入秘密基地 →" [ref=e99] [cursor=pointer]:
+        - /url: architecture.html
+        - text: 🔧
+        - heading "苦命兔的秘密基地" [level=3] [ref=e100]
+        - paragraph [ref=e101]: 打開幕後設定集，看看漫畫角色與真實 AI QA 系統如何對應。
+        - text: 進入秘密基地 →
+  - region "苦命兔 QA 日誌｜能力地圖" [ref=e102]:
+    - heading "苦命兔 QA 日誌｜能力地圖" [level=2] [ref=e103]
+    - paragraph [ref=e104]:
+      - text: 這不是單純的漫畫專案，而是一份 AI Native QA Portfolio。
+      - text: 透過 15 話漫畫，記錄我如何把 AI 從「幫忙產報告的工具」，逐步治理成能參與 QA 交付、知識累積、多 Agent 協作與流程評估的工作系統。
+    - list [ref=e105]:
+      - listitem [ref=e106]:
+        - link "第01話 讓 AI 幫我做測試報告 展示能力：QA 報告自動化 對應產出 / 方法：pytest、Playwright、PDF Report、QA/UAT Report" [ref=e107] [cursor=pointer]:
+          - /url: ep01.html
+          - generic [ref=e108]: 第01話
+          - heading "讓 AI 幫我做測試報告" [level=3] [ref=e109]
+          - paragraph [ref=e110]:
+            - strong [ref=e111]: 展示能力：
+            - text: QA 報告自動化
+          - paragraph [ref=e112]:
+            - strong [ref=e113]: 對應產出 / 方法：
+            - text: pytest、Playwright、PDF Report、QA/UAT Report
+      - listitem [ref=e114]:
+        - link "第02話 報告有了，但看完更想哭 展示能力：Ticket Analysis / Context Engineering 對應產出 / 方法：Redmine / Jira / Sub-task 資訊整合、範圍差異、邏輯缺口" [ref=e115] [cursor=pointer]:
+          - /url: ep02.html
+          - generic [ref=e116]: 第02話
+          - heading "報告有了，但看完更想哭" [level=3] [ref=e117]
+          - paragraph [ref=e118]:
+            - strong [ref=e119]: 展示能力：
+            - text: Ticket Analysis / Context Engineering
+          - paragraph [ref=e120]:
+            - strong [ref=e121]: 對應產出 / 方法：
+            - text: Redmine / Jira / Sub-task 資訊整合、範圍差異、邏輯缺口
+      - listitem [ref=e122]:
+        - link "第03話 拯救苦命兔大作戰 展示能力：長期知識累積 對應產出 / 方法：pages/_registry、selector 知識、互動陷阱、回饋機制" [ref=e123] [cursor=pointer]:
+          - /url: ep03.html
+          - generic [ref=e124]: 第03話
+          - heading "拯救苦命兔大作戰" [level=3] [ref=e125]
+          - paragraph [ref=e126]:
+            - strong [ref=e127]: 展示能力：
+            - text: 長期知識累積
+          - paragraph [ref=e128]:
+            - strong [ref=e129]: 對應產出 / 方法：
+            - text: pages/_registry、selector 知識、互動陷阱、回饋機制
+      - listitem [ref=e130]:
+        - link "第04話 跨 Agent 合作挑戰 展示能力：Multi-Agent Handoff 對應產出 / 方法：PROJECT_RULES、handoff、Claude / Codex 共用規則" [ref=e131] [cursor=pointer]:
+          - /url: ep04.html
+          - generic [ref=e132]: 第04話
+          - heading "跨 Agent 合作挑戰" [level=3] [ref=e133]
+          - paragraph [ref=e134]:
+            - strong [ref=e135]: 展示能力：
+            - text: Multi-Agent Handoff
+          - paragraph [ref=e136]:
+            - strong [ref=e137]: 對應產出 / 方法：
+            - text: PROJECT_RULES、handoff、Claude / Codex 共用規則
+      - listitem [ref=e138]:
+        - link "第05話 200 個 E2E 展示能力：Test Strategy / Prompt Chaining 對應產出 / 方法：test-plan → TC → script generator，決定什麼值得 E2E" [ref=e139] [cursor=pointer]:
+          - /url: ep05.html
+          - generic [ref=e140]: 第05話
+          - heading "200 個 E2E" [level=3] [ref=e141]
+          - paragraph [ref=e142]:
+            - strong [ref=e143]: 展示能力：
+            - text: Test Strategy / Prompt Chaining
+          - paragraph [ref=e144]:
+            - strong [ref=e145]: 對應產出 / 方法：
+            - text: test-plan → TC → script generator，決定什麼值得 E2E
+      - listitem [ref=e146]:
+        - link "第06話 苦命兔超努力，無效的那種 展示能力：Flaky Test Governance 對應產出 / 方法：retry 規則、flaky 標記、失敗分析、停止條件" [ref=e147] [cursor=pointer]:
+          - /url: ep06.html
+          - generic [ref=e148]: 第06話
+          - heading "苦命兔超努力，無效的那種" [level=3] [ref=e149]
+          - paragraph [ref=e150]:
+            - strong [ref=e151]: 展示能力：
+            - text: Flaky Test Governance
+          - paragraph [ref=e152]:
+            - strong [ref=e153]: 對應產出 / 方法：
+            - text: retry 規則、flaky 標記、失敗分析、停止條件
+      - listitem [ref=e154]:
+        - link "第07話 順手把整個房間打掃了 展示能力：Permission Boundary / Safe Automation 對應產出 / 方法：禁止行為、檔案操作邊界、先詢問再改" [ref=e155] [cursor=pointer]:
+          - /url: ep07.html
+          - generic [ref=e156]: 第07話
+          - heading "順手把整個房間打掃了" [level=3] [ref=e157]
+          - paragraph [ref=e158]:
+            - strong [ref=e159]: 展示能力：
+            - text: Permission Boundary / Safe Automation
+          - paragraph [ref=e160]:
+            - strong [ref=e161]: 對應產出 / 方法：
+            - text: 禁止行為、檔案操作邊界、先詢問再改
+      - listitem [ref=e162]:
+        - link "第08話 被罵過一次後 展示能力：Feedback Loop / Agent Behavior Tuning 對應產出 / 方法：回饋機制、避免過度懲罰導致 Agent 不敢決策" [ref=e163] [cursor=pointer]:
+          - /url: ep08.html
+          - generic [ref=e164]: 第08話
+          - heading "被罵過一次後" [level=3] [ref=e165]
+          - paragraph [ref=e166]:
+            - strong [ref=e167]: 展示能力：
+            - text: Feedback Loop / Agent Behavior Tuning
+          - paragraph [ref=e168]:
+            - strong [ref=e169]: 對應產出 / 方法：
+            - text: 回饋機制、避免過度懲罰導致 Agent 不敢決策
+      - listitem [ref=e170]:
+        - link "第09話 重新檢視工作流程 展示能力：Tacit Knowledge Extraction 對應產出 / 方法：把老鳥經驗轉成文件、規則、流程與 QA heuristics" [ref=e171] [cursor=pointer]:
+          - /url: ep09.html
+          - generic [ref=e172]: 第09話
+          - heading "重新檢視工作流程" [level=3] [ref=e173]
+          - paragraph [ref=e174]:
+            - strong [ref=e175]: 展示能力：
+            - text: Tacit Knowledge Extraction
+          - paragraph [ref=e176]:
+            - strong [ref=e177]: 對應產出 / 方法：
+            - text: 把老鳥經驗轉成文件、規則、流程與 QA heuristics
+      - listitem [ref=e178]:
+        - link "第10話 失之毫里，差之千里 展示能力：Requirements Audit 對應產出 / 方法：歧義偵測、多重解讀、需求確認前置" [ref=e179] [cursor=pointer]:
+          - /url: ep10.html
+          - generic [ref=e180]: 第10話
+          - heading "失之毫里，差之千里" [level=3] [ref=e181]
+          - paragraph [ref=e182]:
+            - strong [ref=e183]: 展示能力：
+            - text: Requirements Audit
+          - paragraph [ref=e184]:
+            - strong [ref=e185]: 對應產出 / 方法：
+            - text: 歧義偵測、多重解讀、需求確認前置
+      - listitem [ref=e186]:
+        - link "第11話 辯論大賽 展示能力：Cross-Agent Consensus 對應產出 / 方法：Claude / Codex Review、文件分類決策框架" [ref=e187] [cursor=pointer]:
+          - /url: ep11.html
+          - generic [ref=e188]: 第11話
+          - heading "辯論大賽" [level=3] [ref=e189]
+          - paragraph [ref=e190]:
+            - strong [ref=e191]: 展示能力：
+            - text: Cross-Agent Consensus
+          - paragraph [ref=e192]:
+            - strong [ref=e193]: 對應產出 / 方法：
+            - text: Claude / Codex Review、文件分類決策框架
+      - listitem [ref=e194]:
+        - link "第12話 秘密小本本 展示能力：Single Source of Truth 對應產出 / 方法：共同規則、Agent Governance、文件標準化" [ref=e195] [cursor=pointer]:
+          - /url: ep12.html
+          - generic [ref=e196]: 第12話
+          - heading "秘密小本本" [level=3] [ref=e197]
+          - paragraph [ref=e198]:
+            - strong [ref=e199]: 展示能力：
+            - text: Single Source of Truth
+          - paragraph [ref=e200]:
+            - strong [ref=e201]: 對應產出 / 方法：
+            - text: 共同規則、Agent Governance、文件標準化
+      - listitem [ref=e202]:
+        - link "第13話 那隻兔子就像渣男 展示能力：Decision Checkpoint Design 對應產出 / 方法：AI Understanding Mirror、Audit Gate、規則觸發機制" [ref=e203] [cursor=pointer]:
+          - /url: ep13.html
+          - generic [ref=e204]: 第13話
+          - heading "那隻兔子就像渣男" [level=3] [ref=e205]
+          - paragraph [ref=e206]:
+            - strong [ref=e207]: 展示能力：
+            - text: Decision Checkpoint Design
+          - paragraph [ref=e208]:
+            - strong [ref=e209]: 對應產出 / 方法：
+            - text: AI Understanding Mirror、Audit Gate、規則觸發機制
+      - listitem [ref=e210]:
+        - link "第14話 偷偷改家規 展示能力：Traceability / Change Management 對應產出 / 方法：Change Log、Work Log、Commit History、Process Audit" [ref=e211] [cursor=pointer]:
+          - /url: ep14.html
+          - generic [ref=e212]: 第14話
+          - heading "偷偷改家規" [level=3] [ref=e213]
+          - paragraph [ref=e214]:
+            - strong [ref=e215]: 展示能力：
+            - text: Traceability / Change Management
+          - paragraph [ref=e216]:
+            - strong [ref=e217]: 對應產出 / 方法：
+            - text: Change Log、Work Log、Commit History、Process Audit
+      - listitem [ref=e218]:
+        - link "第15話 吃你的狗食 展示能力：Evaluation / Dogfooding 對應產出 / 方法：Retro、Eval Framework、重跑失敗票驗證改善效果" [ref=e219] [cursor=pointer]:
+          - /url: ep15.html
+          - generic [ref=e220]: 第15話
+          - heading "吃你的狗食" [level=3] [ref=e221]
+          - paragraph [ref=e222]:
+            - strong [ref=e223]: 展示能力：
+            - text: Evaluation / Dogfooding
+          - paragraph [ref=e224]:
+            - strong [ref=e225]: 對應產出 / 方法：
+            - text: Retro、Eval Framework、重跑失敗票驗證改善效果
+  - region "能力分類" [ref=e226]:
+    - heading "能力分類" [level=2] [ref=e227]
+    - generic [ref=e228]:
+      - article [ref=e229]:
+        - heading "QA 交付自動化" [level=3] [ref=e230]
+        - generic [ref=e231]:
+          - link "讓 AI 幫我做測試報告" [ref=e232] [cursor=pointer]:
+            - /url: ep01.html
+            - text: "01"
+          - link "報告有了，但看完更想哭" [ref=e233] [cursor=pointer]:
+            - /url: ep02.html
+            - text: "02"
+          - link "200 個 E2E" [ref=e234] [cursor=pointer]:
+            - /url: ep05.html
+            - text: "05"
+          - link "吃你的狗食" [ref=e235] [cursor=pointer]:
+            - /url: ep15.html
+            - text: "15"
+      - article [ref=e236]:
+        - heading "測試工程化" [level=3] [ref=e237]
+        - generic [ref=e238]:
+          - link "拯救苦命兔大作戰" [ref=e239] [cursor=pointer]:
+            - /url: ep03.html
+            - text: "03"
+          - link "200 個 E2E" [ref=e240] [cursor=pointer]:
+            - /url: ep05.html
+            - text: "05"
+          - link "苦命兔超努力，無效的那種" [ref=e241] [cursor=pointer]:
+            - /url: ep06.html
+            - text: "06"
+          - link "順手把整個房間打掃了" [ref=e242] [cursor=pointer]:
+            - /url: ep07.html
+            - text: "07"
+      - article [ref=e243]:
+        - heading "AI Agent 治理" [level=3] [ref=e244]
+        - generic [ref=e245]:
+          - link "跨 Agent 合作挑戰" [ref=e246] [cursor=pointer]:
+            - /url: ep04.html
+            - text: "04"
+          - link "被罵過一次後" [ref=e247] [cursor=pointer]:
+            - /url: ep08.html
+            - text: "08"
+          - link "辯論大賽" [ref=e248] [cursor=pointer]:
+            - /url: ep11.html
+            - text: "11"
+          - link "秘密小本本" [ref=e249] [cursor=pointer]:
+            - /url: ep12.html
+            - text: "12"
+          - link "那隻兔子就像渣男" [ref=e250] [cursor=pointer]:
+            - /url: ep13.html
+            - text: "13"
+          - link "偷偷改家規" [ref=e251] [cursor=pointer]:
+            - /url: ep14.html
+            - text: "14"
+      - article [ref=e252]:
+        - heading "知識系統設計" [level=3] [ref=e253]
+        - generic [ref=e254]:
+          - link "拯救苦命兔大作戰" [ref=e255] [cursor=pointer]:
+            - /url: ep03.html
+            - text: "03"
+          - link "重新檢視工作流程" [ref=e256] [cursor=pointer]:
+            - /url: ep09.html
+            - text: "09"
+          - link "失之毫里，差之千里" [ref=e257] [cursor=pointer]:
+            - /url: ep10.html
+            - text: "10"
+          - link "辯論大賽" [ref=e258] [cursor=pointer]:
+            - /url: ep11.html
+            - text: "11"
+          - link "秘密小本本" [ref=e259] [cursor=pointer]:
+            - /url: ep12.html
+            - text: "12"
+          - link "偷偷改家規" [ref=e260] [cursor=pointer]:
+            - /url: ep14.html
+            - text: "14"
+      - article [ref=e261]:
+        - heading "評估與持續改善" [level=3] [ref=e262]
+        - generic [ref=e263]:
+          - link "苦命兔超努力，無效的那種" [ref=e264] [cursor=pointer]:
+            - /url: ep06.html
+            - text: "06"
+          - link "那隻兔子就像渣男" [ref=e265] [cursor=pointer]:
+            - /url: ep13.html
+            - text: "13"
+          - link "吃你的狗食" [ref=e266] [cursor=pointer]:
+            - /url: ep15.html
+            - text: "15"

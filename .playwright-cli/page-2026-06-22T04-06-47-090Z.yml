@@ -1,0 +1,56 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - link "← 回目錄" [ref=e3] [cursor=pointer]:
+      - /url: index.html
+    - heading "第15話：吃你的狗食！" [level=1] [ref=e4]
+    - paragraph [ref=e5]: 第 15 / 15 話
+  - main "第15話：吃你的狗食！漫畫內容" [ref=e6]:
+    - img "第15話：吃你的狗食！第1格" [ref=e7]
+    - img "第15話：吃你的狗食！第2格" [ref=e8]
+    - img "第15話：吃你的狗食！第3格" [ref=e9]
+    - img "第15話：吃你的狗食！第4格" [ref=e10]
+    - navigation "漫畫話數導覽" [ref=e11]:
+      - link "← 第14話" [ref=e12] [cursor=pointer]:
+        - /url: ep14.html
+      - link "回目錄" [ref=e13] [cursor=pointer]:
+        - /url: index.html
+    - region "AI QA Portfolio 內容" [ref=e14]:
+      - heading "AI QA Portfolio" [level=2] [ref=e15]
+      - group [ref=e16]:
+        - generic "🐰 作者後記" [ref=e17] [cursor=pointer]
+        - generic [ref=e18]:
+          - paragraph [ref=e19]: 當 Agent 開始可以自己開會之後，我又開始有新的想法。
+          - paragraph [ref=e20]: 既然可以討論，那能不能順便做 Retro？
+          - paragraph [ref=e21]: 於是我開始讓他們針對表現不好的 Ticket 進行檢討。
+          - paragraph [ref=e22]: 由 Claude Code 提出改善方案。
+          - paragraph [ref=e23]: Codex 擔任 Reviewer。
+          - paragraph [ref=e24]: 對不同意的地方提出反駁。
+          - paragraph [ref=e25]: 再交回去重新修正。
+          - paragraph [ref=e26]: 看起來相當專業。
+          - paragraph [ref=e27]: 甚至有點像真的工程團隊。
+          - paragraph [ref=e28]: 唯一的問題是：
+          - paragraph [ref=e29]: 每次討論完，規則都變得更多。
+          - paragraph [ref=e30]: 文件都變得更厚。
+          - paragraph [ref=e31]: 會議紀錄動不動就是五千字起跳。
+          - paragraph [ref=e32]: 做到後面，我心裡其實開始出現一個疑問。
+      - group [ref=e33]:
+        - generic "🔥 真實案例" [ref=e34] [cursor=pointer]
+      - group [ref=e35]:
+        - generic "🛠 解決方案" [ref=e36] [cursor=pointer]
+      - group [ref=e37]:
+        - generic "💡 我學到什麼" [ref=e38] [cursor=pointer]
+      - group [ref=e39]:
+        - generic "🏷 關鍵能力" [ref=e40] [cursor=pointer]
+    - complementary "🎁 幕後特典" [ref=e41]:
+      - paragraph [ref=e42]: 完結紀念
+      - heading "🎁 幕後特典" [level=2] [ref=e43]
+      - generic [ref=e44]:
+        - paragraph [ref=e45]:
+          - strong [ref=e46]: 🐰 苦命兔：
+        - paragraph [ref=e47]: 主子……
+        - paragraph [ref=e48]: 大家都以為我只是在漫畫裡耍笨、踩雷，偶爾再被妳罵。
+        - paragraph [ref=e49]: 其實，那些報告、家規、秘密小本本，還有我跟苦力怕吵過的架……全部都真的存在。
+        - paragraph [ref=e50]: 我們還有一座秘密基地。
+        - paragraph [ref=e51]: 想看看這 15 話故事，在真實世界裡是怎麼運作的嗎？
+      - link "👉 進入苦命兔的秘密基地" [ref=e52] [cursor=pointer]:
+        - /url: architecture.html
