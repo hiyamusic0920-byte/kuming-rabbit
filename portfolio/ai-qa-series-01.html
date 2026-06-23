@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI QA 系列 03：如何讓 AI 參與測試流程？｜苦命兔 QA 日誌</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="home-page">
+  <main class="home-shell about-shell article-shell">
+    <nav class="breadcrumb" aria-label="麵包屑">
+      <a href="../index.html">首頁</a>
+      <span aria-hidden="true">›</span>
+      <a href="index.html">AI QA Portfolio</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">AI QA 系列 03</span>
+    </nav>
+
+    <header class="article-hero">
+      <p class="portfolio-kicker">AI QA Portfolio · AI QA 系列 · 第 1 篇</p>
+      <h1>AI QA 系列 03：如何讓 AI 參與測試流程？</h1>
+      <p class="subtitle">我把 AI 丟進測試流程後，第一個月就翻車了</p>
+      <div class="article-meta">
+        <time datetime="2026-06-23">2026.06.23</time>
+        <span>約 7 分鐘閱讀</span>
+      </div>
+    </header>
+
+    <nav class="article-top-nav" aria-label="文章導覽">
+      <a href="index.html">← 返回 Portfolio</a>
+      <span class="article-nav-disabled">上一篇：Coming Soon</span>
+      <span class="article-nav-disabled">下一篇：Coming Soon</span>
+    </nav>
+
+    <article class="article-content">
+      <h2>我把 AI 丟進測試流程後，第一個月就翻車了</h2>
+      <p>接到一張新的 Ticket 時，QA 通常不會立刻開始測試。</p>
+      <p>我們會先讀需求、翻舊 Ticket 找脈絡、確認系統目前長什麼樣子、思考測試範圍、整理測試計畫，最後才開始執行。</p>
+      <p>以前這些事情都由我自己完成。</p>
+      <p>但老實說，其中有些工作非常耗時，而且做完不一定有成就感。</p>
+      <p>最常發生的情況是：</p>
+      <ul>
+        <li>花半小時讀 Ticket</li>
+        <li>花一小時翻歷史資料</li>
+        <li>最後發現需求根本沒寫清楚</li>
+      </ul>
+      <p>或者：</p>
+      <ul>
+        <li>花很多時間整理測試計畫</li>
+        <li>實際測試時才發現方向錯了</li>
+      </ul>
+      <p>所以我開始思考：</p>
+      <p>如果把一張 Ticket 從進來到產出測試報告的流程拆開來看，哪些環節適合交給 AI？</p>
+
+      <hr>
+
+      <h2>一張 Ticket 如何流過我的 AI QA Pipeline</h2>
+      <pre><code>Ticket
+  ↓
+AI 理解
+  ↓
+人類確認理解是否正確，修正與補充說明
+  ↓
+AI知識沉澱 （knowledge layer)
+  ↓
+AI 產生測試計畫 （決定測試方法）
+  ↓
+人類審核
+  ↓
+AI 產生測試案例
+  ↓
+AI 執行 （playwright）
+  ↓
+AI知識沉澱
+  ↓
+報告</code></pre>
+      <p>這條流程的核心精神其實很簡單：</p>
+      <p>AI 負責理解與執行。</p>
+      <p>人類負責確認與決策。</p>
+      <p>換句話說：</p>
+      <p>AI 在兩端出力。</p>
+      <p>人類守住中間兩個最重要的閘門。</p>
+
+      <hr>
+
+      <h2>Ticket 進來 → AI 理解</h2>
+      <p>第一站不是開始寫測試。</p>
+      <p>而是先讓 AI 告訴我：</p>
+      <blockquote>
+        <p>「它認為這張 Ticket 在講什麼。」</p>
+      </blockquote>
+      <p>讓 AI 先閱讀需求內容，並輸出：</p>
+      <ul>
+        <li>它理解到的需求</li>
+        <li>可能受影響的功能範圍</li>
+        <li>建議驗證項目</li>
+        <li>它認為有疑問的地方</li>
+      </ul>
+      <p>這一步最大的價值其實不是省時間。</p>
+      <p>而是把需求中的模糊地帶挖出來。</p>
+      <p>很多時候問題不是 AI 看不懂。</p>
+      <p>而是 Ticket 本來就沒寫清楚。</p>
+      <p>例如：</p>
+      <ul>
+        <li>中文的「及」、「和」、「與」的連接詞，人類在口語上表達差不多。<br>當規格上寫：「一般旅館月報移除 V1.0.1 廢止的外匯收入與裝修及設備支出項目」</li>
+        <li>「同步資料」是全部同步還是部分同步？</li>
+        <li>哪個系統才是資料來源？</li>
+      </ul>
+      <p>這樣帶來的巨大好處是，人類有可以觀察AI的機會。</p>
+      <p>我們可以清楚看到，哪些是AI猜測，它猜的對不對。</p>
+      <p>這邊我是包成一個command /jira-tc，裡面有兩個skill：</p>
+      <p>使用AI Mirror Understanding 和Requirement Audit兩個技能。</p>
+
+      <hr>
+
+      <h2>人類確認：把 QA 直覺留下來</h2>
+      <p>這一步是整條流程最重要的地方。</p>
+      <p>因為 AI 的理解永遠只是起點。</p>
+      <p>我會閱讀 AI 的分析結果，補充它漏掉的地方。</p>
+      <p>例如：</p>
+      <p>AI 可能認為：</p>
+      <blockquote>
+        <p>「驗證新增資料是否成功」</p>
+      </blockquote>
+      <p>但我會補充：</p>
+      <blockquote>
+        <p>「還要驗證修改後的歷史資料是否受到影響」</p>
+      </blockquote>
+      <p>或者：</p>
+      <blockquote>
+        <p>「這個 API 更新後，另一個模組其實也會受到影響」</p>
+      </blockquote>
+      <p>以前這些思考只存在我腦中。</p>
+      <p>做完測試就消失了。</p>
+      <p>現在我會把這些補充記錄下來。</p>
+      <p>讓它變成下一次 AI 可以重複利用的知識。</p>
+      <p>這也是我後來發展 QA Thought Capture 的原因。</p>
+      <p>我發現：</p>
+      <p>這一步其實不是在修正 AI。</p>
+      <p>而是在把 QA 的直覺轉換成可重用的規則。</p>
+      <p>【插入 AI 理解 → 人類修正的真實對話】</p>
+
+      <hr>
+
+      <h2>AI 產生方案</h2>
+      <p>確認需求理解後，AI 開始產生測試方案。</p>
+      <p>目前主要產出包含：</p>
+      <ul>
+        <li>Test Plan</li>
+        <li>Gherkin Feature File</li>
+        <li>Test Case</li>
+      </ul>
+      <p>例如：</p>
+      <pre><code>Feature: Contract Account Synchronization
+
+  Scenario: Save hotel profile without contract account
+    Given hotel contract account is empty
+    When user updates hotel information
+    Then save operation should succeed
+    And synchronization should not be triggered</code></pre>
+      <p>這時候的產物還不是最終版本。</p>
+      <p>而是待審核草稿。</p>
+      <p>接著我會執行 Test Case Audit。</p>
+      <p>檢查：</p>
+      <ul>
+        <li>是否覆蓋主要風險</li>
+        <li>是否出現重複驗證</li>
+        <li>是否遺漏重要情境</li>
+        <li>是否把需求誤解成測試案例</li>
+      </ul>
+      <p>測試案例越多不一定越好。</p>
+      <p>重點是：</p>
+      <p>哪些測試值得存在。</p>
+
+      <hr>
+
+      <h2>人類決策</h2>
+      <p>當方案攤開後。</p>
+      <p>真正的 QA 工作才開始。</p>
+      <p>我要決定：</p>
+      <ul>
+        <li>哪些情境需要測</li>
+        <li>哪些風險優先處理</li>
+        <li>哪些項目暫時放棄</li>
+      </ul>
+      <p>這部分其實已經不是技術問題。</p>
+      <p>而是風險管理問題。</p>
+      <p>因此我把這個主題獨立放到系列第五篇：</p>
+      <p>《哪些決策該交給 AI？》</p>
+      <p>這裡先保留。</p>
+
+      <hr>
+
+      <h2>AI 執行</h2>
+      <p>決策完成後，才進入執行階段。</p>
+      <p>流程大致如下：</p>
+      <pre><code>Selector 探查
+    ↓
+POM (Page Object Mode) 建立
+    ↓
+Pytest 執行
+    ↓
+結果分析</code></pre>
+      <p>Selector 並不是直接相信 Codegen。</p>
+      <p>尤其在 Vue SPA 專案裡。</p>
+      <p>很多看起來能點的元素，實際上並不穩定。</p>
+      <p>因此我有自己的 Selector 優先策略與 Page Registry。</p>
+      <p>這部分之後會另外展開。</p>
+      <p>執行過程中還有一個重要機制：</p>
+      <p>Two Failure Stop Loss。</p>
+      <p>如果 AI 連續失敗兩次。</p>
+      <p>它不會無限重試。</p>
+      <p>而是停止執行並產出分析報告。</p>
+      <p>避免浪費更多 Token 與時間。</p>
+
+      <hr>
+
+      <h2>產出：報告</h2>
+      <p>一張 Ticket 最終會被轉換成一份可交付的測試成果。</p>
+      <p>目前我的報告大致分成兩類：</p>
+      <p>QA Report</p>
+      <p>給測試與開發團隊使用。</p>
+      <p>內容包含：</p>
+      <ul>
+        <li>測試範圍</li>
+        <li>驗證結果</li>
+        <li>Evidence</li>
+        <li>發現問題</li>
+      </ul>
+      <p>UAT Report</p>
+      <p>提供給需求方或業務單位。</p>
+      <p>內容更偏向：</p>
+      <ul>
+        <li>功能是否符合需求</li>
+        <li>是否可進版</li>
+        <li>是否需要追蹤事項</li>
+      </ul>
+      <p>這樣的區分是因為：</p>
+      <p>不同角色需要的資訊不同。</p>
+      <p>而且部分內容需要符合後續稽核與追溯需求。</p>
+      <p>最後。</p>
+      <p>一張 Ticket 進來。</p>
+      <p>就從一段需求描述。</p>
+      <p>變成一份可以交付、可以追蹤、可以存查的成果。</p>
+      <p>【插入報告資料夾結構】</p>
+      <p>【插入 PDF 報告縮圖】</p>
+
+      <hr>
+
+      <h2>串起這條 Pipeline 的軌道</h2>
+      <p>如果只看前面的流程。</p>
+      <p>很容易以為是我手動把各種工具串起來。</p>
+      <p>但其實這條流程背後有一套基礎設施。</p>
+      <p>例如：</p>
+      <ul>
+        <li>Slash Commands</li>
+        <li>Rules</li>
+        <li>Registry</li>
+        <li>Governance</li>
+        <li>Knowledge Capture</li>
+      </ul>
+      <p>它們共同決定：</p>
+      <p>AI 讀到什麼。</p>
+      <p>AI 應該怎麼做。</p>
+      <p>AI 哪些事情不能做。</p>
+      <p>而這些內容，也是下一篇：</p>
+      <p>《AI QA 的治理與知識管理》</p>
+      <p>要討論的主題。</p>
+
+      <hr>
+
+      <h2>這條流程帶來了什麼改變？</h2>
+      <p>最大的改變其實不是速度。</p>
+      <p>而是資訊流動方式改變了。</p>
+      <p>以前：</p>
+      <p>Ticket → 我的腦袋 → 測試結果</p>
+      <p>現在：</p>
+      <p>Ticket → AI → 人類 → AI → 報告</p>
+      <p>過程中的每一步都留下了痕跡。</p>
+      <p>這些痕跡後來變成：</p>
+      <ul>
+        <li>規則</li>
+        <li>知識庫</li>
+        <li>Registry</li>
+        <li>Audit 機制</li>
+      </ul>
+      <p>但代價也很明顯。</p>
+      <p>這條 Pipeline 本身需要維護。</p>
+      <p>AI 並不會因為接上流程就突然變聰明。</p>
+      <p>相反地。</p>
+      <p>很多時間其實花在：</p>
+      <p>「如何避免 AI 一直犯同樣的錯。」</p>
+      <p>目前仍然持續調整的部分包含：</p>
+      <ul>
+        <li>Requirement Audit</li>
+        <li>Test Case Audit</li>
+        <li>Evidence Board</li>
+        <li>Cross-Agent Review</li>
+      </ul>
+
+      <hr>
+
+      <h2>如果重來一次</h2>
+      <p>如果回到四個月前。</p>
+      <p>我不會先從 E2E 自動化開始。</p>
+      <p>我會先做兩件事。</p>
+      <p>第一件事，是建立需求理解機制。</p>
+      <p>第二件事，是建立知識回收機制。</p>
+      <p>因為我後來發現，AI 最大的問題不是不會寫程式。</p>
+      <p>而是不知道自己不知道什麼。</p>
+      <p>很多時候，它會很有自信地產生測試案例、撰寫腳本，甚至產出完整報告。</p>
+      <p>但如果一開始對需求理解錯了，後面做得再完整，也只是把錯誤放大而已。</p>
+      <p>所以如果你也想開始導入 AI QA，我最實際的建議是：</p>
+      <p>不要一開始就想著讓 AI 幫你自動化全部測試。</p>
+      <p>先把工作流程拆開。</p>
+      <p>看看一張 Ticket 從進來到結案，中間經過哪些步驟。</p>
+      <p>哪些步驟適合交給 AI？</p>
+      <p>哪些步驟必須由人類確認？</p>
+      <p>哪些地方需要留下知識，避免下次重犯同樣的錯？</p>
+      <p>我的做法是把每個步驟獨立成一個 Prompt。</p>
+      <p>讓 AI 一次只做一件事。</p>
+      <p>例如：</p>
+      <pre><code>需求理解
+↓
+測試計畫
+↓
+測試案例
+↓
+腳本產生
+↓
+執行與報告</code></pre>
+      <p>這種做法看起來比較慢。</p>
+      <p>但好處是，每一站都留下了中間產物。</p>
+      <p>我可以清楚看到：</p>
+      <ul>
+        <li>AI 是怎麼理解需求的</li>
+        <li>AI 為什麼設計這些測試案例</li>
+        <li>AI 在哪個環節開始偏離需求</li>
+        <li>哪些問題值得回收成規則或知識</li>
+      </ul>
+      <p>等到單一步驟穩定之後，再慢慢把多個步驟組合成 Command。</p>
+    </article>
+
+    <nav class="article-bottom-nav" aria-label="文章前後篇導覽">
+      <a href="index.html">← 返回 Portfolio</a>
+      <span class="article-nav-disabled">上一篇：Coming Soon</span>
+      <span class="article-nav-disabled">下一篇：Coming Soon</span>
+    </nav>
+  </main>
+  <footer class="site-footer">苦命兔 QA 日誌 · AI QA Portfolio</footer>
+</body>
+</html>
