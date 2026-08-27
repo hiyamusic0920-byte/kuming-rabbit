@@ -317,9 +317,15 @@ Input
       <pre><code>Input = Boundary                        →  88 條
 Dependency State = Conflicting Package  →  41 條
 Usage = Concurrent Call                 →   2 條
-Dependency State = Partially Installed  →   0 條
-Configuration State = Invalid Value     →   0 條</code></pre>
+Dependency State = Partially Installed  →   0 條   漏測
+Configuration State = Invalid Value     →   0 條   已排除</code></pre>
       <p>哪一格被打爛、哪一格是零，一眼就看得出來。</p>
+      <p>但零有兩種意思，一定要分開。</p>
+      <p>一種是真的沒人測到。</p>
+      <p>另一種是那個組合被 Constraints 排掉了。它本來就不成立——例如套件根本沒裝的時候，設定檔指到哪裡已經沒有意義。</p>
+      <p>這兩種在表上長得一模一樣，都是零。</p>
+      <p>分不出來的話，你會花力氣去補一塊其實不用補的，而真正的漏洞還躺在旁邊。</p>
+      <p>所以這張表一定要有第三欄，標清楚那個零是「已排除」還是「漏測」。</p>
       <p>所以建立 Test Model 的目的，不是讓分類看起來漂亮。</p>
       <p>而是讓我們開始有辦法回答：</p>
       <blockquote>
