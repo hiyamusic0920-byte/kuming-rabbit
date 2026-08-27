@@ -1201,6 +1201,11 @@ a { color: var(--structure); text-underline-offset: 3px; }
 
 .article-card p { max-width: var(--measure); margin: 0 0 20px; color: var(--ink-soft); line-height: 1.8; }
 
+/* .article-card 之前沒被任何頁面用過，所以卡片標題的連結狀態一直沒定義，
+   會掉回瀏覽器預設的底線。跟 .article-index 的卡片標題對齊：平常不帶底線。 */
+.article-card h3 a { color: var(--ink); text-decoration: none; }
+.article-card h3 a:hover { text-decoration: underline; }
+
 .article-shell { max-width: 920px; }
 
 .article-hero { margin-top: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--rule); }
@@ -2959,3 +2964,124 @@ body:has(.section-nav) { --sticky-h: 48px; }
   }
 }
 
+/* ============================================================
+   Eval 題庫表（portfolio/chatbot-eval-suite.html）
+   為什麼不沿用 .rule-control-table：那組手機版是為「12 條規則表」
+   硬調的——它把狀態欄整欄藏掉、把第三組的來源欄也藏掉，因為那張表的
+   組首已經帶了訊息。題庫表五欄每一欄都是讀者要的，不能藏，所以自己
+   一組：桌機橫向捲動、手機整列改成卡片並用 data-label 補回欄名。
+   ============================================================ */
+
+.eval-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.eval-case-table {
+  width: 100%;
+  min-width: 780px;
+  border-collapse: collapse;
+  font-size: var(--t-body-s);
+}
+
+.eval-case-table.is-narrow { min-width: 0; }
+
+.eval-case-table th,
+.eval-case-table td {
+  padding: 10px var(--s-4);
+  text-align: left;
+  vertical-align: top;
+}
+
+.eval-case-table thead th {
+  color: var(--ink-faint);
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+
+.eval-case-table .eval-group-head th {
+  padding-top: var(--s-3);
+  padding-bottom: var(--s-3);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule-soft);
+  background: var(--surface-2);
+  font-family: var(--f-mono);
+  font-size: var(--t-data);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.eval-case-table tbody tr + tr td { border-top: 1px solid var(--rule-soft); }
+.eval-case-table .eval-group-head + tr td { border-top: 0; }
+
+.eval-case-table .eval-key { white-space: nowrap; }
+.eval-id {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+}
+.eval-dim { display: block; color: var(--ink); line-height: 1.5; }
+
+.eval-case-table .eval-input { color: var(--ink); line-height: 1.6; }
+.eval-case-table .eval-intent,
+.eval-case-table .eval-expect { color: var(--ink); line-height: 1.6; }
+.eval-case-table .eval-how {
+  color: var(--ink-soft);
+  font-size: var(--t-data);
+  line-height: 1.5;
+}
+
+/* 輸入原句不公開時的替代寫法：跟真句子在視覺上要分得出來 */
+.eval-input-withheld { color: var(--ink-faint); font-style: italic; }
+
+.eval-count {
+  font-family: var(--f-mono);
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+@media (max-width: 899px) {
+  /* 手機：不橫捲、不縮字。每一列變一張卡，欄名用 data-label 印回來。 */
+  .eval-table-wrap { overflow-x: visible; }
+
+  .eval-case-table,
+  .eval-case-table tbody,
+  .eval-case-table tr,
+  .eval-case-table td,
+  .eval-case-table .eval-group-head th { display: block; }
+
+  .eval-case-table { min-width: 0; }
+  .eval-case-table thead { display: none; }
+
+  .eval-case-table .eval-group-head th { padding: var(--s-3) var(--s-4); }
+
+  .eval-case-table tr { padding: var(--s-3) 0; }
+  .eval-case-table td { padding: 0 var(--s-4); }
+  .eval-case-table tbody tr + tr td { border-top: 0; }
+  .eval-case-table tbody tr + tr { border-top: 1px solid var(--rule-soft); }
+  .eval-case-table tbody tr.eval-group-head + tr { border-top: 0; }
+
+  .eval-case-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-top: var(--s-3);
+    font-family: var(--f-mono);
+    font-size: var(--t-label);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+  }
+
+  .eval-case-table td.eval-key::before { content: none; }
+  .eval-case-table .eval-key { white-space: normal; }
+  .eval-id { display: inline; margin-right: 0.6em; }
+  .eval-dim { display: inline; }
+}
