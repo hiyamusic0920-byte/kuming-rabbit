@@ -21,7 +21,7 @@
       <p class="subtitle">出得出題，不代表判斷得出對錯。三層判定，以及承認自己現在還判斷不了的那一格</p>
       <div class="article-meta">
         <time datetime="2026-08-27">2026.08.27</time>
-        <span>約 18 分鐘閱讀</span>
+        <span>約 16 分鐘閱讀</span>
       </div>
     </header>
 
@@ -261,8 +261,17 @@
       </blockquote>
       <p>這句對自動化幾乎沒有幫助。</p>
       <p>這裡要跟 Test Model 那篇分清楚一件事。那篇處理的是預期結果<strong>定不定得出來</strong>，分成 Specified、Baseline、Unknown。spec 有寫的直接當斷言，沒寫但現況已知的先錄成基準線，連現況都不合理的那一條不是 Test Case，是要拿去問 PM 的問題。</p>
-      <p>這篇處理的是下一關：預期結果已經定出來了，但我<strong>驗不驗得動</strong>。</p>
-      <p>這兩件事在傳統測試裡常常是同一件事。spec 寫了，你就驗得到。但在 Chatbot 上會分岔：你很清楚正確行為是什麼，系統卻不一定讓你看到證據。</p>
+      <p>這篇處理的是下一關。假設規格已經寫得很清楚：</p>
+      <blockquote>
+        <p>「使用者說明天，查房日期就應該是明天。」</p>
+      </blockquote>
+      <p>很好，我知道正確答案是什麼了。</p>
+      <p>但下一個問題是：</p>
+      <blockquote>
+        <p><strong>我要去哪裡看它到底拿哪一天去查房？</strong></p>
+      </blockquote>
+      <p>如果 API 根本沒有把 Tool Arguments 回傳給我，就算我知道正確答案，也還是驗不了。</p>
+      <p>所以「知道正確答案」跟「我有辦法驗證它」，其實是兩件事。</p>
       <p>所以要把 Expected Behavior 拆開。例如同一題可以問：</p>
       <ul>
         <li>有沒有呼叫查房 Tool？</li>
@@ -306,11 +315,14 @@
       <pre><code>reply_includes:
   - "{re:today+1}"</code></pre>
       <p>去找 Response 裡的日期。</p>
-      <p>但這裡有一個很重要的差別：</p>
+      <p>但這裡有一個很重要的差別。</p>
+      <p>Chatbot 最後回答「8/5 有房」，只能證明它嘴巴說的是 8/5。</p>
+      <p>但我真正想知道的是：</p>
       <blockquote>
-        <p><strong>這是佐證，不是直接驗證 Tool Argument。</strong></p>
+        <p><strong>它剛剛拿去查房的日期，到底是不是 8/5？</strong></p>
       </blockquote>
-      <p>Chatbot 說出了 8/5，不代表我真的看到了它送給 Tool 的 checkInDate=8/5。</p>
+      <p>這兩件事不能畫上等號。</p>
+      <p>所以目前這個結果只能當佐證，還不能算直接驗證 Tool Argument。</p>
       <p>這種情況不能假裝自己已經驗到了。</p>
       <p>所以我另外保留了一種狀態：</p>
       <blockquote>
@@ -357,10 +369,20 @@
       </blockquote>
       <p>等待人工複核，或未來真正接上 Judge。</p>
       <p>這跟 PENDING 又不一樣。</p>
-      <ul>
-        <li><strong>PENDING</strong>：目前沒有足夠的系統能力可以驗。</li>
-        <li><strong>REVIEW</strong>：我知道要判斷什麼，但這個判斷目前仍需要人工，或需要尚未啟用的 Semantic Judge。</li>
-      </ul>
+      <p>有兩種「我現在不能寫 PASS」。</p>
+      <p>第一種：</p>
+      <blockquote>
+        <p>我想看 Tool 傳了什麼日期，但系統根本不給我看。</p>
+      </blockquote>
+      <p>→ PENDING</p>
+      <p>第二種：</p>
+      <blockquote>
+        <p>東西我都看得到，但這個回答的語意到底算不算對，目前還需要人來判斷。</p>
+      </blockquote>
+      <p>→ REVIEW</p>
+      <p>一個是沒證據可以判。</p>
+      <p>一個是有東西可以判，但目前還需要人判。</p>
+      <p>所以 PENDING 比較接近 Testability / Observability gap；REVIEW 則是 Semantic Evaluation 還沒有自動化。</p>
       <p>三層合起來，判定策略長這樣：</p>
       <pre><code>Expected Behavior
 │
@@ -519,57 +541,26 @@ Report
 
       <hr>
 
-      <h2>回頭看，AI Chatbot Eval 其實沒有那麼神秘</h2>
+      <h2>AI Chatbot Eval 其實沒有那麼神秘</h2>
       <p>一開始看到自然語言，我很容易覺得：</p>
       <blockquote>
         <p>使用者什麼都可能講，這到底怎麼測？</p>
       </blockquote>
-      <p>但最後真正解的還是 QA 很熟悉的兩件事：測試空間怎麼拆，以及 Expected Behavior 怎麼定義。</p>
-      <p>整套東西攤開來長這樣：</p>
-      <pre><code>被測系統
-程式 / Prompt / Tool / Rule
-  ↓
-QA 定義 System Behavior
-  ↓
-  ├─ A. Test Input
-  │    怎麼設計？
-  │    維度 / 值 → MECE 檢查
-  │    → Test Intent
-  │    → AI 產 Variation
-  │
-  └─ B. Expected Behavior
-       怎麼驗證？
-       定不定得出來（Test Model）
-       驗不驗得動 → 三層判定
-       → Judge Criteria
-  ↓
-一條 Test Case
-Test Intent 與 Judge Criteria 同源
-  ↓
-送真實 Endpoint × N
-  ↓
-├─ 判斷出來了 → PASS/FAIL/FLAKY
-├─ 沒被公平考到 → ERROR/SKIP
-└─ 還沒能力判斷 → PENDING/REVIEW</code></pre>
-      <p>A 和 B 不是各走各的流程，它們在同一個點上咬合：<strong>出題和判卷共用同一句「這題想證明什麼」。</strong></p>
-      <p>Test Intent 是這句話的出題版本，Judge Criteria 是它的判卷版本。同源，所以不會出現「題目想測 A、判定卻在看 B」。</p>
-      <p>最後那三行狀態，也不是照 PASS / FAIL 分，是照「這個結果能不能拿來對 Chatbot 下判斷」分。第一行能，第二行不能（考場出問題），第三行不能（裁判還沒到）。</p>
-      <p>AI 讓兩邊都變得更極端。</p>
-      <p>Input 幾乎無限，所以不能靠人工窮舉。</p>
-      <p>Output 不固定，所以不能全部靠字串比對。</p>
-      <p>AI 很適合幫我在已經定義好的測試空間裡，大量產生自然語言 Variation。LLM Judge 也很適合處理最後那些真的只能靠語意判斷的結果。</p>
-      <p>但中間還是有大量事情，應該交給 deterministic assertion、regex、fixture 和真實 execution evidence。</p>
-      <p>更重要的是：</p>
+      <p>回頭看，我當時其實只做了兩件事。</p>
+      <p>第一件：</p>
       <blockquote>
-        <p><strong>當現在的系統沒有足夠證據讓我判斷時，不要叫 AI 幫忙猜一個答案。</strong></p>
+        <p><strong>不要叫 AI 隨便出題。先告訴它我要測哪一種能力，再讓它幫我變化使用者的說法。</strong></p>
       </blockquote>
-      <p>標成 PENDING。</p>
-      <p>留下缺口。</p>
-      <p>再決定要不要增加 Observability，讓下一輪真的有能力驗證它。</p>
-      <p>這可能也是我做完這套 Eval 之後，覺得最重要的一件事：</p>
+      <p>第二件：</p>
       <blockquote>
-        <p><strong>好的 AI Eval，不是什麼都能判斷。而是它知道什麼可以判斷、什麼只能輔助判斷，以及什麼現在根本還判斷不了。</strong></p>
+        <p><strong>不要看到 Chatbot 就什麼都交給另一個 AI 判。能直接 Assert 的就 Assert，真的只能判語意的，才交給 Judge。</strong></p>
       </blockquote>
+      <p>至於現在根本看不到、判不了的東西？</p>
+      <p>就承認還判不了。</p>
+      <p>留成 PENDING，再決定要不要為了它改系統、補可測性。</p>
+      <p>我現在反而覺得，這是整套 Eval 裡最重要的設計。</p>
+      <p>因為一套測試真正可信的地方，不是它全部都是綠色。</p>
+      <p>而是它知道自己的綠色到底是怎麼判出來的。</p>
     </article>
 
     <nav class="article-bottom-nav" aria-label="文章前後篇導覽">
