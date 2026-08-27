@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>如何從無限輸入建立可測試的 Test Model？｜苦命兔 QA 日誌</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="home-page">
+  <main class="home-shell about-shell article-shell">
+    <nav class="breadcrumb" aria-label="麵包屑">
+      <a href="../index.html">首頁</a>
+      <span aria-hidden="true">›</span>
+      <a href="index.html">AI QA Portfolio</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">Test Model</span>
+    </nav>
+
+    <header class="article-hero">
+      <h1>如何從無限輸入建立可測試的 Test Model？</h1>
+      <p class="subtitle">問題不是 Test Case 不夠多，而是可能性太多</p>
+      <div class="article-meta">
+        <time datetime="2026-08-27">2026.08.27</time>
+        <span>約 12 分鐘閱讀</span>
+      </div>
+    </header>
+
+    <nav class="article-top-nav" aria-label="文章導覽">
+      <a href="index.html">← 返回 Portfolio</a>
+      <span class="article-nav-disabled">上一篇：Coming Soon</span>
+      <span class="article-nav-disabled">下一篇：Coming Soon</span>
+    </nav>
+
+    <article class="article-content">
+      <p>最近面試時，我被問了一個乍聽之下很基礎的問題：</p>
+      <blockquote>
+        <p>Test Case 怎麼設計？</p>
+      </blockquote>
+      <p>我第一個反應其實是：</p>
+      <p><strong>咦？怎麼會問這麼初階的問題？</strong></p>
+      <p>所以我開始回答需求分析、風險評估、測試策略、如何決定 coverage。</p>
+      <p>但聊到後面，我才發現，他們真正想問的可能不是「Test Case 怎麼寫」。</p>
+      <p>而是：</p>
+      <blockquote>
+        <p><strong>假設有 30 個 API，彼此有些相關、有些不相關，而且使用者很可能不按照說明書操作，要怎麼設計測試？</strong></p>
+      </blockquote>
+      <p>這就完全是另一回事了。</p>
+      <p>之前在測試 AI Chatbot 時，我也遇過幾乎一樣的困境：</p>
+      <blockquote>
+        <p><strong>使用者什麼都可能輸入，那我要準備哪些 Test Case？</strong></p>
+      </blockquote>
+      <p>「正常問法、錯字、資訊不足、答非所問、惡意輸入、多輪對話……」</p>
+      <p>如果沿著每一句使用者可能說的話一直列，一樣永遠列不完。</p>
+      <p>後來真正需要解決的，也不是「再多想 100 句 Prompt」，而是先定義：<strong>Chatbot 的 Input Space 可以拆成哪些測試維度？</strong></p>
+      <p>這其實就是同一個問題本質。</p>
+      <p>→「我如何測試 AI Chatbot？」會在後面系列文獨立說明。</p>
+
+      <hr>
+
+      <h2>問題：不是 Test Case 不夠，而是可能性太多</h2>
+      <p>假設今天有一個 SDK。</p>
+      <p>文件告訴使用者，正確操作方式是：</p>
+      <pre><code>Install Dependency
+↓
+Initialize SDK
+↓
+Load Model
+↓
+Create Session
+↓
+Run
+↓
+Release</code></pre>
+      <p>如果所有使用者都乖乖照說明書操作，其實很好測。</p>
+      <p>問題是真實世界不會這麼美好。</p>
+      <p>有人可能沒裝 Dependency 就直接 Initialize：</p>
+      <pre><code>Missing Dependency
+↓
+Initialize SDK</code></pre>
+      <p>有人裝了不相容的版本：</p>
+      <pre><code>Wrong Dependency Version
+↓
+Initialize SDK
+↓
+Run</code></pre>
+      <p>也有人完全不按照預期順序：</p>
+      <pre><code>Initialize
+↓
+Run
+↓
+Load Model
+↓
+Initialize again
+↓
+Release
+↓
+Run again</code></pre>
+      <p>如果系統裡還有 30 個 API，QA 很自然會想到：</p>
+      <blockquote>
+        <p>那就把各種情況全部列出來？</p>
+      </blockquote>
+      <p>但很快就會發現：</p>
+      <p><strong>根本列不完。</strong></p>
+      <p>就算真的列完了，也測不完。</p>
+      <p>光是假設每次測試只考慮：</p>
+      <pre><code>5 種 Environment
+×
+5 種 Installation State
+×
+30 個 API
+×
+5 種 Input State</code></pre>
+      <p>就已經有 3,750 個基本組合。</p>
+      <p>這甚至還沒有把 API 彼此的呼叫順序、前後狀態、Dependency 算進去。</p>
+      <p>一旦開始考慮這些關係，測試空間只會繼續膨脹。</p>
+      <p>這時候問題已經不是：</p>
+      <blockquote>
+        <p>QA 寫 Test Case 的速度能不能再快一點？</p>
+      </blockquote>
+      <p>甚至也不是：</p>
+      <blockquote>
+        <p>我們怎麼加入 AI，讓它幫忙產生更多 Test Case？</p>
+      </blockquote>
+      <p>而是：</p>
+      <blockquote>
+        <p><strong>我們是不是一開始就不該用「窮舉 Test Case」的方式理解這個問題？</strong></p>
+      </blockquote>
+
+      <hr>
+
+      <h2>從設計 Test Case，變成設計 Test Case Generator</h2>
+      <p>以前 QA 做 Test Design，很自然會問：</p>
+      <blockquote>
+        <p>這個功能，我要測哪些 Case？</p>
+      </blockquote>
+      <p>於是我們讀需求、理解 Business Rule、找 Boundary、想 Exception，最後產出一組 Test Case。</p>
+      <p>這件事沒有錯。</p>
+      <p>但當測試空間大到人類無法窮舉，而 AI 又加入之後，問題開始改變了。</p>
+      <p>我們除了問：</p>
+      <blockquote>
+        <p><strong>我要設計哪些 Test Case？</strong></p>
+      </blockquote>
+      <p>還可以往上一層問：</p>
+      <blockquote>
+        <p><strong>我要設計一套什麼規則，才能持續產生值得測的 Test Case？</strong></p>
+      </blockquote>
+      <p>也就是從：</p>
+      <pre><code>QA
+↓
+Design Test Cases
+↓
+TC001
+TC002
+TC003</code></pre>
+      <p>變成：</p>
+      <pre><code>QA + AI
+↓
+Build Test Model
+↓
+AI explores the model
+↓
+Generate Test Cases</code></pre>
+      <p>這裡的 Test Case Generator 不是一句：</p>
+      <blockquote>
+        <p>幫我產生完整的 Test Case。</p>
+      </blockquote>
+      <p>而是一套明確的方法：</p>
+      <pre><code>輸入什麼資訊？
+↓
+怎麼拆測試維度？
+↓
+怎麼判斷 API Relation？
+↓
+有哪些 Constraints？
+↓
+哪些 Combination 有意義？
+↓
+怎麼判斷 Risk？
+↓
+哪些 Combination 要變成 Test Case？</code></pre>
+      <p>以前 QA 靠大量壓縮的經驗，把自己的判斷直接寫成 Test Case。</p>
+      <p>現在，我們可以嘗試把<strong>產生這些判斷的方法也設計出來</strong>。</p>
+      <p>這個差別很重要。</p>
+      <p>因為一組 Test Case 解決的是：</p>
+      <blockquote>
+        <p><strong>這一次我要對受測物件測什麼？</strong></p>
+      </blockquote>
+      <p>而一個好的 Generator 解決的是：</p>
+      <blockquote>
+        <p><strong>下一次需求改變、API 增加、Environment 改變時，我們要如何重新推導「該測什麼」？</strong></p>
+      </blockquote>
+
+      <hr>
+
+      <h2>先畫出測試空間</h2>
+      <p>第一步先整理：</p>
+      <blockquote>
+        <p><strong>有哪些因素會改變系統行為？</strong></p>
+      </blockquote>
+      <p>例如 SDK 可能有：</p>
+      <pre><code>Environment
+├── OS
+├── Runtime Version
+└── Hardware
+
+Installation
+├── Correct
+├── Missing Dependency
+├── Wrong Version
+└── Wrong Configuration
+
+Usage
+├── Normal Sequence
+├── Skip Step
+├── Wrong Order
+├── Duplicate Call
+└── Retry After Failure
+
+Input
+├── Valid
+├── Invalid
+├── Boundary
+├── Missing
+└── Wrong Type</code></pre>
+      <p>問題來了。</p>
+      <p><strong>我們怎麼知道自己這樣分是合理的？</strong></p>
+      <p>這時候 MECE 就可以拿來當成一個檢查方法。</p>
+      <p><strong>MECE（Mutually Exclusive, Collectively Exhaustive）</strong>原本就是在處理一件事：</p>
+      <blockquote>
+        <p><strong>當一個問題很大、很複雜，我們把它拆小之後，要怎麼檢查自己是不是一直在描述同一塊，卻漏掉另外一整塊？</strong></p>
+      </blockquote>
+      <p>放進 Test Design 裡，我會把它變成三個問題：</p>
+      <ul>
+        <li><strong>我現在用什麼維度拆這個問題？</strong></li>
+        <li><strong>同一個維度裡，有沒有重複？</strong></li>
+        <li><strong>有沒有重要的情況，根本沒有被分進來？</strong></li>
+      </ul>
+      <p>例如 Dependency State：</p>
+      <pre><code>Dependency State
+├── Missing
+├── Correct Version
+└── Wrong Version</code></pre>
+      <p>我們不是在宣稱：</p>
+      <blockquote>
+        <p>這三種狀態已經包含世界上所有 Bug。</p>
+      </blockquote>
+      <p>而是先建立一個<strong>可以討論、可以檢查、可以持續補充的測試空間</strong>。</p>
+      <p>這件事情在 AI 加入之後反而更重要。</p>
+      <p>因為以前 QA 一天可能只寫 30 條 Test Case。</p>
+      <p>現在 AI 很快就能給你 300 條。</p>
+      <p>問題已經不是 Case 不夠多，而是：</p>
+      <blockquote>
+        <p><strong>這 300 條是不是其實一直在測同一塊？</strong></p>
+      </blockquote>
+      <p>以及：</p>
+      <blockquote>
+        <p><strong>有沒有一整塊測試空間，AI 從頭到尾根本沒想到？</strong></p>
+      </blockquote>
+      <p>所以建立 Test Model 的目的，不是讓分類看起來漂亮。</p>
+      <p>而是讓我們開始有辦法回答：</p>
+      <blockquote>
+        <p><strong>我們到底正在 Cover 哪裡？</strong></p>
+      </blockquote>
+
+      <hr>
+
+      <h2>但分類本身，也不應該全部丟給 QA</h2>
+      <p>這裡又會遇到另一個現實問題。</p>
+      <p>如果今天真的有 30 個 API、一大包 SDK 文件、不同 Environment 和 Dependency，而我們告訴 QA：</p>
+      <blockquote>
+        <p>好，現在請你先把所有 Dimensions、States、Relations 全部整理好，再交給 AI。</p>
+      </blockquote>
+      <p>好像也沒有真的解決人工瓶頸。</p>
+      <p>只是把工作從：</p>
+      <blockquote>
+        <p>人工寫 Test Case</p>
+      </blockquote>
+      <p>搬成：</p>
+      <blockquote>
+        <p>人工寫 Test Model。</p>
+      </blockquote>
+      <p>所以比較合理的做法應該是：</p>
+      <pre><code>API / SDK Spec
+Documentation
+Known Business Rules
+Existing Tests
+        ↓
+AI 建立 Test Model Draft
+        ↓
+QA Review
+        ↓
+修正 / 補充 / 確認
+        ↓
+Approved Test Model</code></pre>
+      <p>AI 可以先從現有資料裡整理：</p>
+      <pre><code>Dimensions
+Values / Partitions
+States
+API Relations
+Preconditions
+Constraints
+Unknowns</code></pre>
+      <p>但它不能看到 API 名稱，就自己腦補：</p>
+      <blockquote>
+        <p><code>Run</code> 看起來應該需要 <code>CreateSession</code>，那我就當成 Dependency。</p>
+      </blockquote>
+      <p>每一個 Relation 都應該盡可能回答：</p>
+      <pre><code>Relation:
+Run requires CreateSession
+
+Evidence:
+SDK Documentation / Spec
+
+Status:
+Confirmed / Assumed / Unknown</code></pre>
+      <p><strong>AI 負責大量整理，QA 負責決定這張地圖能不能相信。</strong></p>
+      <p>這才真的有省到人工。</p>
+
+      <hr>
+
+      <h2>怎麼從無限組合縮成值得測的組合？</h2>
+      <p>有了 Test Model 之後，才開始處理 30 個 API。</p>
+      <p>第一件事情不是：</p>
+      <pre><code>API 1 × API 2 × API 3 × ... × API 30</code></pre>
+      <p>因為有些 API 有關係，有些根本沒有。</p>
+      <p>例如：</p>
+      <pre><code>Initialize
+    ↓
+Load Model
+    ↓
+Create Session
+    ↓
+Run
+    ↓
+Release</code></pre>
+      <p>這幾個 API 明顯存在關係。</p>
+      <p><code>Run</code> 可能要求 Session 已經存在。</p>
+      <p><code>Create Session</code> 可能要求 Model 已經載入。</p>
+      <p><code>Release</code> 之後再呼叫 <code>Run</code>，系統也應該有明確的行為。</p>
+      <p>但是：</p>
+      <pre><code>Get SDK Version</code></pre>
+      <p>可能根本不需要跟 <code>Release</code> 做大量排列組合。</p>
+      <p>所以我們可以先建立 <strong>API Relation Map</strong>：</p>
+      <pre><code>API A
+│
+├── data dependency → API B
+│
+├── state dependency → API C
+│
+└── sequence dependency → API D
+
+API E
+└── independent</code></pre>
+      <p>先問：</p>
+      <blockquote>
+        <p><strong>哪些 API 組在一起，真的可能讓結果發生變化？</strong></p>
+      </blockquote>
+      <p>接著，再故意破壞這些 Relation。</p>
+      <p>正常流程：</p>
+      <pre><code>Initialize
+↓
+Load Model
+↓
+Run</code></pre>
+      <p>Generator 就可以從 Relation 推導出不同情境。</p>
+      <pre><code>1. Skip
+
+未 Initialize → 直接 Run</code></pre>
+      <pre><code>2. Wrong Order
+
+Initialize → Run → Load Model</code></pre>
+      <pre><code>3. Duplicate
+
+Initialize → Initialize again</code></pre>
+      <pre><code>4. State Violation
+
+Initialize → Load Model → Release → Run</code></pre>
+      <p>這時候我們不是叫 AI：</p>
+      <blockquote>
+        <p>幫我多想一些奇怪的 Test Case。</p>
+      </blockquote>
+      <p>而是給它一條生成規則：</p>
+      <blockquote>
+        <p><strong>找出 API Relation，再探索正常 Relation 與破壞這些 Relation 時，系統應該如何反應。</strong></p>
+      </blockquote>
+      <p>這就是 Generator 開始出現的地方。</p>
+      <p>接著才進入 Combination。</p>
+      <p>例如 <code>Run</code> 同時受到三個維度影響：</p>
+      <pre><code>Installation State
+        ×
+API Sequence
+        ×
+Input State</code></pre>
+      <p>假設：</p>
+      <pre><code>Installation State = 5
+API Sequence        = 6
+Input State         = 5</code></pre>
+      <p>完整組合就是 150 種。</p>
+      <p>我們仍然不需要全部測。</p>
+      <p>可以先用 Constraints 排除根本不成立的組合，再根據不同的測試目的，例如：</p>
+      <ul>
+        <li>Interaction Coverage，例如 Pairwise</li>
+        <li>Boundary</li>
+        <li>State Transition</li>
+        <li>Business Risk</li>
+        <li>歷史 Bug</li>
+        <li>Error Recovery</li>
+      </ul>
+      <p>挑出值得驗證的交叉點。</p>
+      <p>整個 Generator 的流程就會變成：</p>
+      <pre><code>API / SDK Spec
+      ↓
+Build Test Model Draft
+      ↓
+QA Review / Approve
+      ↓
+Approved Test Model
+      ↓
+Define Constraints
+      ↓
+Generate Combination Space
+      ↓
+Select by Coverage / Risk
+      ↓
+Generate Test Cases</code></pre>
+      <p><strong>Test Case 是這套 Generator 的 output，而不是起點。</strong></p>
+
+      <hr>
+
+      <h2>Generator 之外，還要有人稽核 Generator</h2>
+      <p>Generator 負責的是：</p>
+      <pre><code>Source
+↓
+Model Draft
+↓
+Human Approved Model
+↓
+Combinations
+↓
+Test Cases</code></pre>
+      <p>它的目標是：</p>
+      <blockquote>
+        <p><strong>產生值得測的案例。</strong></p>
+      </blockquote>
+      <p>Auditor 則不沿用 Generator 的結論直接往下檢查。</p>
+      <p>它要重新回到 Source：</p>
+      <pre><code>Spec / Documentation
+        ↓
+重新檢查 Dimensions
+        ↓
+Relation 有沒有 Evidence？
+        ↓
+有沒有 Unknown Relation？
+        ↓
+重要 State Transition 有沒有 Cover？
+        ↓
+高風險 Interaction 有沒有 Case？
+        ↓
+是否大量 Case 重複 Cover 同一區？</code></pre>
+      <p>它的目標是：</p>
+      <blockquote>
+        <p><strong>找 Generator 沒看到的地方。</strong></p>
+      </blockquote>
+      <p>所以 Generation 和 Audit 不只是換一個 Prompt。</p>
+      <p>更重要的是：</p>
+      <blockquote>
+        <p><strong>Auditor 不能把 Generator 的答案直接當成事實。</strong></p>
+      </blockquote>
+      <p>否則還是：</p>
+      <blockquote>
+        <p><strong>AI 自己出題，再自己告訴你自己考了 100 分。</strong></p>
+      </blockquote>
+
+      <hr>
+
+      <h2>一套可以開始實驗的方法</h2>
+      <p>如果把整件事情整理成一個最小的方法，我目前會把它畫成：</p>
+      <pre><code>              HUMAN QA
+                 │
+          定義目標 / Risk
+                 │
+                 ▼
+        ┌─────────────────┐
+        │ GENERATOR SKILL │
+        │                 │
+Source →│ Build Model     │
+        │ Find Relations  │
+        │ Mark Unknowns   │
+        └────────┬────────┘
+                 │
+                 ▼
+             QA REVIEW
+                 │
+       校正 / 補充 / Approve
+                 │
+                 ▼
+          APPROVED MODEL
+                 │
+                 ▼
+        ┌─────────────────┐
+        │ GENERATOR SKILL │
+        │                 │
+        │ Combination     │
+        │ Selection       │
+        │ Generate Cases  │
+        └────────┬────────┘
+                 │
+                 ▼
+             TEST CASES
+                 │
+                 ▼
+        ┌─────────────────┐
+        │  AUDITOR SKILL  │
+        │                 │
+Source →│ Re-check Model  │
+        │ Coverage Gap    │
+        │ Unsupported     │
+        │ Unknown         │
+        └────────┬────────┘
+                 │
+                 ▼
+              QA REVIEW
+                 │
+                 ▼
+              實際測試
+                 │
+                 ▼
+          Actual Evidence
+                 │
+                 └──────→ 修正 Model / 下一輪</code></pre>
+      <p>人在這裡沒有消失。</p>
+      <p>AI 擅長的是：</p>
+      <blockquote>
+        <p><strong>大量整理、展開 Combination、比對 Coverage、找出候選組合。</strong></p>
+      </blockquote>
+      <p>QA 負責的是：</p>
+      <blockquote>
+        <p><strong>確認分類是否合理、Relation 是否可信、判斷 Risk，以及決定 AI 的推論能不能進入正式 Model。</strong></p>
+      </blockquote>
+
+      <hr>
+
+      <h2>不用先蓋 AI Testing Platform，先做兩個 Skill</h2>
+      <p>如果一個 QA 團隊想開始實驗，我反而不建議一開始就做一套很大的 AI Testing Platform。</p>
+      <p>先做兩個最小的 Skill。</p>
+      <p><strong>Skill 1：Test Model &amp; Case Generator</strong></p>
+      <p>它不是拿到 Spec 就直接吐 Test Case。</p>
+      <p>第一階段先建立 Model：</p>
+      <pre><code>Input
+
+API / SDK Spec
+Documentation
+Business Rules
+Known Constraints
+Existing Tests</code></pre>
+      <p>輸出：</p>
+      <pre><code>Test Dimensions
+Values / Partitions
+States
+API Relation Map
+Constraints
+Unknown Relations
+Evidence</code></pre>
+      <p>經過 QA Review 之後，再進第二階段：</p>
+      <pre><code>Approved Test Model
+↓
+Combination Candidates
+↓
+Coverage / Risk Selection
+↓
+Selected Test Cases</code></pre>
+      <p>而且每一條 Test Case 都必須能回答：</p>
+      <blockquote>
+        <p><strong>我是從哪個 Dimension × Relation × Rule 推導出來的？</strong></p>
+      </blockquote>
+      <p>這樣 Case 才是可追溯的。</p>
+      <p><strong>Skill 2：Test Design Auditor</strong></p>
+      <p>輸入：</p>
+      <pre><code>Source Spec / Documentation
+Approved Test Model
+Generated Test Cases</code></pre>
+      <p>Auditor 不負責再生一批 Test Case。</p>
+      <p>它重新從 Source 出發，挑戰：</p>
+      <pre><code>有沒有漏掉 Dimension？
+Relation 有沒有 Evidence？
+哪些 Relation 只是 Assumption？
+有哪些 Unknown？
+哪些重要 Combination 沒 Cover？
+哪些 Case 其實重複？
+High Risk 區域是否反而 Coverage 很低？</code></pre>
+      <p>最後輸出：</p>
+      <pre><code>Coverage Gaps
+Unsupported Assumptions
+Unknown Relations
+Duplicate Coverage
+Recommended Experiments</code></pre>
+
+      <hr>
+
+      <h2>下一步，實驗方法論</h2>
+      <p>做到這裡，方法論還只是方法論。</p>
+      <p>下一個最小行動應該是：</p>
+      <blockquote>
+        <p><strong>拿 3～5 支真的有 Relation 的 API，開始實驗。</strong></p>
+      </blockquote>
+      <p>而且不要一次證明所有事情。</p>
+      <p>第一輪只驗證：</p>
+      <blockquote>
+        <p><strong>AI 能不能從真實 Spec 建出一份 QA 認為可用的 Test Model Draft？</strong></p>
+      </blockquote>
+      <p>如果連 Model 都建不好，後面的 Test Case 根本不用談。</p>
+      <p>如果可以，再驗證第二件事：</p>
+      <blockquote>
+        <p><strong>從 Approved Model 產生的 Test Case，有沒有找到人工原本沒想到、但合理的重要 Combination？</strong></p>
+      </blockquote>
+      <p>最後才驗證 Auditor：</p>
+      <blockquote>
+        <p><strong>它能不能真的找到 Generator 漏掉的東西？</strong></p>
+      </blockquote>
+      <p>也就是：</p>
+      <pre><code>Experiment 1
+Model 能不能用？
+        ↓
+Experiment 2
+Cases 有沒有價值？
+        ↓
+Experiment 3
+Auditor 抓不抓得到盲區？</code></pre>
+      <p>一次只驗證一個假設。</p>
+      <p>如果實驗結果不好，就修 Generator 或 Model。</p>
+      <p>如果實際執行測試後發現新的 Relation、Constraint 或 State，也把 Evidence 回寫到 Model，再進下一輪。</p>
+      <p>這時我們測試的其實不只是 API。</p>
+      <p><strong>我們也正在測試自己的 Test Case Generator。</strong></p>
+      <p>而這可能才是從：</p>
+      <blockquote>
+        <p>「讓 AI 幫我寫 Test Case」</p>
+      </blockquote>
+      <p>走到：</p>
+      <blockquote>
+        <p><strong>「讓 QA 設計一個可以被驗證、可以持續改善的 AI Test Design System」</strong></p>
+      </blockquote>
+      <p>真正的第一步。</p>
+    </article>
+
+    <nav class="article-bottom-nav" aria-label="文章前後篇導覽">
+      <a href="index.html">← 返回 Portfolio</a>
+      <span class="article-nav-disabled">上一篇：Coming Soon</span>
+      <span class="article-nav-disabled">下一篇：Coming Soon</span>
+    </nav>
+  </main>
+  <footer class="site-footer">苦命兔 QA 日誌 · AI QA Portfolio</footer>
+</body>
+</html>
