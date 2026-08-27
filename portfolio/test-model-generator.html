@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>如何從無限輸入建立可測試的 Test Model？｜苦命兔 QA 日誌</title>
+  <title>Test Case 列不完怎麼辦？從無限組合建立可測試的 Test Model｜苦命兔 QA 日誌</title>
   <link rel="stylesheet" href="../styles.css">
 </head>
 <body class="home-page">
@@ -17,8 +17,8 @@
     </nav>
 
     <header class="article-hero">
-      <h1>如何從無限輸入建立可測試的 Test Model？</h1>
-      <p class="subtitle">問題不是 Test Case 不夠多，而是可能性太多</p>
+      <h1>Test Case 列不完怎麼辦？從無限組合建立可測試的 Test Model</h1>
+      <p class="subtitle">從設計 Test Case，改成設計一套能持續產生 Test Case 的規則</p>
       <div class="article-meta">
         <time datetime="2026-08-27">2026.08.27</time>
         <span>約 16 分鐘閱讀</span>
@@ -52,7 +52,7 @@
       <p>「正常問法、錯字、資訊不足、答非所問、惡意輸入、多輪對話……」</p>
       <p>如果沿著每一句使用者可能說的話一直列，一樣永遠列不完。</p>
       <p>後來真正需要解決的，也不是「再多想 100 句 Prompt」，而是先定義：<strong>Chatbot 的 Input Space 可以拆成哪些測試維度？</strong></p>
-      <p>這其實就是同一個問題本質。</p>
+      <p>這兩件事，本質上其實是同一個問題。</p>
       <p>→「我如何測試 AI Chatbot？」會在後面系列文獨立說明。</p>
 
       <hr>
@@ -103,15 +103,17 @@ Run again</code></pre>
       <p><strong>根本列不完。</strong></p>
       <p>就算真的列完了，也測不完。</p>
       <p>光是假設每次測試只考慮：</p>
-      <pre><code>5 種 Environment
+      <pre><code>3 種 OS / Platform
+×
+3 種 Execution Environment
 ×
 5 種 Dependency State
 ×
 30 個 API
 ×
 5 種 Input State</code></pre>
-      <p>就已經有 3,750 個基本組合。</p>
-      <p>而這還只挑了四個維度。</p>
+      <p>就已經有 6,750 個基本組合。</p>
+      <p>而這還只挑了五個維度。</p>
       <p>設定檔寫錯、API 彼此的呼叫順序、前後狀態，全都還沒算進去。</p>
       <p>一旦開始考慮這些關係，測試空間只會繼續膨脹。</p>
       <p>這時候問題已經不是：</p>
@@ -258,11 +260,15 @@ Input
       <p>Installation、Usage、Input 底下列的是<strong>值</strong>。</p>
       <p>Environment 底下列的 OS、Runtime Version、Hardware 是<strong>三個子維度</strong>。</p>
       <p>一個列值、一個列維度，混在同一張圖上，後面拿它們相乘就會算錯。</p>
+      <p>所以 Environment 不該是一個維度，它本來就是好幾個維度擠在一起。</p>
       <p>拆完之後長這樣：</p>
-      <pre><code>Environment
+      <pre><code>OS / Platform
 ├── macOS
 ├── Ubuntu
-├── Windows
+└── Windows
+
+Execution Environment
+├── Local
 ├── Container
 └── CI Runner
 
@@ -293,9 +299,10 @@ Input
 ├── Boundary
 ├── Missing
 └── Wrong Type</code></pre>
-      <p>從四個維度變成五個。</p>
-      <p>多出來的那一個不是為了讓圖好看。</p>
-      <p>而是原本有一整塊組合，我根本看不見。</p>
+      <p>從四個維度變成六個。</p>
+      <p>多出來的那兩個不是為了讓圖好看。</p>
+      <p>而是原本各有一整塊組合，我根本看不見。</p>
+      <p>「套件裝對但設定寫錯」看不見，「同一套 OS 在本機跑得過、進 CI 就掛」也看不見。</p>
       <p>我們不是在宣稱：</p>
       <blockquote>
         <p>這些狀態已經包含世界上所有 Bug。</p>
