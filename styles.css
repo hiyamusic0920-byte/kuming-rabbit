@@ -319,6 +319,25 @@ body {
   font-size: 0.92rem;
 }
 
+.article-figure {
+  margin: 26px 0;
+}
+
+.article-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #ead8c2;
+  border-radius: 14px;
+}
+
+.article-figure figcaption {
+  margin-top: 10px;
+  color: #8c7467;
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
 .article-content hr {
   margin: 36px 0;
   border: 0;
