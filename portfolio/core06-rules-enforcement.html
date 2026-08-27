@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>我以為我寫的是規則，其實是備忘錄｜苦命兔 Kuming Rabbit — AI QA Lab</title>
+  <meta name="description" content="12 條硬規則，真正會擋下違規的只有 2 條。一條規則什麼時候才算從「寫在文件裡」跨進「真的能約束系統」。">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="苦命兔 Kuming Rabbit — AI QA Lab">
+  <meta property="og:title" content="我以為我寫的是規則，其實是備忘錄">
+  <meta property="og:description" content="12 條硬規則，真正會擋下違規的只有 2 條。">
+  <meta property="og:url" content="https://hiyamusic0920-byte.github.io/kuming-rabbit/portfolio/core06-rules-enforcement.html">
+  <meta property="og:image" content="https://hiyamusic0920-byte.github.io/kuming-rabbit/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="苦命兔睡著了，旁邊的終端機一直印 sleep()，估計還要跑 14 小時 23 分。">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..800&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&family=Noto+Serif+TC:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="../styles.css">
+
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到主要內容</a>
+
+<!-- CHROME:HEADER -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark" aria-hidden="true">🐰</span>
+      <span class="brand-text">
+        <span class="brand-name">苦命兔 Kuming Rabbit</span>
+        <span class="brand-role">AI QA Lab</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="開啟主導覽">
+      <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18"></path>
+      </svg>
+      <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M5 5l14 14M19 5L5 19"></path>
+      </svg>
+    </button>
+
+    <nav class="site-nav" id="site-nav" aria-label="主導覽">
+      <ul>
+        <li><a href="../ai-qa.html" aria-current="page">AI QA</a></li>
+        <li><a href="../case-studies.html">Case Studies</a></li>
+        <li><a href="../diary.html">QA Diary</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li class="nav-secondary"><a href="../lessons.html">Things AI Got Wrong</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<!-- /CHROME:HEADER -->
+
+<main id="main">
+
+  <article class="longform lab-shell">
+    <ol class="crumbs">
+      <li><a href="../index.html">Home</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="../ai-qa.html">AI QA Lab</a></li>
+      <li aria-hidden="true">/</li>
+      <li><span aria-current="page">Core 06</span></li>
+    </ol>
+
+    <header class="longform-head">
+      <h1>我以為我寫的是規則，其實是備忘錄</h1>
+      <p class="longform-standfirst">12 條硬規則，真正會擋下違規的只有 2 條</p>
+      <p class="longform-meta">
+        <time datetime="2026-08-24">2026.08.24</time>
+        <span aria-hidden="true">·</span>
+        <span>約 10 分鐘閱讀</span>
+      </p>
+    </header>
+
+    <div class="article-content">
+
+      <h2>我去數了一遍</h2>
+      <p>我的測試 repo 裡有一份規則文件。</p>
+      <p>四百多行，我自己寫的，開頭第一句就要求所有 agent 動工前先讀完。三個 agent 都被要求讀：Claude、Codex、Gemini。</p>
+      <p>裡面有一張表，標題叫「強制規則」。</p>
+      <p>「強制」兩個字是我自己打上去的。</p>
+      <p>那張表寫好三個月後，我做了一件之前沒做過的事：我沒有去問「有沒有人違規」，而是逐條去數——<strong>這 12 條，如果現在有人違反，會發生什麼事？</strong></p>
+
+      <figure class="article-evidence rule-summary" aria-label="12 條強制規則的實際效力分佈">
+        <ol class="rule-summary-row">
+          <li>
+            <p class="rule-summary-value">2 <span>條</span></p>
+            <p class="rule-summary-label">會被擋下來的</p>
+          </li>
+          <li>
+            <p class="rule-summary-value">1 <span>條</span></p>
+            <p class="rule-summary-label">會在收工時被念一句的</p>
+          </li>
+          <li class="is-marked">
+            <p class="rule-summary-value">9 <span>條</span></p>
+            <p class="rule-summary-label">什麼都不會發生</p>
+          </li>
+        </ol>
+      </figure>
+
+      <p>我原本以為這 9 條只是還沒排到，等我有空把檢查程式寫完就好。</p>
+      <p>後來發現不是。</p>
+
+      <hr>
+
+      <h2>規則寫在那裡，但沒有人在看</h2>
+      <p>先講最單純的那種失敗。</p>
+      <p>流程規定，AI 測完一張票，要把「這張票是誰測的」寫進一份帳本。有一張票，AI 從頭到尾測完、報告也出了，帳本沒寫——於是看板上那張票顯示成「沒有 AI 測過」。</p>
+      <p>這種失敗好處理，因為條件很乾淨：有新的報告檔案、卻沒有對應的帳本記錄，兩個檔案一比就知道。</p>
+      <p>我在七月初一次把能比的都補上。同一天，靜態檢查、編輯期的檢查點、還有 CI 一起進 repo。</p>
+      <p>那天的盤點紀錄裡有一句，現在回頭看是最有用的一句：</p>
+
+      <figure class="article-evidence evidence-source">
+        <p class="evidence-label"><span class="evidence-label-kind">SOURCE</span> <span class="evidence-label-name">七月初的盤點紀錄</span></p>
+        <blockquote class="evidence-body">
+          <p>規則遵循率，原本取決於每個 agent 有沒有記得那四百多行；改完之後取決於檢查程式有沒有跑。後者是確定的。</p>
+        </blockquote>
+      </figure>
+
+      <p>差別不在規則寫得多清楚。</p>
+      <p>在於有沒有東西可以拿來比對。</p>
+
+      <figure class="article-evidence rule-control">
+        <figcaption class="evidence-label"><span class="evidence-label-kind">SOURCE</span> <span class="evidence-label-name">PROJECT_RULES 強制規則表 · 12 條</span></figcaption>
+        <table class="rule-control-table">
+          <thead>
+            <tr>
+              <th scope="col">規則</th>
+              <th scope="col">做完會留下可檢查的東西嗎</th>
+              <th scope="col">現在會怎樣</th>
+            </tr>
+          </thead>
+          <tbody class="rule-group">
+            <tr class="rule-group-head"><th scope="rowgroup" colspan="3">會擋下來<span class="rule-group-count">2 條</span></th></tr>
+            <tr>
+              <td class="rule-name">測試檔不能出現 <code>.locator()</code></td>
+              <td class="rule-trace">有：檔案內容</td>
+              <td class="rule-status">擋下</td>
+            </tr>
+            <tr>
+              <td class="rule-name">feature 的 Background 不寫登入</td>
+              <td class="rule-trace">有：檔案內容</td>
+              <td class="rule-status">擋下</td>
+            </tr>
+          </tbody>
+          <tbody class="rule-group">
+            <tr class="rule-group-head"><th scope="rowgroup" colspan="3">只會提醒<span class="rule-group-count">1 條</span></th></tr>
+            <tr>
+              <td class="rule-name">封裝完頁面元件後必須回補共用的頁面知識</td>
+              <td class="rule-trace">有：這次改了哪些檔</td>
+              <td class="rule-status">收工時提醒</td>
+            </tr>
+          </tbody>
+          <tbody class="rule-group is-inert">
+            <tr class="rule-group-head"><th scope="rowgroup" colspan="3">什麼都不會發生<span class="rule-group-count">9 條</span></th></tr>
+            <tr><td class="rule-name">test plan 必須在 test case 前</td><td class="rule-trace">沒有</td><td class="rule-status">—</td></tr>
+            <tr><td class="rule-name">情境描述（feature）必須在頁面探索前</td><td class="rule-trace">沒有</td><td class="rule-status">—</td></tr>
+            <tr><td class="rule-name">探索前必須先盤點既有的元件與頁面知識（下文的 Reuse Audit）</td><td class="rule-trace">沒有</td><td class="rule-status">—</td></tr>
+            <tr><td class="rule-name">只有既有元件／知識不足時，才允許進入探索工具</td><td class="rule-trace">沒有</td><td class="rule-status">—</td></tr>
+            <tr><td class="rule-name">進入探索工具必須帶既有的登入狀態</td><td class="rule-trace">沒有</td><td class="rule-status">—</td></tr>
+            <tr><td class="rule-name">Page Object 必須在測試步驟前</td><td class="rule-trace">沒有</td><td class="rule-status">—</td></tr>
+            <tr><td class="rule-name">環境／上下文切換必須走統一入口</td><td class="rule-trace">沒有</td><td class="rule-status">—</td></tr>
+            <tr><td class="rule-name">同一個問題試超過 2 次必須停損</td><td class="rule-trace">沒有</td><td class="rule-status">—</td></tr>
+            <tr><td class="rule-name">會影響其他工作項產出的共用變更，要先有人看過</td><td class="rule-trace">沒有</td><td class="rule-status">—</td></tr>
+          </tbody>
+        </table>
+      </figure>
+
+      <p>這張表只涵蓋那份文件裡的「強制規則」12 條。repo 裡還有幾類檢查是會擋的——報告的資料格式、報告檔案的落點、程式索引的完整性——它們不在這張表裡<sup class="fn-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。所以別把「只有 2 條」讀成「整個 repo 只有兩個守門的」。</p>
+      <p>我要說的是更窄、也更難看的一件事：<strong>我親手標上「強制」的那 12 條，四分之三強制不了。</strong></p>
+
+      <aside class="article-callout">
+        <p class="article-callout-label">短註</p>
+        <p class="article-callout-title">真的會擋是什麼感覺</p>
+        <p>有一次 CI 擋下我自己的變更，而那個變更正在<strong>新增一個檢查</strong>。它被既有的程式索引稽核攔住，理由是我忘記同步索引，修好才進得去。</p>
+        <p>「擋下來」就是這個樣子——不看你在做好事還是壞事，條件不滿足就是不行。</p>
+      </aside>
+
+      <hr>
+
+      <h2>有些規則不是還沒寫檢查程式，是根本沒有東西可以驗</h2>
+      <p>現在講那 9 條。</p>
+      <p>我原本的計畫是照上面那套做法一路補完。挑一條最重要的先辦——那條叫 Reuse Audit。</p>
+      <p>規則長這樣：<strong>探索頁面之前，必須先盤點現有的 Page Object 和頁面知識，確認哪些步驟已經有人寫過了。</strong></p>
+      <p>理由很硬：上一張票摸清楚的頁面，下一張票不該重新摸一次，否則不只浪費時間，還會寫出兩份互相矛盾的 selector。</p>
+      <p>配套也齊全。流程文件有專門一段規定產出格式，要三張表格。我甚至為它寫了一個專用的 subagent，唯讀，只做這件事。</p>
+      <p>然後它被跳過了。</p>
+      <p>有一張票，AI 沒有盤點，直接開了一支 raw Playwright 腳本自己摸。六個要驗的區塊，做到第二個就卡死。</p>
+      <p>我當時的反應是「補一個檢查把它擋住」。</p>
+      <p>打開流程文件想確認要檢查什麼，才看到問題。</p>
+
+      <div class="article-evidence evidence-compare">
+        <figure class="evidence-source">
+          <figcaption class="evidence-label"><span class="evidence-label-kind">SOURCE A</span> <span class="evidence-label-name">PROJECT_RULES 強制規則表 · 硬規則那一列</span></figcaption>
+          <div class="evidence-body">
+            <p>情境描述必須在頁面探索前完成 —— 因為探索需要先根據情境的步驟，盤點哪些已經有現成的元件可以重用。</p>
+          </div>
+        </figure>
+        <figure class="evidence-source">
+          <figcaption class="evidence-label"><span class="evidence-label-kind">SOURCE B</span> <span class="evidence-label-name">流程文件「輸出格式」段</span></figcaption>
+          <div class="evidence-body">
+            <ul class="evidence-plain-list">
+              <li>可重用的既有項目</li>
+              <li>缺口</li>
+              <li>每一列的信心水準</li>
+            </ul>
+          </div>
+        </figure>
+        <div class="evidence-observation">
+          <p class="evidence-label"><span class="evidence-label-kind">作者註</span></p>
+          <p>這一段定義了輸出的內容，但文件沒有指定輸出的檔名、路徑，也沒有定義任何代表 Reuse Audit 已完成的產物。</p>
+        </div>
+      </div>
+
+      <p>右邊沒有檔名。</p>
+      <p>整段規定了那三張表要長什麼樣、要有哪些欄位、每一列要標信心水準——<strong>沒有規定寫到哪裡去。</strong></p>
+      <p>所以它的產出是什麼？是對話裡的一段文字。</p>
+      <p>整份流程文件只有一條回寫規則：探索過程中發現的 selector 要寫進頁面知識庫。那是副產物，不是盤點本身。我去 ticket 目錄找，一份盤點產物都沒有。那個專用 subagent 也一樣，輸出是回覆裡的一張表。</p>
+      <p>於是我要加的那個檢查，沒有可以檢查的對象。</p>
+      <p>不是難寫。是<strong>沒有東西可寫</strong>。</p>
+      <p>我當時能做到的只有一件事：新增一個事後標記，讓「該重用卻沒重用」在紀錄裡看得見。那份設計紀錄的最後一句是我自己寫的：</p>
+
+      <figure class="article-evidence evidence-source">
+        <p class="evidence-label"><span class="evidence-label-kind">SOURCE</span> <span class="evidence-label-name">事後標記的設計紀錄</span></p>
+        <blockquote class="evidence-body">
+          <p>這只能讓失敗可見，不能強制。強制的機制仍需另案設計。</p>
+        </blockquote>
+      </figure>
+
+      <p>到今天還是沒案。</p>
+
+      <h3>為什麼卡得這麼死</h3>
+      <p>我把兩堆規則攤開對照，才看出它們差在哪。</p>
+      <p>會被檢查的那些，違規全部長成同一個形狀：<strong>某個檔案裡出現了什麼，或缺了什麼。</strong></p>
+      <p>檢查不了的那些，也是同一個形狀：<strong>誰先誰後、這件事做過沒做過。</strong></p>
+      <p>前者是狀態，會自己留在那裡等人來看。後者是行為，發生完就結束了，除非有人特地記下來。</p>
+      <p>「同一個問題試超過 2 次必須停損」——嘗試次數不寫進任何檔案。所以沒有人能證明它被遵守過，也沒有人能證明它被違反過。</p>
+      <p>我後來發現，這不只是紀律夠不夠的問題。流程本身就沒有留下可以被檢查的完成狀態。</p>
+      <p>這是我這次真正學到的東西，而且我想把它的適用範圍講清楚——它針對的是「這一步做過沒有」、「A 必須先於 B」、「這一步不得跳過」這類規則：</p>
+
+      <div class="article-evidence evidence-interpretation">
+        <p class="evidence-label"><span class="evidence-label-kind">我的判斷</span></p>
+        <p>對這種需要驗證「做過沒有」的流程規則，如果完成之後不留下任何可檢查的痕跡，就很難建立可靠的機械強制。</p>
+      </div>
+
+      <p>推論很直接：如果一條這樣的規則重要到不能只靠人記得，要改的是「讓它做完會留下痕跡」，不是把規則寫得更大聲。</p>
+      <p>Reuse Audit 需要的是一個落檔的位置，不是一句更硬的措辭。我還沒做，這篇寫的時候它仍是原樣。</p>
+
+      <h3>反方向也有代價</h3>
+      <p>我不主張「每條規則都該有產出檔」。</p>
+      <p>那樣做的下場很好想像：流程長出一堆只為了通過檢查而存在的檔案。最後留下的可能只是形式上的完成紀錄，卻不能代表那一步真的被做好。停損那條就是例子——為「試了幾次」造一個計數檔，成本高於它能換到的東西。</p>
+      <p>所以判斷順序是：先問這條規則值不值得為它造一個產出，再決定要不要說「不得跳過」。不是每一條都值得，但值得的那幾條，得誠實承認它現在還沒有。</p>
+
+      <figure class="article-evidence article-diagram" aria-label="一條規則要走到「會擋」，中間要跨過什麼">
+        <div class="article-chain">
+          <div class="article-chain-step">
+            <p class="article-chain-label">規則寫在文件裡</p>
+            <p class="article-chain-note">12 條都在這裡</p>
+          </div>
+
+          <div class="article-chain-break">
+            <p class="article-chain-break-mark" aria-hidden="true">✕</p>
+            <p class="article-chain-break-text">Reuse Audit 卡在這一段。規則有、產出格式有、專用 subagent 也有，但做完不會留下任何檔案。9 條規則都卡在這一段。</p>
+          </div>
+
+          <div class="article-chain-step">
+            <p class="article-chain-label">做完會留下可檢查的痕跡</p>
+            <p class="article-chain-note">3 條走到這裡</p>
+          </div>
+
+          <p class="article-chain-arrow" aria-hidden="true">↓</p>
+
+          <div class="article-chain-step">
+            <p class="article-chain-label">有程式在讀那個痕跡</p>
+            <p class="article-chain-note">收工檢查點讀得到帳本，但只念一句</p>
+          </div>
+
+          <p class="article-chain-arrow" aria-hidden="true">↓</p>
+
+          <div class="article-chain-step">
+            <p class="article-chain-label">不符合就退回</p>
+            <p class="article-chain-note">靜態檢查（只對新寫的檔）、CI 的索引稽核</p>
+          </div>
+        </div>
+      </figure>
+
+      <p class="article-diagram-caption">這張圖不是在說每條規則都該走到最後一格。它只是說：如果我想要機械強制，中間有哪幾個條件必須先成立。</p>
+      <p>我原本以為規則和檢查程式之間是直接相連的，缺的只是工。實際上第一段就是門檻——沒有痕跡，後面兩段連開始的條件都沒有。</p>
+
+      <hr>
+
+      <h2>豁免名單：新債停了，舊債一行沒少</h2>
+      <p>爬到最後一格也不代表事情就好了。</p>
+      <p>規則說 test 檔不能出現 <code>.locator()</code>——selector 要包在 Page Object 裡。理由是 selector 會變，包起來才改一個地方。</p>
+      <p>問題是規則上線那天，repo 裡已經一堆了。檢查程式如果一視同仁，那天所有測試都跑不了。</p>
+      <p>我的做法是加一份豁免名單：當下既有的違規全部登記赦免，之後新寫進來的一律退回。</p>
+
+      <div class="article-evidence evidence-split">
+        <div class="evidence-split-side">
+          <p class="evidence-split-label">新債</p>
+          <ul class="evidence-stat">
+            <li><span class="evidence-stat-label">豁免名單之後新增的 test 檔，違規數</span><span class="evidence-stat-value">0</span></li>
+          </ul>
+        </div>
+        <div class="evidence-split-side">
+          <p class="evidence-split-label">舊債</p>
+          <ul class="evidence-stat">
+            <li><span class="evidence-stat-label">登記在名單上的違規</span><span class="evidence-stat-value">88 行</span></li>
+            <li><span class="evidence-stat-label">名單被改過的次數</span><span class="evidence-stat-value">1</span></li>
+            <li><span class="evidence-stat-label">六週後減少的行數</span><span class="evidence-stat-value">0</span></li>
+          </ul>
+        </div>
+        <p class="evidence-split-note">收斂後 62 個特徵值 · 其中 <code>.locator()</code> 佔 82 行</p>
+      </div>
+
+      <p>登記的違規是 <strong>88 行</strong>（收斂成 62 個特徵值<sup class="fn-ref"><a href="#fn2" id="fnref2">[2]</a></sup>），其中 <code>.locator()</code> 那一條佔 <strong>82 行</strong>。</p>
+      <p>一個月後我查了一次：<strong>豁免名單建立之後新增的 test 檔，違規數全部是 0。</strong></p>
+      <p>這個機制有效。它確實把新債擋在外面。</p>
+      <p>但同一次查詢還有另一個結果，我一開始不想寫進來：</p>
+      <p><strong>那份名單從建立到現在只被改過一次，就是建立那次。六週，一行都沒少。</strong></p>
+      <p>所以誠實的說法是：豁免名單改變的是<strong>新增債務的方向</strong>，不是歷史的現實。</p>
+      <p>那 88 行還在 repo 裡，一行都沒動過。變的只是檢查程式怎麼看它們——從「違規」變成「已知、暫時不報」。所以它不會出現在任何一次檢查結果裡，包括我自己看的那些。</p>
+      <p>如果我當初同時排了每個 sprint 拔掉幾行，今天的數字不會是零。我沒排。</p>
+
+      <hr>
+
+      <h2>144 筆裡有 143 筆是假的</h2>
+      <p>另一個方向的失敗更難看，而且是現在還在的。</p>
+      <p>我有一個編輯期的檢查點：每次改到 Python 檔，就順手稽核程式索引有沒有同步。它不是提醒，是會退回的那種。</p>
+      <p>寫這篇的時候我為了取材去跑了一次。</p>
+      <p>它退回了，吐出 <strong>144 筆</strong>「索引裡缺這個檔」。</p>
+      <p>其中 <strong>143 筆是假的。</strong></p>
+      <p>原因是那支稽核程式用掃檔案系統的方式找 Python 檔——工作目錄底下所有的 <code>.py</code> 一律算進來。而我的工作目錄底下有一個 agent 開的臨時 worktree，沒有進版控，裡面一整包 Python 檔。</p>
+
+      <div class="article-evidence">
+        <ul class="evidence-stat is-lead">
+          <li><span class="evidence-stat-label">它這次吐出的缺漏數</span><span class="evidence-stat-value">144 筆</span></li>
+          <li><span class="evidence-stat-label">其中是假的</span><span class="evidence-stat-value">143 筆</span></li>
+        </ul>
+        <figure class="evidence-source">
+          <figcaption class="evidence-label"><span class="evidence-label-kind">SOURCE</span> <span class="evidence-label-name">節錄：編輯期檢查點的實際輸出（路徑已遮蔽）</span></figcaption>
+          <pre class="evidence-body"><code>[missing] .claude/worktrees/agent-&lt;略&gt;/scripts/…
+[missing] .claude/worktrees/agent-&lt;略&gt;/pages/…
+[missing] .claude/worktrees/agent-&lt;略&gt;/tests/…
+   （同類 141 行）</code></pre>
+        </figure>
+      </div>
+
+      <p>同一支稽核程式在 CI 上是綠的。因為 CI 是全新 checkout，那個目錄根本不存在。</p>
+      <p>同一支程式、同一天、兩個相反的答案。</p>
+      <p>而被信任的是綠的那個。</p>
+      <p>現在看到它又吐出一大串缺漏，我的第一反應已經不是「真的漏了什麼」，而是先確認這次又掃到了哪個不該掃的目錄。</p>
+      <p>也就是說，會不會擋已經不是我最先要問的問題。會退回的檢查不等於品質保證，它自己的訊號也需要可信度——而可信度來自「它看的東西，就是它要保護的東西」。這支不是：它看的是我的工作目錄，它要保護的是進到 repo 裡的內容。</p>
+      <p>我沒有修它。這篇的取材過程本身就是那個 gap 的證據；修不修是另一件事的判斷，不該由「我想寫一篇漂亮的文章」來觸發。</p>
+
+      <hr>
+
+      <h2>如果重來一次</h2>
+      <p>三條，都是從上面幾次撞出來的。</p>
+      <p><strong>一、寫「不得跳過」之前，先問這一步做完會留下什麼。</strong></p>
+      <p>如果答案是「對話裡的一段文字」，那它現在還不是規則，是備忘。可以留著，但別叫它強制。</p>
+      <p><strong>二、要不要為一條規則造一個產出檔，是成本判斷，不是教條。</strong></p>
+      <p>值得的就做，不值得的就承認它只能靠人記得。最糟是中間那種：規則寫得很硬、實際上沒人在看，而所有人都以為有。</p>
+      <p><strong>三、把檢查改成「會退回」之前，先確認它看的範圍和它要保護的東西一致。</strong></p>
+      <p>不然本機和 CI 會對同一支檢查給出相反答案。而一個長期不準的訊號，會讓真正的違規更難從噪音裡被認出來。</p>
+
+      <hr>
+
+      <h2>所以現在算什麼</h2>
+      <p>我不會說我建立了一套治理機制。</p>
+      <p>現在的狀態是：12 條裡有 2 條真的會擋，而我知道那 2 條為什麼擋得住、另外 9 條為什麼擋不住、其中哪幾條值得補、哪幾條不值得。</p>
+      <p>比三個月前只有一份四百多行的文件強。強的不是規則變多，是我終於分得出哪些是規則、哪些是備忘。</p>
+      <p>但這裡有一條很清楚的界線。</p>
+      <p>機械化管得住形狀，管不住證據力。</p>
+      <p>靜態檢查能確認 test 檔裡沒有 <code>.locator()</code>。但「規則有被遵守」和「測試結果值得相信」，是兩個不同的問題。</p>
+      <p>所以下一個問題更麻煩：</p>
+      <p><strong>規則都照跑了，測試也綠了，就代表結果是真的嗎？</strong></p>
+      <p>那是下一篇：《憑什麼相信 AI 說「測完了」》。</p>
+
+      <section class="article-notes" aria-labelledby="notes-title">
+        <h2 id="notes-title" class="article-notes-title">註</h2>
+        <ol>
+          <li id="fn1">那幾類分別是報告 JSON 的資料合約驗證、報告產物落點稽核、Python 入口索引完整性稽核，都在 CI 的關卡裡，也都會擋。它們是後來另外長出來的，不在那份文件的「強制規則」表中。 <a class="fn-back" href="#fnref1" aria-label="回到註 1 的出處">↩ 回到正文</a></li>
+          <li id="fn2">88 是實際的違規行數，62 是收斂後的特徵值數量——同一支檔案裡內容相同的多行只登記一筆。兩個數字都列是因為只講 62 會低報實際債務。 <a class="fn-back" href="#fnref2" aria-label="回到註 2 的出處">↩ 回到正文</a></li>
+        </ol>
+      </section>
+
+    </div>
+
+    <footer class="longform-foot article-next">
+      <p class="article-next-eyebrow">Next in AI QA Lab</p>
+      <p class="article-next-title">憑什麼相信 AI 說「測完了」</p>
+      <p class="article-next-status">Core 04 · Coming next</p>
+      <p class="article-next-back"><a class="link-arrow" href="../ai-qa.html">← 回 AI QA Lab</a></p>
+    </footer>
+  </article>
+
+</main>
+
+<!-- CHROME:FOOTER -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <p class="footer-brand">苦命兔 Kuming Rabbit · AI QA Lab</p>
+      <p class="footer-tagline">一個 QA 把兩個 AI agent 放進真實測試流程的實驗紀錄。</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="../ai-qa.html">AI QA</a></li>
+      <li><a href="../case-studies.html">Case Studies</a></li>
+      <li><a href="../diary.html">QA Diary</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../lessons.html">Things AI Got Wrong</a></li>
+      <li><a href="https://github.com/hiyamusic0920-byte/kuming-rabbit">GitHub</a></li>
+    </ul>
+    <p class="footer-meta">Sunny · QA Engineer / AI Native QA Explorer</p>
+  </div>
+</footer>
+<!-- /CHROME:FOOTER -->
+
+<!-- CHROME:NAVJS -->
+<script>
+  // 手機漢堡選單。展開後焦點進選單、Esc 關閉並把焦點還給觸發按鈕。
+  (function () {
+    var toggle = document.querySelector('.nav-toggle');
+    var nav = document.getElementById('site-nav');
+    if (!toggle || !nav) return;
+
+    function setOpen(open) {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? '關閉主導覽' : '開啟主導覽');
+      nav.setAttribute('data-open', String(open));
+    }
+
+    toggle.addEventListener('click', function () {
+      var open = toggle.getAttribute('aria-expanded') === 'true';
+      setOpen(!open);
+      if (!open) {
+        var first = nav.querySelector('a');
+        if (first) first.focus();
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      setOpen(false);
+      toggle.focus();
+    });
+
+    // 從手機寬度放大到桌機時，把展開狀態收掉，避免桌機殘留 data-open
+    var wide = window.matchMedia('(min-width: 900px)');
+    wide.addEventListener('change', function (e) {
+      if (e.matches) setOpen(false);
+    });
+  })();
+</script>
+<!-- /CHROME:NAVJS -->
+
+</body>
+</html>

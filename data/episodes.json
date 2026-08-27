@@ -4,91 +4,213 @@
       "number": 1,
       "title": "讓 AI 幫我做測試報告",
       "capability": "QA 報告自動化",
-      "methods": "pytest、Playwright、PDF Report、QA/UAT Report"
+      "methods": "pytest、Playwright、PDF Report、QA/UAT Report",
+      "related": [
+        {
+          "href": "ai-qa.html#workflow",
+          "label": "這套 workflow 怎麼跑"
+        }
+      ]
     },
     {
       "number": 2,
       "title": "報告有了，但看完更想哭",
       "capability": "Ticket Analysis / Context Engineering",
-      "methods": "Redmine / Jira / Sub-task 資訊整合、範圍差異、邏輯缺口"
+      "methods": "Redmine / Jira / Sub-task 資訊整合、範圍差異、邏輯缺口",
+      "related": [
+        {
+          "href": "ai-qa.html#workflow",
+          "label": "採集與 Test Plan 這兩步"
+        },
+        {
+          "href": "ai-qa.html#knowledge",
+          "label": "知識層怎麼餵 context"
+        }
+      ]
     },
     {
       "number": 3,
       "title": "拯救苦命兔大作戰",
       "capability": "長期知識累積",
-      "methods": "pages/_registry、selector 知識、互動陷阱、回饋機制"
+      "methods": "pages/_registry、selector 知識、互動陷阱、回饋機制",
+      "related": [
+        {
+          "href": "ai-qa.html#knowledge",
+          "label": "長期知識庫的做法"
+        },
+        {
+          "href": "lessons.html#ep03",
+          "label": "這次失敗留下的機制"
+        }
+      ]
     },
     {
       "number": 4,
       "title": "跨 Agent 合作挑戰",
       "capability": "Multi-Agent Handoff",
-      "methods": "PROJECT_RULES、handoff、Claude / Codex 共用規則"
+      "methods": "PROJECT_RULES、handoff、Claude / Codex 共用規則",
+      "related": [
+        {
+          "href": "ai-qa.html#architecture",
+          "label": "兩個 agent 的分工"
+        }
+      ]
     },
     {
       "number": 5,
       "title": "200 個 E2E",
       "capability": "Test Strategy / Prompt Chaining",
-      "methods": "test-plan → TC → script generator，決定什麼值得 E2E"
+      "methods": "test-plan → TC → script generator，決定什麼值得 E2E",
+      "related": [
+        {
+          "href": "lessons.html#ep05",
+          "label": "這次失敗留下的機制"
+        },
+        {
+          "href": "ai-qa.html#workflow",
+          "label": "為什麼要先跑 Test Plan"
+        }
+      ]
     },
     {
       "number": 6,
       "title": "苦命兔超努力，無效的那種",
       "capability": "Flaky Test Governance",
-      "methods": "retry 規則、flaky 標記、失敗分析、停止條件"
+      "methods": "retry 規則、flaky 標記、失敗分析、停止條件",
+      "related": [
+        {
+          "href": "lessons.html#ep06",
+          "label": "三條停止條件"
+        },
+        {
+          "href": "case-studies.html#stop-rules",
+          "label": "案例：一直重試不是解法"
+        }
+      ]
     },
     {
       "number": 7,
       "title": "順手把整個房間打掃了",
       "capability": "Permission Boundary / Safe Automation",
-      "methods": "禁止行為、檔案操作邊界、先詢問再改"
+      "methods": "禁止行為、檔案操作邊界、先詢問再改",
+      "related": [
+        {
+          "href": "lessons.html#ep07",
+          "label": "為什麼只能一直補家規"
+        },
+        {
+          "href": "ai-qa.html#governance",
+          "label": "治理層怎麼限制行動範圍"
+        }
+      ]
     },
     {
       "number": 8,
       "title": "被罵過一次後",
       "capability": "Feedback Loop / Agent Behavior Tuning",
-      "methods": "回饋機制、避免過度懲罰導致 Agent 不敢決策"
+      "methods": "回饋機制、避免過度懲罰導致 Agent 不敢決策",
+      "related": [
+        {
+          "href": "ai-qa.html#governance",
+          "label": "回饋機制怎麼寫進規則"
+        }
+      ]
     },
     {
       "number": 9,
       "title": "重新檢視工作流程",
       "capability": "Tacit Knowledge Extraction",
-      "methods": "把老鳥經驗轉成文件、規則、流程與 QA heuristics"
+      "methods": "把老鳥經驗轉成文件、規則、流程與 QA heuristics",
+      "related": [
+        {
+          "href": "ai-qa.html#knowledge",
+          "label": "把隱性知識變成 artifact"
+        }
+      ]
     },
     {
       "number": 10,
       "title": "失之毫里，差之千里",
       "capability": "Requirements Audit",
-      "methods": "歧義偵測、多重解讀、需求確認前置"
+      "methods": "歧義偵測、多重解讀、需求確認前置",
+      "related": [
+        {
+          "href": "case-studies.html#requirements-audit",
+          "label": "案例：一句需求三種讀法"
+        },
+        {
+          "href": "ai-qa.html#workflow",
+          "label": "Requirements Audit 落在哪一步"
+        }
+      ]
     },
     {
       "number": 11,
       "title": "辯論大賽",
       "capability": "Cross-Agent Consensus",
-      "methods": "Claude / Codex Review、文件分類決策框架"
+      "methods": "Claude / Codex Review、文件分類決策框架",
+      "related": [
+        {
+          "href": "case-studies.html#cross-agent",
+          "label": "案例：讓兩個 AI 吵完再收斂"
+        },
+        {
+          "href": "ai-qa.html#architecture",
+          "label": "跨 agent 討論的位置"
+        }
+      ]
     },
     {
       "number": 12,
       "title": "秘密小本本",
       "capability": "Single Source of Truth",
-      "methods": "共同規則、Agent Governance、文件標準化"
+      "methods": "共同規則、Agent Governance、文件標準化",
+      "related": [
+        {
+          "href": "ai-qa.html#knowledge",
+          "label": "真理來源為什麼是 repo 不是記憶"
+        }
+      ]
     },
     {
       "number": 13,
       "title": "那隻兔子就像渣男",
       "capability": "Decision Checkpoint Design",
-      "methods": "AI Understanding Mirror、Audit Gate、規則觸發機制"
+      "methods": "AI Understanding Mirror、Audit Gate、規則觸發機制",
+      "related": [
+        {
+          "href": "lessons.html#ep13",
+          "label": "規則存在不等於規則生效"
+        },
+        {
+          "href": "ai-qa.html#governance",
+          "label": "人類決策節點設在哪三步"
+        }
+      ]
     },
     {
       "number": 14,
       "title": "偷偷改家規",
       "capability": "Traceability / Change Management",
-      "methods": "Change Log、Work Log、Commit History、Process Audit"
+      "methods": "Change Log、Work Log、Commit History、Process Audit",
+      "related": [
+        {
+          "href": "ai-qa.html#governance",
+          "label": "變更可追溯怎麼做"
+        }
+      ]
     },
     {
       "number": 15,
       "title": "吃你的狗食",
       "capability": "Evaluation / Dogfooding",
-      "methods": "Retro、Eval Framework、重跑失敗票驗證改善效果"
+      "methods": "Retro、Eval Framework、重跑失敗票驗證改善效果",
+      "related": [
+        {
+          "href": "ai-qa.html#evaluation",
+          "label": "怎麼驗證改善真的有效"
+        }
+      ]
     }
   ],
   "categories": [
@@ -96,31 +218,59 @@
       "name": "QA 交付自動化",
       "summary": "把需求理解、測試執行、證據收集與稽核報告串成可重複交付的流程。",
       "methods": "Ticket Analysis、Playwright、pytest、QA / UAT PDF、Dogfooding",
-      "episodes": [1, 2, 5, 15]
+      "episodes": [
+        1,
+        2,
+        5,
+        15
+      ]
     },
     {
       "name": "測試工程化",
       "summary": "決定值得自動化的測試層級，控制 flaky test，並建立安全的執行邊界。",
       "methods": "Test Strategy、POM、retry / stop rules、Permission Boundary",
-      "episodes": [3, 5, 6, 7]
+      "episodes": [
+        3,
+        5,
+        6,
+        7
+      ]
     },
     {
       "name": "AI Agent 治理",
       "summary": "讓多個 Agent 在共用規則、權限與決策節點下協作，而不是各自自由發揮。",
       "methods": "Multi-Agent Handoff、Consensus、Feedback Loop、Governance、Audit Gate",
-      "episodes": [4, 8, 11, 12, 13, 14]
+      "episodes": [
+        4,
+        8,
+        11,
+        12,
+        13,
+        14
+      ]
     },
     {
       "name": "知識系統設計",
       "summary": "把 QA 的隱性經驗轉成可搜尋、可追蹤、可被不同 Agent 重複使用的知識。",
       "methods": "Single Source of Truth、Registry、Requirements Audit、Change Log",
-      "episodes": [3, 9, 10, 11, 12, 14]
+      "episodes": [
+        3,
+        9,
+        10,
+        11,
+        12,
+        14
+      ]
     },
     {
       "name": "評估與持續改善",
       "summary": "用失敗案例、回顧與評估框架驗證流程改善是否真的產生效果。",
       "methods": "Retro、Eval Framework、Dogfooding、Decision Checkpoint",
-      "episodes": [6, 13, 15]
+      "episodes": [
+        6,
+        13,
+        15
+      ]
     }
   ]
 }

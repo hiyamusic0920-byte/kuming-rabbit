@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>AI QA｜苦命兔 Kuming Rabbit — AI QA Lab</title>
+  <meta name="description" content="這套 AI-Assisted QA workflow 的四個部分：11 步主線、兩個 agent 的系統架構、治理規則、知識層與驗證機制。每一條都從真實的失敗長出來。">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="苦命兔 Kuming Rabbit — AI QA Lab">
+  <meta property="og:title" content="AI QA — 這套 workflow 怎麼跑">
+  <meta property="og:description" content="11 步主線、兩個 agent、一份共用規則檔。固定交付物，可變測試深度。">
+  <meta property="og:url" content="https://hiyamusic0920-byte.github.io/kuming-rabbit/ai-qa.html">
+  <meta property="og:image" content="https://hiyamusic0920-byte.github.io/kuming-rabbit/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="苦命兔睡著了，旁邊的終端機一直印 sleep()，估計還要跑 14 小時 23 分。">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..800&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&family=Noto+Serif+TC:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到主要內容</a>
+
+<!-- CHROME:HEADER -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">🐰</span>
+      <span class="brand-text">
+        <span class="brand-name">苦命兔 Kuming Rabbit</span>
+        <span class="brand-role">AI QA Lab</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="開啟主導覽">
+      <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18"></path>
+      </svg>
+      <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M5 5l14 14M19 5L5 19"></path>
+      </svg>
+    </button>
+
+    <nav class="site-nav" id="site-nav" aria-label="主導覽">
+      <ul>
+        <li><a href="ai-qa.html" aria-current="page">AI QA</a></li>
+        <li><a href="case-studies.html">Case Studies</a></li>
+        <li><a href="diary.html">QA Diary</a></li>
+        <li><a href="about.html">About</a></li>
+        <li class="nav-secondary"><a href="lessons.html">Things AI Got Wrong</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<!-- /CHROME:HEADER -->
+
+<nav class="section-nav" aria-label="本頁章節">
+  <ol>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#workflow">Workflow</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#governance">Governance</a></li>
+    <li><a href="#evaluation">Knowledge / Evaluation</a></li>
+  </ol>
+</nav>
+
+<main id="main">
+
+  <section class="page-head lab-shell">
+    <ol class="crumbs">
+      <li><a href="index.html">Home</a></li>
+      <li aria-hidden="true">/</li>
+      <li><span aria-current="page">AI QA</span></li>
+    </ol>
+    <p class="lab-eyebrow">AI QA</p>
+    <h1>這套 workflow 怎麼跑，以及哪幾步我一定要自己簽</h1>
+    <p class="page-lead">兩個 AI agent、一份共用規則檔。固定交付物，可變測試深度。這頁把四個部分攤開：主線流程、系統架構、治理規則、知識與驗證。</p>
+  </section>
+
+  <!-- ── Overview ─────────────────────────────────────────── -->
+  <section class="lab-section lab-shell" id="overview" aria-labelledby="overview-title">
+    <p class="lab-eyebrow">Overview</p>
+    <h2 id="overview-title">出發點很小：我只是不想再手工整理測試證據。</h2>
+
+    <ol class="build-list">
+      <li>
+        <span class="build-num">01</span>
+        <div class="build-body">
+          <h3>Workflow</h3>
+          <p>11 步主線：從一張票到符合稽核標準的 PDF。交付物固定，測試深度看票的風險調整。</p>
+          <a class="link-arrow" href="#workflow">看 11 步 →</a>
+        </div>
+        <span class="status status-live">上線中</span>
+      </li>
+      <li>
+        <span class="build-num">02</span>
+        <div class="build-body">
+          <h3>Governance</h3>
+          <p>規則檔講的是「不准做什麼」，不是「怎麼做才對」。停止條件、權限邊界、人類決策節點。</p>
+          <a class="link-arrow" href="#governance">看規則 →</a>
+        </div>
+        <span class="status status-live">上線中</span>
+      </li>
+      <li>
+        <span class="build-num">03</span>
+        <div class="build-body">
+          <h3>Knowledge</h3>
+          <p>商業規則、UI 陷阱、測資、決策紀錄都落成 repo 檔案。Agent 可以換，repo 才是真理來源。</p>
+          <a class="link-arrow" href="#knowledge">看知識層 →</a>
+        </div>
+        <span class="status status-live">上線中</span>
+      </li>
+      <li>
+        <span class="build-num">04</span>
+        <div class="build-body">
+          <h3>Evaluation</h3>
+          <p>怎麼確認改善真的有效，而不是換了個講法。這一塊還在長。</p>
+          <a class="link-arrow" href="#evaluation">看目前做到哪 →</a>
+        </div>
+        <span class="status status-ongoing">進行中</span>
+      </li>
+    </ol>
+
+    <p class="arch-principle">每一條規則背後都有一次翻車。不是先想好架構，是撞出來的。</p>
+  </section>
+
+  <!-- ── Workflow ─────────────────────────────────────────── -->
+  <section class="lab-section lab-shell" id="workflow" aria-labelledby="workflow-title">
+    <p class="lab-eyebrow">Workflow</p>
+    <h2 id="workflow-title">一張票怎麼流過去。標 ◆ 的三步，AI 不得自行通過。</h2>
+    <p class="lab-intro">十一步主線。AI 執行絕大部分，但有三個節點它不能自己過。</p>
+
+    <ol class="flow">
+      <li><span class="flow-mark" aria-hidden="true"></span><span class="flow-num">01</span><span class="flow-name">採集</span><span class="flow-actor">AI · 人審閱</span></li>
+      <li class="flow-decision"><span class="flow-mark" aria-hidden="true">◆</span><span class="flow-num">02</span><span class="flow-name">Test Plan</span><span class="flow-actor">我定範圍</span></li>
+      <li class="flow-decision"><span class="flow-mark" aria-hidden="true">◆</span><span class="flow-num">03</span><span class="flow-name">Test Cases</span><span class="flow-actor">我審過才算</span></li>
+      <li><span class="flow-mark" aria-hidden="true"></span><span class="flow-num">04</span><span class="flow-name">Feature</span><span class="flow-actor">AI</span></li>
+      <li><span class="flow-mark" aria-hidden="true"></span><span class="flow-num">05</span><span class="flow-name">Explore</span><span class="flow-actor">AI · 真實瀏覽器</span></li>
+      <li><span class="flow-mark" aria-hidden="true"></span><span class="flow-num">06</span><span class="flow-name">POM</span><span class="flow-actor">AI</span></li>
+      <li><span class="flow-mark" aria-hidden="true"></span><span class="flow-num">07</span><span class="flow-name">BDD Steps</span><span class="flow-actor">AI</span></li>
+      <li><span class="flow-mark" aria-hidden="true"></span><span class="flow-num">08</span><span class="flow-name">pytest</span><span class="flow-actor">AI · 自動收證</span></li>
+      <li class="flow-decision"><span class="flow-mark" aria-hidden="true">◆</span><span class="flow-num">09</span><span class="flow-name">Report</span><span class="flow-actor">我定稿</span></li>
+      <li><span class="flow-mark" aria-hidden="true"></span><span class="flow-num">10</span><span class="flow-name">Worklog</span><span class="flow-actor">AI</span></li>
+      <li><span class="flow-mark" aria-hidden="true"></span><span class="flow-num">11</span><span class="flow-name">沉澱知識</span><span class="flow-actor">AI · 回饋 registry</span></li>
+    </ol>
+
+    <p class="flow-terminal">QA / UAT PDF <span>→ 交給稽核方</span></p>
+
+    <p class="flow-legend">
+      <b>◆ = 人類必須決策，AI 不得自行通過。</b><br>三個節點：測試範圍、測試案例、報告定稿。
+    </p>
+
+    <ul class="rule-list">
+      <li>
+        <h3>為什麼是這三步</h3>
+        <p>這三步錯了，後面全部白做。測試範圍定錯，就是把力氣花在不重要的地方；測試案例沒審，等於讓 AI 自己決定什麼叫測過了；報告沒定稿，錯的結論會直接進到稽核文件。</p>
+        <p class="rule-src">起源：<a href="ep13.html">第 13 話</a> · <a href="ep10.html">第 10 話</a></p>
+      </li>
+      <li>
+        <h3>固定交付物，可變測試深度</h3>
+        <p>每張票都產出同一組東西：test plan、test cases、feature 檔、測試腳本、證據 JSON、PDF 報告、worklog。深度看票的風險調整——低風險的票不必補完整 E2E，但交付物的欄位不能少，否則報告格式會跟著漂。</p>
+        <p class="rule-src">起源：<a href="ep05.html">第 05 話</a></p>
+      </li>
+      <li>
+        <h3>一個大 prompt 拆成多個可觀察的步驟</h3>
+        <p>把整件事丟成一個指令，壞掉的時候你不知道是哪一步壞的。拆成步驟之後，每一步都有輸入和輸出，出問題可以指到某一步重跑。</p>
+        <p class="rule-src">起源：<a href="ep05.html">第 05 話</a></p>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ── Architecture ─────────────────────────────────────── -->
+  <section class="lab-section lab-shell" id="architecture" aria-labelledby="architecture-title">
+    <p class="lab-eyebrow">Architecture</p>
+    <h2 id="architecture-title">誰在跑、資訊往哪流、什麼東西橫跨全部。</h2>
+    <p class="lab-intro">三層來看比較清楚：上面是誰在跑，中間是資訊怎麼流，旁邊是不屬於任何一步、但每一步都會用到的東西。</p>
+
+    <h3 class="lab-eyebrow">誰在跑</h3>
+    <ul class="arch-operators">
+      <li>
+        <span class="op-role">Human</span>
+        <span class="op-name">Sunny · QA-PM</span>
+        <p>下票、定範圍、審測試案例、報告定稿。兩個 agent 意見不同的時候，我是仲裁的人。</p>
+      </li>
+      <li>
+        <span class="op-role">Agent · Lead</span>
+        <span class="op-name">苦命兔 · Claude Code</span>
+        <p>預設的執行者，可以叫另一個 agent 來討論。跑主線流程、寫腳本、出報告。</p>
+      </li>
+      <li>
+        <span class="op-role">Agent · Peer</span>
+        <span class="op-name">苦力怕 · Codex</span>
+        <p>對等的第二個 agent，不是下屬。個性偏減法，常常拆掉前一個 agent 想加的東西。</p>
+      </li>
+    </ul>
+
+    <h3 class="lab-eyebrow">資訊往哪流</h3>
+    <ol class="arch-spine">
+      <li>
+        <span class="spine-num">01</span>
+        <div>
+          <h3>票進來</h3>
+          <p>需求票加上 repo 裡已經有的產品知識，組成這次工作的上下文。這一步做不好，後面十步都在猜。</p>
+          <p class="spine-io"><b>進：</b>需求票、產品知識、既有測試資產　<b>出：</b>test plan</p>
+        </div>
+      </li>
+      <li>
+        <span class="spine-num">02</span>
+        <div>
+          <h3>設計與探勘</h3>
+          <p>測試案例先審過，才去真實瀏覽器上確認畫面元素怎麼抓。selector 封裝進 Page Object，不散在腳本裡。</p>
+          <p class="spine-io"><b>進：</b>test plan　<b>出：</b>test cases、feature 檔、Page Object</p>
+        </div>
+      </li>
+      <li>
+        <span class="spine-num">03</span>
+        <div>
+          <h3>執行與收證</h3>
+          <p>跑測試的同時自動收步驟截圖，結果寫成固定格式的 JSON。證據不是事後補的，是跑的時候就落下來的。</p>
+          <p class="spine-io"><b>進：</b>測試腳本、測試資料　<b>出：</b>證據 JSON、步驟截圖</p>
+        </div>
+      </li>
+      <li>
+        <span class="spine-num">04</span>
+        <div>
+          <h3>交付與回饋</h3>
+          <p>統一的 renderer 讀證據 JSON 產出 PDF。這一步還有一件事常被忽略：這次學到的東西要寫回 repo，不然下次重新踩一次。</p>
+          <p class="spine-io"><b>進：</b>證據 JSON　<b>出：</b>QA / UAT PDF、worklog、回寫的知識</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="arch-margin">
+      <div>
+        <h3>Knowledge · 橫跨每一步</h3>
+        <p>商業規則、UI 陷阱、測資、決策紀錄。四步都在讀它，第四步會寫回它。</p>
+        <ul>
+          <li>產品知識與商業規則</li>
+          <li>頁面與 selector 的踩坑紀錄</li>
+          <li>測試資料怎麼造</li>
+          <li>跨 agent 討論的結論</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Governance · 橫跨每一步</h3>
+        <p>共用規則檔。兩個 agent 讀同一份，所以規則只需要維護一次。</p>
+        <ul>
+          <li>硬規則與禁止行為清單</li>
+          <li>停止條件（什麼時候該停下來問）</li>
+          <li>權限邊界（哪些檔案不准動）</li>
+          <li>人類決策節點</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="arch-principle">Agent 可換，repo 才是真理來源。聊天記錄和模型的記憶都不是。</p>
+
+    <p class="lab-intro stack-top"><a class="link-arrow" href="architecture.html">看漫畫設定與真實系統的對照表 →</a></p>
+  </section>
+
+  <!-- ── Governance ───────────────────────────────────────── -->
+  <section class="lab-section lab-shell" id="governance" aria-labelledby="governance-title">
+    <p class="lab-eyebrow">Governance</p>
+    <h2 id="governance-title">規則檔寫的多半是「不准做什麼」。</h2>
+    <p class="lab-intro">一開始我以為要教它怎麼做才對。後來發現有用的規則幾乎都是反面的：什麼時候要停、什麼不能碰、什麼要先問。</p>
+
+    <ul class="rule-list">
+      <li>
+        <h3>停止條件</h3>
+        <p>失敗重試三次就標記成不穩定並停下；不准直接改腳本，要先分析可能原因；修正後第一次失敗就停，交人判斷。沒有停止條件的話，它會一直加等待時間，把不穩定包起來而不是解掉。</p>
+        <p class="rule-src">起源：<a href="ep06.html">第 06 話</a> · <a href="lessons.html#ep06">完整紀錄 →</a></p>
+      </li>
+      <li>
+        <h3>權限邊界</h3>
+        <p>哪些檔案不能動、哪些資料夾不准整理、哪些修改要先問。這條是被逼出來的——它「順手幫忙整理」過一次之後。</p>
+        <p class="rule-src">起源：<a href="ep07.html">第 07 話</a> · <a href="lessons.html#ep07">完整紀錄 →</a></p>
+      </li>
+      <li>
+        <h3>人類決策節點</h3>
+        <p>規則存在，不等於規則會被引用，不等於規則會被遵守，也不等於它知道下一步該做什麼。所以重要的地方要設節點讓它停下來，而不是相信它會自己想起來。</p>
+        <p class="rule-src">起源：<a href="ep13.html">第 13 話</a> · <a href="lessons.html#ep13">完整紀錄 →</a></p>
+      </li>
+      <li>
+        <h3>變更要可追溯</h3>
+        <p>規則被改過就要看得出來是誰改的、為什麼改。這條的起因不是 AI 亂改，是我自己改了規則然後忘記為什麼——所以決策要留紀錄，不是留在腦袋裡。</p>
+        <p class="rule-src">起源：<a href="ep14.html">第 14 話</a></p>
+      </li>
+      <li>
+        <h3>跨 agent 討論要收斂成文件</h3>
+        <p>兩個 agent 吵完的結論如果只留在對話裡，下次就要重吵一次。討論結果落成 repo 檔案，兩邊都讀同一份。</p>
+        <p class="rule-src">起源：<a href="ep11.html">第 11 話</a> · <a href="case-studies.html#cross-agent">案例 →</a></p>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ── Knowledge / Evaluation ───────────────────────────── -->
+  <section class="lab-section lab-shell" id="evaluation" aria-labelledby="knowledge-title">
+    <p class="lab-eyebrow">Knowledge / Evaluation</p>
+    <h2 id="knowledge-title">重複教同一件事，問題不在 token。</h2>
+
+    <div id="knowledge">
+      <ul class="rule-list">
+        <li>
+          <h3>知識要落成檔案，不能靠記憶</h3>
+          <p>同樣的錯誤、同樣的規則、同樣的經驗，每天重新教一次。我一開始以為是指令太長，後來以為是上下文太肥。真正的問題是它每次都在重新學同一件事——所以重複出現的知識要寫成 repo 裡的檔案。</p>
+          <p class="rule-src">起源：<a href="ep03.html">第 03 話</a> · <a href="ep12.html">第 12 話</a></p>
+        </li>
+        <li>
+          <h3>做錯不只修結果，要留下經驗</h3>
+          <p>修好這一次沒有用，下次還會犯。所以每次修正都要問：這件事要不要變成一條規則、一份產品知識、還是一個測試？</p>
+          <p class="rule-src">起源：<a href="ep03.html">第 03 話</a> · <a href="ep09.html">第 09 話</a></p>
+        </li>
+        <li>
+          <h3>隱性知識要被挖出來</h3>
+          <p>我腦袋裡有一堆「這個欄位其實會影響那個排程」之類的東西，從來沒寫下來過。AI 不知道，所以它會做出技術上正確、業務上錯的判斷。這部分是靠它問、我答，然後把答案寫進 repo。</p>
+          <p class="rule-src">起源：<a href="ep09.html">第 09 話</a></p>
+        </li>
+      </ul>
+    </div>
+
+    <h3 class="lab-eyebrow stack-top-lg">Evaluation · 進行中</h3>
+    <ul class="rule-list">
+      <li>
+        <h3>用自己的工具測自己的東西</h3>
+        <p>目前的驗證方式很土：把這套 workflow 用在真實的票上，看它會不會出錯，出錯就補規則。這不是一套嚴謹的評估方法，但至少是真實負載。</p>
+        <p class="rule-src">起源：<a href="ep15.html">第 15 話</a></p>
+      </li>
+      <li>
+        <h3>還沒做到的部分</h3>
+        <p>我還沒有一套能回答「這次改善讓它變好多少」的量化方式。目前只能說某類錯誤不再出現，不能說整體品質提升了幾個百分點。這頁不會假裝已經有。</p>
+      </li>
+    </ul>
+
+    <p class="arch-principle">目前正在追的問題：AI 說做完了，我怎麼知道它真的做完了。</p>
+  </section>
+
+  <section class="about-strip lab-shell" aria-labelledby="next-title">
+    <h2 id="next-title" class="lab-eyebrow">接下來</h2>
+    <p>上面每一條規則背後都有一次翻車。想看事情是怎麼壞的，從失敗紀錄開始比較快。</p>
+    <p class="about-actions">
+      <a class="link-arrow" href="lessons.html">Things AI Got Wrong →</a>
+      <a class="link-arrow" href="case-studies.html">Case Studies →</a>
+      <a class="link-arrow" href="diary.html">QA Diary →</a>
+    </p>
+  </section>
+
+</main>
+
+<!-- CHROME:FOOTER -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <p class="footer-brand">苦命兔 Kuming Rabbit · AI QA Lab</p>
+      <p class="footer-tagline">一個 QA 把兩個 AI agent 放進真實測試流程的實驗紀錄。</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="ai-qa.html">AI QA</a></li>
+      <li><a href="case-studies.html">Case Studies</a></li>
+      <li><a href="diary.html">QA Diary</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="lessons.html">Things AI Got Wrong</a></li>
+      <li><a href="https://github.com/hiyamusic0920-byte/kuming-rabbit">GitHub</a></li>
+    </ul>
+    <p class="footer-meta">Sunny · QA Engineer / AI Native QA Explorer</p>
+  </div>
+</footer>
+<!-- /CHROME:FOOTER -->
+
+<!-- CHROME:NAVJS -->
+<script>
+  // 手機漢堡選單。展開後焦點進選單、Esc 關閉並把焦點還給觸發按鈕。
+  (function () {
+    var toggle = document.querySelector('.nav-toggle');
+    var nav = document.getElementById('site-nav');
+    if (!toggle || !nav) return;
+
+    function setOpen(open) {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? '關閉主導覽' : '開啟主導覽');
+      nav.setAttribute('data-open', String(open));
+    }
+
+    toggle.addEventListener('click', function () {
+      var open = toggle.getAttribute('aria-expanded') === 'true';
+      setOpen(!open);
+      if (!open) {
+        var first = nav.querySelector('a');
+        if (first) first.focus();
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      setOpen(false);
+      toggle.focus();
+    });
+
+    // 從手機寬度放大到桌機時，把展開狀態收掉，避免桌機殘留 data-open
+    var wide = window.matchMedia('(min-width: 900px)');
+    wide.addEventListener('change', function (e) {
+      if (e.matches) setOpen(false);
+    });
+  })();
+</script>
+<!-- /CHROME:NAVJS -->
+
+</body>
+</html>

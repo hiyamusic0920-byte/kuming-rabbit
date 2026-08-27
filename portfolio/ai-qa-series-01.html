@@ -3,35 +3,85 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI QA 系列 03：如何讓 AI 參與測試流程？｜苦命兔 QA 日誌</title>
-  <link rel="stylesheet" href="../styles.css">
-</head>
-<body class="home-page">
-  <main class="home-shell about-shell article-shell">
-    <nav class="breadcrumb" aria-label="麵包屑">
-      <a href="../index.html">首頁</a>
-      <span aria-hidden="true">›</span>
-      <a href="index.html">AI QA Portfolio</a>
-      <span aria-hidden="true">›</span>
-      <span aria-current="page">AI QA 系列 03</span>
-    </nav>
 
-    <header class="article-hero">
+  <title>AI QA 系列 03：如何讓 AI 參與測試流程？｜苦命兔 Kuming Rabbit — AI QA Lab</title>
+  <meta name="description" content="接到一張票之後，從需求理解、測試計畫、測試案例、自動化執行到報告產出，中間到底發生了什麼。">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="苦命兔 Kuming Rabbit — AI QA Lab">
+  <meta property="og:title" content="AI QA 系列 03：如何讓 AI 參與測試流程？">
+  <meta property="og:description" content="我把 AI 丟進測試流程後，第一個月就翻車了。">
+  <meta property="og:url" content="https://hiyamusic0920-byte.github.io/kuming-rabbit/portfolio/ai-qa-series-01.html">
+  <meta property="og:image" content="https://hiyamusic0920-byte.github.io/kuming-rabbit/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="苦命兔睡著了，旁邊的終端機一直印 sleep()，估計還要跑 14 小時 23 分。">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..800&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&family=Noto+Serif+TC:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="../styles.css">
+
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到主要內容</a>
+
+<!-- CHROME:HEADER -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark" aria-hidden="true">🐰</span>
+      <span class="brand-text">
+        <span class="brand-name">苦命兔 Kuming Rabbit</span>
+        <span class="brand-role">AI QA Lab</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="開啟主導覽">
+      <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18"></path>
+      </svg>
+      <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M5 5l14 14M19 5L5 19"></path>
+      </svg>
+    </button>
+
+    <nav class="site-nav" id="site-nav" aria-label="主導覽">
+      <ul>
+        <li><a href="../ai-qa.html">AI QA</a></li>
+        <li><a href="../case-studies.html">Case Studies</a></li>
+        <li><a href="../diary.html">QA Diary</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li class="nav-secondary"><a href="../lessons.html">Things AI Got Wrong</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<!-- /CHROME:HEADER -->
+
+<main id="main">
+
+  <article class="longform lab-shell">
+    <ol class="crumbs">
+      <li><a href="../index.html">Home</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="index.html">AI QA Portfolio</a></li>
+      <li aria-hidden="true">/</li>
+      <li><span aria-current="page">系列 03</span></li>
+    </ol>
+
+    <header class="longform-head">
       <h1>AI QA 系列 03：如何讓 AI 參與測試流程？</h1>
-      <p class="subtitle">我把 AI 丟進測試流程後，第一個月就翻車了</p>
-      <div class="article-meta">
+      <p class="longform-meta">
         <time datetime="2026-06-23">2026.06.23</time>
+        <span aria-hidden="true">·</span>
         <span>約 7 分鐘閱讀</span>
-      </div>
+      </p>
     </header>
 
-    <nav class="article-top-nav" aria-label="文章導覽">
-      <a href="index.html">← 返回 Portfolio</a>
-      <span class="article-nav-disabled">上一篇：Coming Soon</span>
-      <span class="article-nav-disabled">下一篇：Coming Soon</span>
-    </nav>
-
-    <article class="article-content">
+<article class="article-content">
       <h2>我把 AI 丟進測試流程後，第一個月就翻車了</h2>
       <p>接到一張新的 Ticket 時，QA 通常不會立刻開始測試。</p>
       <p>我們會先讀需求、翻舊 Ticket 找脈絡、確認系統目前長什麼樣子、思考測試範圍、整理測試計畫，最後才開始執行。</p>
@@ -340,12 +390,81 @@ Pytest 執行
       <p>等到單一步驟穩定之後，再慢慢把多個步驟組合成 Command。</p>
     </article>
 
-    <nav class="article-bottom-nav" aria-label="文章前後篇導覽">
-      <a href="index.html">← 返回 Portfolio</a>
-      <span class="article-nav-disabled">上一篇：Coming Soon</span>
-      <span class="article-nav-disabled">下一篇：Coming Soon</span>
-    </nav>
-  </main>
-  <footer class="site-footer">苦命兔 QA 日誌 · AI QA Portfolio</footer>
+    <footer class="longform-foot">
+      <p class="longform-foot-nav"><a class="link-arrow" href="index.html">← 回 AI QA Portfolio</a></p>
+      <p class="longform-foot-note">上一篇、下一篇還沒有。</p>
+    </footer>
+  </article>
+
+  <section class="about-strip lab-shell" aria-labelledby="art-next-title">
+    <h2 id="art-next-title" class="lab-eyebrow">接下來</h2>
+    <p>這篇寫的流程，後來長成站上 AI QA 那頁的 11 步主線。想看它現在的樣子，或看它是怎麼撞出來的：</p>
+    <p class="about-actions">
+      <a class="link-arrow" href="../ai-qa.html#workflow">現在的 workflow →</a>
+      <a class="link-arrow" href="../lessons.html">Things AI Got Wrong →</a>
+    </p>
+  </section>
+
+</main>
+
+<!-- CHROME:FOOTER -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <p class="footer-brand">苦命兔 Kuming Rabbit · AI QA Lab</p>
+      <p class="footer-tagline">一個 QA 把兩個 AI agent 放進真實測試流程的實驗紀錄。</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="../ai-qa.html">AI QA</a></li>
+      <li><a href="../case-studies.html">Case Studies</a></li>
+      <li><a href="../diary.html">QA Diary</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../lessons.html">Things AI Got Wrong</a></li>
+      <li><a href="https://github.com/hiyamusic0920-byte/kuming-rabbit">GitHub</a></li>
+    </ul>
+    <p class="footer-meta">Sunny · QA Engineer / AI Native QA Explorer</p>
+  </div>
+</footer>
+<!-- /CHROME:FOOTER -->
+
+<!-- CHROME:NAVJS -->
+<script>
+  // 手機漢堡選單。展開後焦點進選單、Esc 關閉並把焦點還給觸發按鈕。
+  (function () {
+    var toggle = document.querySelector('.nav-toggle');
+    var nav = document.getElementById('site-nav');
+    if (!toggle || !nav) return;
+
+    function setOpen(open) {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? '關閉主導覽' : '開啟主導覽');
+      nav.setAttribute('data-open', String(open));
+    }
+
+    toggle.addEventListener('click', function () {
+      var open = toggle.getAttribute('aria-expanded') === 'true';
+      setOpen(!open);
+      if (!open) {
+        var first = nav.querySelector('a');
+        if (first) first.focus();
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      setOpen(false);
+      toggle.focus();
+    });
+
+    // 從手機寬度放大到桌機時，把展開狀態收掉，避免桌機殘留 data-open
+    var wide = window.matchMedia('(min-width: 900px)');
+    wide.addEventListener('change', function (e) {
+      if (e.matches) setOpen(false);
+    });
+  })();
+</script>
+<!-- /CHROME:NAVJS -->
+
 </body>
 </html>

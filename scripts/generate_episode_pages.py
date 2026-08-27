@@ -1,16 +1,37 @@
 #!/usr/bin/env python3
-"""Generate the comic index and episode HTML pages from assets directories."""
+"""從 assets/ 目錄產生 18 頁漫畫與 QA Diary 索引。
+
+漫畫本體（格數、檔案、順序、alt、故事文字）由這支腳本產生，改版只動外殼：
+header / footer / metadata / 版面 wrapper / 相關技術連結。
+
+重產前後一定要跑 content-preservation 驗證：
+    python3 scripts/verify_episode_content.py snapshot validation/episode-snapshot-before.json
+    python3 scripts/generate_episode_pages.py
+    python3 scripts/verify_episode_content.py compare validation/episode-snapshot-before.json
+
+注意：這支腳本不再產生首頁。首頁 index.html 是手寫的 AI QA Lab 入口，
+漫畫索引搬到 diary.html。以前的 render_index() 會蓋掉首頁，已經移除。
+"""
 
 import json
 import re
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import site_chrome as chrome  # noqa: E402
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
+# 兩種命名都要認：正篇是 01.png 這種切好的格，特別篇 03 只有 full-1.jpg 這種整頁圖。
+# 只認前者的話，重跑會把特別篇 03 的四張圖換成「圖片準備中」。
 PANEL_PATTERN = re.compile(r"^(\d+)\.png$")
+FULLPAGE_PATTERN = re.compile(r"^full-(\d+)\.jpe?g$")
 CAPABILITY_MAP = json.loads(
     (ROOT_DIR / "data" / "episodes.json").read_text(encoding="utf-8")
 )
+
+EPISODE_BY_NUMBER = {e["number"]: e for e in CAPABILITY_MAP["episodes"]}
 
 EPISODE_TITLES = {
     1: "起點，讓AI幫我做測試報告",
@@ -1130,9 +1151,17 @@ def episode_title(episode: int) -> str:
 
 
 def panel_paths(asset_name: str) -> list[Path]:
+    """切好的格優先；沒有的話退而用整頁圖（特別篇 03 只有整頁圖）。"""
     directory = ROOT_DIR / "assets" / asset_name
-    panels = [path for path in directory.iterdir() if PANEL_PATTERN.fullmatch(path.name)]
-    return sorted(panels, key=lambda path: int(path.stem))
+    panels = [p for p in directory.iterdir() if PANEL_PATTERN.fullmatch(p.name)]
+    if panels:
+        return sorted(panels, key=lambda p: int(p.stem))
+    pages = [
+        (int(FULLPAGE_PATTERN.fullmatch(p.name).group(1)), p)
+        for p in directory.iterdir()
+        if FULLPAGE_PATTERN.fullmatch(p.name)
+    ]
+    return [p for _, p in sorted(pages)]
 
 
 def render_navigation(episode: int) -> str:
@@ -1150,7 +1179,7 @@ def render_navigation(episode: int) -> str:
     )
     return f"""    <nav class="episode-nav" aria-label="漫畫話數導覽">
       {previous}
-      <a class="nav-link nav-index" href="index.html">回目錄</a>
+      <a class="nav-link nav-index" href="diary.html">回目錄</a>
       {following}
     </nav>"""
 
@@ -1193,6 +1222,38 @@ def render_episode_bonus(episode: int) -> str:
     </aside>"""
 
 
+def render_related(episode: int) -> str:
+    """漫畫 → 技術內容的出口。這一段是外殼，不是漫畫本體。
+
+    目的：不要讓漫畫和技術內容變成兩座孤島。連結來自 data/episodes.json 的
+    related 欄位，沒有對應內容的話就不硬湊。
+    """
+    entry = EPISODE_BY_NUMBER.get(episode)
+    if not entry or not entry.get("related"):
+        return ""
+    items = "\n".join(
+        f'        <li><a href="{link["href"]}">{link["label"]}<span>→</span></a></li>'
+        for link in entry["related"]
+    )
+    return f"""    <section class="ep-related" aria-labelledby="ep-related-title">
+      <h2 id="ep-related-title">這一話在真實系統裡的位置</h2>
+      <p class="ep-related-lead">這一話講的能力是「{entry['capability']}」。想看它現在長成什麼樣子：</p>
+      <ul>
+{items}
+      </ul>
+    </section>"""
+
+
+def render_episode_sequence(episode: int) -> str:
+    links = []
+    if episode > 1:
+        links.append(f'<a href="ep{episode - 1:02d}.html">← 第 {episode - 1:02d} 話</a>')
+    links.append('<a href="diary.html">全部 18 話</a>')
+    if episode < 15:
+        links.append(f'<a href="ep{episode + 1:02d}.html">第 {episode + 1:02d} 話 →</a>')
+    return '    <nav class="ep-seq" aria-label="前後話">\n      ' + "\n      ".join(links) + "\n    </nav>"
+
+
 def render_episode(
     filename: str,
     asset_name: str,
@@ -1224,22 +1285,60 @@ def render_episode(
     )
     bonus = render_episode_bonus(episode_number) if episode_number is not None else ""
     bonus_html = f"\n{bonus}" if bonus else ""
+    related = render_related(episode_number) if episode_number is not None else ""
+    related_html = f"\n{related}" if related else ""
+    sequence_html = (
+        f"\n{render_episode_sequence(episode_number)}" if episode_number is not None else ""
+    )
+
+    entry = EPISODE_BY_NUMBER.get(episode_number or 0, {})
+    capability = entry.get("capability", "")
+    desc_tail = f"能力：{capability}。" if capability else ""
+    head_html = chrome.head(
+        f"{title}｜苦命兔 Kuming Rabbit — AI QA Lab",
+        f"苦命兔 QA Diary {title}。{desc_tail}一個 QA 把兩個 AI agent 放進真實測試流程的紀錄。",
+        filename,
+        og_type="article",
+        og_title=title,
+        og_description=f"苦命兔 QA Diary · {title}",
+    )
+    crumb_label = title.split("：")[0]
+
     html = f"""<!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{title}</title>
-  <link rel="stylesheet" href="styles.css">
+{head_html}
 </head>
 <body class="comic-page">
+
+{chrome.skip_link()}
+
+<!-- CHROME:HEADER -->
+{chrome.header("diary")}
+<!-- /CHROME:HEADER -->
+
+<main id="main" class="comic-content" aria-label="{title}漫畫內容">
+    <ol class="crumbs">
+      <li><a href="index.html">Home</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="diary.html">QA Diary</a></li>
+      <li aria-hidden="true">/</li>
+      <li><span aria-current="page">{crumb_label}</span></li>
+    </ol>
   <header class="comic-header">
-    <a href="index.html">← 回目錄</a>
     <h1>{title}</h1>{progress_html}
   </header>
-  <main class="comic-content" aria-label="{title}漫畫內容">
-{content}{navigation_html}{portfolio_html}{bonus_html}
-  </main>
+{content}{navigation_html}{portfolio_html}{bonus_html}{related_html}{sequence_html}
+</main>
+
+<!-- CHROME:FOOTER -->
+{chrome.footer()}
+<!-- /CHROME:FOOTER -->
+
+<!-- CHROME:NAVJS -->
+{chrome.nav_js()}
+<!-- /CHROME:NAVJS -->
+
 </body>
 </html>
 """
@@ -1247,131 +1346,177 @@ def render_episode(
     print(f"Created {filename}: {len(panels)} panel(s)")
 
 
-def render_index() -> None:
+def render_diary() -> None:
+    """QA Diary 索引（以前的漫畫首頁）。18 話 + 能力篩選。
+
+    篩選鈕用真的 <button aria-pressed>，不是 CSS checkbox 花招——
+    讀螢幕的人要聽得到哪一個被選取。
+    """
     episodes = CAPABILITY_MAP["episodes"]
-    capability_by_number = {item["number"]: item for item in episodes}
-    regular_items = "\n".join(
-        f"""        <li>
-          <a href="ep{item['number']:02d}.html">
-            <span class="episode-title">{episode_title(item['number'])}</span>
-            <span class="episode-capability"><strong>能力：</strong>{item['capability']}</span>
-          </a>
-        </li>"""
+    categories = CAPABILITY_MAP["categories"]
+
+    def cat_key(name: str) -> str:
+        return "cat-" + str(abs(hash(name)) % 100000)
+
+    keys = {c["name"]: f"c{i + 1}" for i, c in enumerate(categories)}
+    ep_cats = {}
+    for c in categories:
+        for n in c["episodes"]:
+            ep_cats.setdefault(n, []).append(keys[c["name"]])
+
+    buttons = "\n".join(
+        f'      <li><button type="button" aria-pressed="false" data-filter="{keys[c["name"]]}">'
+        f'{c["name"]}<span class="sr-only"> ／ {len(c["episodes"])} 話</span></button></li>'
+        for c in categories
+    )
+
+    rows = "\n".join(
+        f"""      <li data-cats="{' '.join(ep_cats.get(item['number'], []))}">
+        <a class="ep-row" href="ep{item['number']:02d}.html">
+          <span class="ep-no">{item['number']:02d}</span>
+          <span class="ep-title">{EPISODE_TITLES[item['number']]}</span>
+          <span class="ep-cap">{item['capability']}</span>
+        </a>
+      </li>"""
         for item in episodes
     )
-    special_items = "\n".join(
-        f'        <li><a href="special{episode:02d}.html">特別篇 {episode:02d}</a></li>'
-        for episode in range(1, 4)
+
+    specials = "\n".join(
+        f"""      <li>
+        <a class="ep-row" href="special{n:02d}.html">
+          <span class="ep-no">SP{n}</span>
+          <span class="ep-title">特別篇 {n:02d}</span>
+          <span class="ep-cap">番外</span>
+        </a>
+      </li>"""
+        for n in range(1, 4)
     )
-    category_cards = "\n".join(
-        f"""        <article class="category-card">
-          <h3>{category['name']}</h3>
-          <p class="category-summary">{category['summary']}</p>
-          <p class="category-methods"><strong>方法 / 關鍵字：</strong>{category['methods']}</p>
-          <p class="category-episodes-label">相關話數</p>
-          <div class="category-episodes">
-            {''.join(f'<a href="ep{number:02d}.html" aria-label="{capability_by_number[number]["title"]}">{number:02d}</a>' for number in category['episodes'])}
-          </div>
-        </article>"""
-        for category in CAPABILITY_MAP["categories"]
+
+    head_html = chrome.head(
+        "QA Diary｜苦命兔 Kuming Rabbit — AI QA Lab",
+        "十五話漫畫加三篇特別篇，記錄這套 AI-Assisted QA workflow 怎麼從「我只是懶」長成現在的樣子。可以按能力面向篩選。",
+        "diary.html",
+        og_title="QA Diary — 十五話翻車紀錄",
+        og_description="這套系統怎麼從真實的失敗長出來的。可以按能力面向篩選。",
     )
+
     html = f"""<!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>苦命兔 QA 日誌</title>
-  <link rel="stylesheet" href="styles.css">
+{head_html}
 </head>
-<body class="home-page">
-  <main class="home-shell">
-    <h1>苦命兔 QA 日誌</h1>
-    <p class="subtitle">一位 QA、一隻兔子，以及兩個 AI Agent 的真實故事。</p>
-    <a class="hero-cta" href="ep01.html">從第 1 話開始 →</a>
-    <nav class="site-section comic-main-section" aria-labelledby="episodes-title">
-      <h2 id="episodes-title">📖 漫畫正篇</h2>
-      <ul class="episode-list">
-{regular_items}
-      </ul>
-      <h3 class="special-title">特別篇</h3>
-      <ul class="episode-list">
-{special_items}
-      </ul>
-    </nav>
-    <section class="site-section backstage-section" aria-labelledby="backstage-title">
-      <h2 id="backstage-title">🎁 幕後花絮</h2>
-      <p class="section-intro">故事看完了嗎？接著認識創作背景，或走進漫畫背後真正運作的 AI QA 系統。</p>
-      <div class="backstage-grid">
-        <a class="backstage-card" href="about.html">
-          <span class="backstage-card-icon" aria-hidden="true">🐰</span>
-          <h3>關於這個 AI QA Portfolio</h3>
-          <p>故事背景、創作動機，以及這份作品集想記錄的事。</p>
-          <span class="backstage-card-cta">查看幕後故事 →</span>
-        </a>
-        <a class="backstage-card" href="architecture.html">
-          <span class="backstage-card-icon" aria-hidden="true">🔧</span>
-          <h3>苦命兔的秘密基地</h3>
-          <p>打開幕後設定集，看看漫畫角色與真實 AI QA 系統如何對應。</p>
-          <span class="backstage-card-cta">進入秘密基地 →</span>
-        </a>
-      </div>
-    </section>
-    <section class="site-section capability-categories" aria-labelledby="capability-categories-title">
-      <h2 id="capability-categories-title">🧭 能力分類</h2>
-      <p class="capability-intro">如果你想快速理解這份作品集的技術重點，這裡將 15 話故事整理成五個 AI Native QA 能力面向。</p>
-      <div class="category-grid">
-{category_cards}
-      </div>
-    </section>
-  </main>
-</body>
-</html>
-"""
-    (ROOT_DIR / "index.html").write_text(html, encoding="utf-8")
-    print("Created index.html")
+<body>
 
+{chrome.skip_link()}
 
-def render_about() -> None:
-    html = """<!doctype html>
-<html lang="zh-Hant">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>關於｜苦命兔 QA 日誌</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body class="home-page">
-  <main class="home-shell about-shell">
-    <nav class="breadcrumb" aria-label="麵包屑">
-      <a href="index.html">首頁</a>
-      <span aria-hidden="true">›</span>
-      <span>幕後花絮</span>
-      <span aria-hidden="true">›</span>
-      <span aria-current="page">關於</span>
-    </nav>
-    <h1>關於這個 AI QA Portfolio</h1>
-    <p>這是一個記錄 QA 與 AI Agent 協作演化過程的作品集。</p>
-    <p>內容包含：</p>
-    <ul>
-      <li>漫畫</li>
-      <li>真實案例</li>
-      <li>AI QA 方法論</li>
-      <li>工作流程演化</li>
-      <li>Agent 治理實驗</li>
+<!-- CHROME:HEADER -->
+{chrome.header("diary")}
+<!-- /CHROME:HEADER -->
+
+<main id="main">
+
+  <section class="page-head lab-shell">
+    <ol class="crumbs">
+      <li><a href="index.html">Home</a></li>
+      <li aria-hidden="true">/</li>
+      <li><span aria-current="page">QA Diary</span></li>
+    </ol>
+    <p class="lab-eyebrow">QA Diary</p>
+    <h1>十五話漫畫，記錄這套系統怎麼從「我只是懶」長成現在的樣子</h1>
+    <p class="page-lead">按順序讀最完整。想找某個技術面向的話，用下面的篩選——每一話都對應一個能力，點進去看得到它現在長在系統的哪裡。</p>
+  </section>
+
+  <section class="lab-section lab-shell" aria-labelledby="episodes-title">
+    <h2 id="episodes-title" class="lab-eyebrow">正篇 15 話</h2>
+
+    <h3 class="sr-only" id="filter-title">按能力面向篩選</h3>
+    <ul class="filter-bar" aria-labelledby="filter-title">
+{buttons}
     </ul>
-    <section class="backstage-next" aria-labelledby="backstage-next-title">
-      <p class="backstage-next-label">下一站</p>
-      <h2 id="backstage-next-title">苦命兔的秘密基地</h2>
-      <p>漫畫裡的角色、家規與秘密小本本，在真實世界裡都有對應的系統角色。</p>
-      <a class="primary-link" href="architecture.html">進入苦命兔的秘密基地 →</a>
-    </section>
-    <a class="about-back-link" href="index.html">← 返回首頁</a>
-  </main>
+    <p class="filter-count" data-count role="status">顯示全部 15 話</p>
+
+    <ol class="ep-list" id="ep-list">
+{rows}
+    </ol>
+    <p class="ep-empty" hidden data-empty>這個組合沒有對應的話數。<button type="button" class="link-arrow" data-reset>清掉篩選</button></p>
+  </section>
+
+  <section class="lab-section lab-shell" aria-labelledby="specials-title">
+    <h2 id="specials-title" class="lab-eyebrow">特別篇</h2>
+    <p class="lab-intro">番外，不在能力分類裡。</p>
+    <ol class="ep-list">
+{specials}
+    </ol>
+  </section>
+
+  <section class="about-strip lab-shell" aria-labelledby="diary-next-title">
+    <h2 id="diary-next-title" class="lab-eyebrow">接下來</h2>
+    <p>漫畫講的是事情怎麼壞的。想看壞完之後留下什麼機制，往技術內容走比較快。</p>
+    <p class="about-actions">
+      <a class="link-arrow" href="lessons.html">Things AI Got Wrong →</a>
+      <a class="link-arrow" href="ai-qa.html">這套 workflow 怎麼跑 →</a>
+      <a class="link-arrow" href="case-studies.html">Case Studies →</a>
+    </p>
+  </section>
+
+</main>
+
+<!-- CHROME:FOOTER -->
+{chrome.footer()}
+<!-- /CHROME:FOOTER -->
+
+<!-- CHROME:NAVJS -->
+{chrome.nav_js()}
+<!-- /CHROME:NAVJS -->
+
+<script>
+  // 能力篩選。多選 OR：選了兩個面向就顯示屬於任一面向的話數。
+  (function () {{
+    var bar = document.querySelector('.filter-bar');
+    var list = document.getElementById('ep-list');
+    if (!bar || !list) return;
+    var items = [].slice.call(list.children);
+    var count = document.querySelector('[data-count]');
+    var empty = document.querySelector('[data-empty]');
+    var reset = document.querySelector('[data-reset]');
+
+    function apply() {{
+      var on = [].slice.call(bar.querySelectorAll('[aria-pressed="true"]'))
+        .map(function (b) {{ return b.getAttribute('data-filter'); }});
+      var shown = 0;
+      items.forEach(function (li) {{
+        var cats = (li.getAttribute('data-cats') || '').split(' ');
+        var match = on.length === 0 || on.some(function (k) {{ return cats.indexOf(k) > -1; }});
+        li.hidden = !match;
+        if (match) shown++;
+      }});
+      count.textContent = on.length === 0
+        ? '顯示全部 ' + items.length + ' 話'
+        : '顯示 ' + shown + ' / ' + items.length + ' 話';
+      if (empty) empty.hidden = shown !== 0;
+    }}
+
+    bar.addEventListener('click', function (e) {{
+      var btn = e.target.closest('button[data-filter]');
+      if (!btn) return;
+      btn.setAttribute('aria-pressed', btn.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+      apply();
+    }});
+
+    if (reset) reset.addEventListener('click', function () {{
+      bar.querySelectorAll('[aria-pressed="true"]').forEach(function (b) {{
+        b.setAttribute('aria-pressed', 'false');
+      }});
+      apply();
+    }});
+  }})();
+</script>
+
 </body>
 </html>
 """
-    (ROOT_DIR / "about.html").write_text(html, encoding="utf-8")
-    print("Created about.html")
+    (ROOT_DIR / "diary.html").write_text(html, encoding="utf-8")
+    print("Created diary.html")
 
 
 def main() -> None:
@@ -1389,8 +1534,8 @@ def main() -> None:
             f"special{episode:02d}",
             f"特別篇 {episode:02d}",
         )
-    render_index()
-    render_about()
+    render_diary()
+    # 首頁與 about.html 不由這支腳本產生（首頁是手寫的 AI QA Lab 入口）。
 
 
 if __name__ == "__main__":

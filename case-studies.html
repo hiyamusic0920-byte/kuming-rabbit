@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Case Studies｜苦命兔 Kuming Rabbit — AI QA Lab</title>
+  <meta name="description" content="三個有實際紀錄的案例：需求可以讀出三種意思、讓兩個 AI 吵完再收斂、一直重試不是解法。每個案例都寫清楚問題、做法、證據到哪裡、以及學到什麼。">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="苦命兔 Kuming Rabbit — AI QA Lab">
+  <meta property="og:title" content="Case Studies — 做出來的東西，以及當初為什麼要做">
+  <meta property="og:description" content="三個案例。只放證據足夠的，不為了湊數補薄的。">
+  <meta property="og:url" content="https://hiyamusic0920-byte.github.io/kuming-rabbit/case-studies.html">
+  <meta property="og:image" content="https://hiyamusic0920-byte.github.io/kuming-rabbit/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="苦命兔睡著了，旁邊的終端機一直印 sleep()，估計還要跑 14 小時 23 分。">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..800&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&family=Noto+Serif+TC:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到主要內容</a>
+
+<!-- CHROME:HEADER -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">🐰</span>
+      <span class="brand-text">
+        <span class="brand-name">苦命兔 Kuming Rabbit</span>
+        <span class="brand-role">AI QA Lab</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="開啟主導覽">
+      <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18"></path>
+      </svg>
+      <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M5 5l14 14M19 5L5 19"></path>
+      </svg>
+    </button>
+
+    <nav class="site-nav" id="site-nav" aria-label="主導覽">
+      <ul>
+        <li><a href="ai-qa.html">AI QA</a></li>
+        <li><a href="case-studies.html" aria-current="page">Case Studies</a></li>
+        <li><a href="diary.html">QA Diary</a></li>
+        <li><a href="about.html">About</a></li>
+        <li class="nav-secondary"><a href="lessons.html">Things AI Got Wrong</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<!-- /CHROME:HEADER -->
+
+<main id="main">
+
+  <section class="page-head lab-shell">
+    <ol class="crumbs">
+      <li><a href="index.html">Home</a></li>
+      <li aria-hidden="true">/</li>
+      <li><span aria-current="page">Case Studies</span></li>
+    </ol>
+    <p class="lab-eyebrow">Case Studies</p>
+    <h1>做出來的東西，以及當初為什麼要做</h1>
+    <p class="page-lead">三個案例。只放我拿得出紀錄的，寧可少也不要湊數——所以這頁比一般作品集短。每個案例都照同一個順序寫：問題、做法、證據在哪、學到什麼。</p>
+  </section>
+
+  <section class="lab-section lab-shell" aria-label="案例列表">
+
+    <!-- ── Case 1 ─────────────────────────────────────────── -->
+    <article class="case-full" id="requirements-audit">
+      <p class="case-kicker">Requirement → Test</p>
+      <h2>一句需求可以讀出三種欄位數量</h2>
+      <dl class="case-steps">
+        <div>
+          <dt>Problem</dt>
+          <dd>票上寫「新增平日／假日客房住用數及收入欄位」。光是我自己就讀出三種意思：2 個欄位、3 個欄位、4 個欄位。</dd>
+          <dd>更麻煩的是我當時已經有測試案例審查這一步，但審的時候沒有拆解需求，就直接放過去了。所以誤解不是在最後才被發現，是一路帶著往下跑。</dd>
+        </div>
+        <div>
+          <dt>Approach</dt>
+          <dd>在開始設計測試之前，先做一次需求審查，固定檢查四件事：
+            <ul>
+              <li>這句話是否存在多種解讀</li>
+              <li>是否缺少定義（欄位、範圍、邊界）</li>
+              <li>是否有沒寫出來的隱含規則</li>
+              <li>有哪些地方必須先回去問人</li>
+            </ul>
+          </dd>
+          <dd>這一步放在主線流程的最前面，在 Test Plan 之前。不通過就不往下走。</dd>
+        </div>
+        <div>
+          <dt>Evidence</dt>
+          <dd>需求審查現在是主線流程的第一步，寫在共用規則檔裡，兩個 agent 都讀同一份。</dd>
+          <dd>當時的實際情況記在漫畫第 10 話，包含我怎麼發現三種讀法、以及為什麼審查沒攔下來。</dd>
+          <p class="evidence-note">誠實說明：我沒有量化數字。這個機制擋掉的是「往下跑之後才發現理解錯」，而那些被擋掉的事情本來就不會留下紀錄。</p>
+        </div>
+        <div>
+          <dt>Learning</dt>
+          <dd>審查這個動作本身不會保護你。要審什麼，得先寫清楚。「請幫我 review 需求」和「請檢查這句話是否存在多種解讀」對 AI 來說是兩件差很多的事。</dd>
+        </div>
+      </dl>
+      <p class="case-meta">
+        <span>出處</span><a href="ep10.html">第 10 話 →</a>
+        <span>能力　Requirements Audit · Test Case Review</span>
+        <span><a href="ai-qa.html#workflow">這一步落在流程哪裡 →</a></span>
+      </p>
+    </article>
+
+    <!-- ── Case 2 ─────────────────────────────────────────── -->
+    <article class="case-full" id="cross-agent">
+      <p class="case-kicker">Cross-agent consensus</p>
+      <h2>兩個 AI 個性不一樣，讓牠們吵完反而撿到寶</h2>
+      <dl class="case-steps">
+        <div>
+          <dt>Problem</dt>
+          <dd>規則檔越來越肥。每次踩到坑就補一條，補到後來連我自己都不確定哪幾條還有效、哪幾條互相矛盾。</dd>
+          <dd>問單一個 agent 沒有用——它會很配合地說我講的都對，然後再幫我加三條。</dd>
+        </div>
+        <div>
+          <dt>Approach</dt>
+          <dd>讓兩個 agent 用同一個題目各自提案，然後互相挑對方的洞，最後我當仲裁收斂。</dd>
+          <dd>會這樣做是因為牠們個性真的不一樣：一個習慣用加法（不確定就多補一條），一個習慣用減法（先問這條能不能刪）。單獨問任何一邊都會偏。</dd>
+        </div>
+        <div>
+          <dt>Evidence</dt>
+          <dd>收斂結果是一套文件分類規則：什麼東西該進硬規則、什麼只是這次的做法、什麼屬於產品知識。這份規則現在在 repo 裡，兩個 agent 都讀。</dd>
+          <dd>討論過程記在漫畫第 11 話。</dd>
+          <p class="evidence-note">誠實說明：這是單一次討論的結果，不是跑過很多次的統計。我不能說「多 agent 討論一定比單 agent 好」，只能說這一次的產出比我單獨問任一邊都好。</p>
+        </div>
+        <div>
+          <dt>Learning</dt>
+          <dd>兩個 agent 的價值不在算力加倍，在立場不同。如果兩邊都用加法，吵完只會得到更長的規則檔。</dd>
+          <dd>還有一件事：吵完的結論一定要落成檔案。留在對話裡等於沒發生，下次會重吵一次。</dd>
+        </div>
+      </dl>
+      <p class="case-meta">
+        <span>出處</span><a href="ep11.html">第 11 話 →</a>
+        <span>能力　Cross-Agent Consensus · Governance</span>
+        <span><a href="ai-qa.html#architecture">兩個 agent 怎麼分工 →</a></span>
+      </p>
+    </article>
+
+    <!-- ── Case 3 ─────────────────────────────────────────── -->
+    <article class="case-full" id="stop-rules">
+      <p class="case-kicker">Stop rules</p>
+      <h2>一直重試不是解法，是把不穩定包進更多等待時間</h2>
+      <dl class="case-steps">
+        <div>
+          <dt>Problem</dt>
+          <dd>測試失敗，它就加等待時間；還是失敗，再加。原本想解決的是不穩定的測試，最後變成一套跑很慢、而且還是會偶爾失敗的測試。</dd>
+          <dd>最糟的是測試會「通過」，所以看起來像修好了。</dd>
+        </div>
+        <div>
+          <dt>Approach</dt>
+          <dd>補的不是修法，是停止條件。三條寫進共用規則檔：
+            <ul>
+              <li>重試三次還是失敗，標記成不穩定並停下</li>
+              <li>不准直接改腳本，要先分析可能原因</li>
+              <li>修正後第一次失敗就停，交人判斷</li>
+            </ul>
+          </dd>
+        </div>
+        <div>
+          <dt>Evidence</dt>
+          <dd>三條規則現在在共用規則檔的治理段落裡，是這套流程目前最常被觸發的規則之一。</dd>
+          <dd>過程記在漫畫第 06 話。</dd>
+          <p class="evidence-note">誠實說明：這條規則的效果是「不再累積無意義的等待時間」，這點可以從腳本裡沒有那種堆疊的等待看出來。但我沒有前後的執行時間對照數字。</p>
+        </div>
+        <div>
+          <dt>Learning</dt>
+          <dd>AI 需要的不只是目標，還需要停止條件。給了目標沒給停止條件，它會用任何方式達成目標——包括把問題蓋起來。</dd>
+          <dd>測試通過不一定代表測試變好。有時候只代表問題被藏得更深。</dd>
+        </div>
+      </dl>
+      <p class="case-meta">
+        <span>出處</span><a href="ep06.html">第 06 話 →</a>
+        <span>能力　Flaky Test Governance · Stop Rules</span>
+        <span><a href="ai-qa.html#governance">停止條件寫在哪 →</a></span>
+      </p>
+    </article>
+  </section>
+
+  <section class="about-strip lab-shell" aria-labelledby="more-title">
+    <h2 id="more-title" class="lab-eyebrow">為什麼只有三個</h2>
+    <p>其他事情當然也做了，但拿不出足夠的紀錄就先不寫成案例。目前另一條工作在盤點哪些技術內容站得住腳，盤完會再補進來。想看沒有漂亮結論的部分，失敗紀錄比案例誠實。</p>
+    <p class="about-actions">
+      <a class="link-arrow" href="lessons.html">Things AI Got Wrong →</a>
+      <a class="link-arrow" href="ai-qa.html">這套 workflow 怎麼跑 →</a>
+    </p>
+  </section>
+
+</main>
+
+<!-- CHROME:FOOTER -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <p class="footer-brand">苦命兔 Kuming Rabbit · AI QA Lab</p>
+      <p class="footer-tagline">一個 QA 把兩個 AI agent 放進真實測試流程的實驗紀錄。</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="ai-qa.html">AI QA</a></li>
+      <li><a href="case-studies.html">Case Studies</a></li>
+      <li><a href="diary.html">QA Diary</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="lessons.html">Things AI Got Wrong</a></li>
+      <li><a href="https://github.com/hiyamusic0920-byte/kuming-rabbit">GitHub</a></li>
+    </ul>
+    <p class="footer-meta">Sunny · QA Engineer / AI Native QA Explorer</p>
+  </div>
+</footer>
+<!-- /CHROME:FOOTER -->
+
+<!-- CHROME:NAVJS -->
+<script>
+  // 手機漢堡選單。展開後焦點進選單、Esc 關閉並把焦點還給觸發按鈕。
+  (function () {
+    var toggle = document.querySelector('.nav-toggle');
+    var nav = document.getElementById('site-nav');
+    if (!toggle || !nav) return;
+
+    function setOpen(open) {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? '關閉主導覽' : '開啟主導覽');
+      nav.setAttribute('data-open', String(open));
+    }
+
+    toggle.addEventListener('click', function () {
+      var open = toggle.getAttribute('aria-expanded') === 'true';
+      setOpen(!open);
+      if (!open) {
+        var first = nav.querySelector('a');
+        if (first) first.focus();
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      setOpen(false);
+      toggle.focus();
+    });
+
+    // 從手機寬度放大到桌機時，把展開狀態收掉，避免桌機殘留 data-open
+    var wide = window.matchMedia('(min-width: 900px)');
+    wide.addEventListener('change', function (e) {
+      if (e.matches) setOpen(false);
+    });
+  })();
+</script>
+<!-- /CHROME:NAVJS -->
+
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>QA Diary｜苦命兔 Kuming Rabbit — AI QA Lab</title>
+  <meta name="description" content="十五話漫畫加三篇特別篇，記錄這套 AI-Assisted QA workflow 怎麼從「我只是懶」長成現在的樣子。可以按能力面向篩選。">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="苦命兔 Kuming Rabbit — AI QA Lab">
+  <meta property="og:title" content="QA Diary — 十五話翻車紀錄">
+  <meta property="og:description" content="這套系統怎麼從真實的失敗長出來的。可以按能力面向篩選。">
+  <meta property="og:url" content="https://hiyamusic0920-byte.github.io/kuming-rabbit/diary.html">
+  <meta property="og:image" content="https://hiyamusic0920-byte.github.io/kuming-rabbit/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="苦命兔睡著了，旁邊的終端機一直印 sleep()，估計還要跑 14 小時 23 分。">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..800&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&family=Noto+Serif+TC:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到主要內容</a>
+
+<!-- CHROME:HEADER -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">🐰</span>
+      <span class="brand-text">
+        <span class="brand-name">苦命兔 Kuming Rabbit</span>
+        <span class="brand-role">AI QA Lab</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="開啟主導覽">
+      <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18"></path>
+      </svg>
+      <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M5 5l14 14M19 5L5 19"></path>
+      </svg>
+    </button>
+
+    <nav class="site-nav" id="site-nav" aria-label="主導覽">
+      <ul>
+        <li><a href="ai-qa.html">AI QA</a></li>
+        <li><a href="case-studies.html">Case Studies</a></li>
+        <li><a href="diary.html" aria-current="page">QA Diary</a></li>
+        <li><a href="about.html">About</a></li>
+        <li class="nav-secondary"><a href="lessons.html">Things AI Got Wrong</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<!-- /CHROME:HEADER -->
+
+<main id="main">
+
+  <section class="page-head lab-shell">
+    <ol class="crumbs">
+      <li><a href="index.html">Home</a></li>
+      <li aria-hidden="true">/</li>
+      <li><span aria-current="page">QA Diary</span></li>
+    </ol>
+    <p class="lab-eyebrow">QA Diary</p>
+    <h1>十五話漫畫，記錄這套系統怎麼從「我只是懶」長成現在的樣子</h1>
+    <p class="page-lead">按順序讀最完整。想找某個技術面向的話，用下面的篩選——每一話都對應一個能力，點進去看得到它現在長在系統的哪裡。</p>
+  </section>
+
+  <section class="lab-section lab-shell" aria-labelledby="episodes-title">
+    <h2 id="episodes-title" class="lab-eyebrow">正篇 15 話</h2>
+
+    <h3 class="sr-only" id="filter-title">按能力面向篩選</h3>
+    <ul class="filter-bar" aria-labelledby="filter-title">
+      <li><button type="button" aria-pressed="false" data-filter="c1">QA 交付自動化<span class="sr-only"> ／ 4 話</span></button></li>
+      <li><button type="button" aria-pressed="false" data-filter="c2">測試工程化<span class="sr-only"> ／ 4 話</span></button></li>
+      <li><button type="button" aria-pressed="false" data-filter="c3">AI Agent 治理<span class="sr-only"> ／ 6 話</span></button></li>
+      <li><button type="button" aria-pressed="false" data-filter="c4">知識系統設計<span class="sr-only"> ／ 6 話</span></button></li>
+      <li><button type="button" aria-pressed="false" data-filter="c5">評估與持續改善<span class="sr-only"> ／ 3 話</span></button></li>
+    </ul>
+    <p class="filter-count" data-count role="status">顯示全部 15 話</p>
+
+    <ol class="ep-list" id="ep-list">
+      <li data-cats="c1">
+        <a class="ep-row" href="ep01.html">
+          <span class="ep-no">01</span>
+          <span class="ep-title">起點，讓AI幫我做測試報告</span>
+          <span class="ep-cap">QA 報告自動化</span>
+        </a>
+      </li>
+      <li data-cats="c1">
+        <a class="ep-row" href="ep02.html">
+          <span class="ep-no">02</span>
+          <span class="ep-title">報告有了，但看完更想哭</span>
+          <span class="ep-cap">Ticket Analysis / Context Engineering</span>
+        </a>
+      </li>
+      <li data-cats="c2 c4">
+        <a class="ep-row" href="ep03.html">
+          <span class="ep-no">03</span>
+          <span class="ep-title">拯救苦命兔大作戰</span>
+          <span class="ep-cap">長期知識累積</span>
+        </a>
+      </li>
+      <li data-cats="c3">
+        <a class="ep-row" href="ep04.html">
+          <span class="ep-no">04</span>
+          <span class="ep-title">苦力怕（Codex）登場！跨 Agent 合作挑戰</span>
+          <span class="ep-cap">Multi-Agent Handoff</span>
+        </a>
+      </li>
+      <li data-cats="c1 c2">
+        <a class="ep-row" href="ep05.html">
+          <span class="ep-no">05</span>
+          <span class="ep-title">我只是叫苦命兔測一張票，牠卻寫了 200 個 E2E……</span>
+          <span class="ep-cap">Test Strategy / Prompt Chaining</span>
+        </a>
+      </li>
+      <li data-cats="c2 c5">
+        <a class="ep-row" href="ep06.html">
+          <span class="ep-no">06</span>
+          <span class="ep-title">苦命兔超努力，無效的那種</span>
+          <span class="ep-cap">Flaky Test Governance</span>
+        </a>
+      </li>
+      <li data-cats="c2">
+        <a class="ep-row" href="ep07.html">
+          <span class="ep-no">07</span>
+          <span class="ep-title">那隻兔子只是聞到怪味道，就順手把整個房間都打掃了</span>
+          <span class="ep-cap">Permission Boundary / Safe Automation</span>
+        </a>
+      </li>
+      <li data-cats="c3">
+        <a class="ep-row" href="ep08.html">
+          <span class="ep-no">08</span>
+          <span class="ep-title">那隻兔子，自從被我罵過一次後……</span>
+          <span class="ep-cap">Feedback Loop / Agent Behavior Tuning</span>
+        </a>
+      </li>
+      <li data-cats="c4">
+        <a class="ep-row" href="ep09.html">
+          <span class="ep-no">09</span>
+          <span class="ep-title">因為苦命兔，我不得不重新檢視工作流程</span>
+          <span class="ep-cap">Tacit Knowledge Extraction</span>
+        </a>
+      </li>
+      <li data-cats="c4">
+        <a class="ep-row" href="ep10.html">
+          <span class="ep-no">10</span>
+          <span class="ep-title">失之毫里，差之千里</span>
+          <span class="ep-cap">Requirements Audit</span>
+        </a>
+      </li>
+      <li data-cats="c3 c4">
+        <a class="ep-row" href="ep11.html">
+          <span class="ep-no">11</span>
+          <span class="ep-title">辯論大賽！苦命兔 VS 苦力怕</span>
+          <span class="ep-cap">Cross-Agent Consensus</span>
+        </a>
+      </li>
+      <li data-cats="c3 c4">
+        <a class="ep-row" href="ep12.html">
+          <span class="ep-no">12</span>
+          <span class="ep-title">苦命兔的秘密小本本</span>
+          <span class="ep-cap">Single Source of Truth</span>
+        </a>
+      </li>
+      <li data-cats="c3 c5">
+        <a class="ep-row" href="ep13.html">
+          <span class="ep-no">13</span>
+          <span class="ep-title">那隻兔子就像渣男</span>
+          <span class="ep-cap">Decision Checkpoint Design</span>
+        </a>
+      </li>
+      <li data-cats="c3 c4">
+        <a class="ep-row" href="ep14.html">
+          <span class="ep-no">14</span>
+          <span class="ep-title">臭兔子！你又偷偷改家規！</span>
+          <span class="ep-cap">Traceability / Change Management</span>
+        </a>
+      </li>
+      <li data-cats="c1 c5">
+        <a class="ep-row" href="ep15.html">
+          <span class="ep-no">15</span>
+          <span class="ep-title">吃你的狗食！</span>
+          <span class="ep-cap">Evaluation / Dogfooding</span>
+        </a>
+      </li>
+    </ol>
+    <p class="ep-empty" hidden data-empty>這個組合沒有對應的話數。<button type="button" class="link-arrow" data-reset>清掉篩選</button></p>
+  </section>
+
+  <section class="lab-section lab-shell" aria-labelledby="specials-title">
+    <h2 id="specials-title" class="lab-eyebrow">特別篇</h2>
+    <p class="lab-intro">番外，不在能力分類裡。</p>
+    <ol class="ep-list">
+      <li>
+        <a class="ep-row" href="special01.html">
+          <span class="ep-no">SP1</span>
+          <span class="ep-title">特別篇 01</span>
+          <span class="ep-cap">番外</span>
+        </a>
+      </li>
+      <li>
+        <a class="ep-row" href="special02.html">
+          <span class="ep-no">SP2</span>
+          <span class="ep-title">特別篇 02</span>
+          <span class="ep-cap">番外</span>
+        </a>
+      </li>
+      <li>
+        <a class="ep-row" href="special03.html">
+          <span class="ep-no">SP3</span>
+          <span class="ep-title">特別篇 03</span>
+          <span class="ep-cap">番外</span>
+        </a>
+      </li>
+    </ol>
+  </section>
+
+  <section class="about-strip lab-shell" aria-labelledby="diary-next-title">
+    <h2 id="diary-next-title" class="lab-eyebrow">接下來</h2>
+    <p>漫畫講的是事情怎麼壞的。想看壞完之後留下什麼機制，往技術內容走比較快。</p>
+    <p class="about-actions">
+      <a class="link-arrow" href="lessons.html">Things AI Got Wrong →</a>
+      <a class="link-arrow" href="ai-qa.html">這套 workflow 怎麼跑 →</a>
+      <a class="link-arrow" href="case-studies.html">Case Studies →</a>
+    </p>
+  </section>
+
+</main>
+
+<!-- CHROME:FOOTER -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <p class="footer-brand">苦命兔 Kuming Rabbit · AI QA Lab</p>
+      <p class="footer-tagline">一個 QA 把兩個 AI agent 放進真實測試流程的實驗紀錄。</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="ai-qa.html">AI QA</a></li>
+      <li><a href="case-studies.html">Case Studies</a></li>
+      <li><a href="diary.html">QA Diary</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="lessons.html">Things AI Got Wrong</a></li>
+      <li><a href="https://github.com/hiyamusic0920-byte/kuming-rabbit">GitHub</a></li>
+    </ul>
+    <p class="footer-meta">Sunny · QA Engineer / AI Native QA Explorer</p>
+  </div>
+</footer>
+<!-- /CHROME:FOOTER -->
+
+<!-- CHROME:NAVJS -->
+<script>
+  // 手機漢堡選單。展開後焦點進選單、Esc 關閉並把焦點還給觸發按鈕。
+  (function () {
+    var toggle = document.querySelector('.nav-toggle');
+    var nav = document.getElementById('site-nav');
+    if (!toggle || !nav) return;
+
+    function setOpen(open) {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? '關閉主導覽' : '開啟主導覽');
+      nav.setAttribute('data-open', String(open));
+    }
+
+    toggle.addEventListener('click', function () {
+      var open = toggle.getAttribute('aria-expanded') === 'true';
+      setOpen(!open);
+      if (!open) {
+        var first = nav.querySelector('a');
+        if (first) first.focus();
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      setOpen(false);
+      toggle.focus();
+    });
+
+    // 從手機寬度放大到桌機時，把展開狀態收掉，避免桌機殘留 data-open
+    var wide = window.matchMedia('(min-width: 900px)');
+    wide.addEventListener('change', function (e) {
+      if (e.matches) setOpen(false);
+    });
+  })();
+</script>
+<!-- /CHROME:NAVJS -->
+
+<script>
+  // 能力篩選。多選 OR：選了兩個面向就顯示屬於任一面向的話數。
+  (function () {
+    var bar = document.querySelector('.filter-bar');
+    var list = document.getElementById('ep-list');
+    if (!bar || !list) return;
+    var items = [].slice.call(list.children);
+    var count = document.querySelector('[data-count]');
+    var empty = document.querySelector('[data-empty]');
+    var reset = document.querySelector('[data-reset]');
+
+    function apply() {
+      var on = [].slice.call(bar.querySelectorAll('[aria-pressed="true"]'))
+        .map(function (b) { return b.getAttribute('data-filter'); });
+      var shown = 0;
+      items.forEach(function (li) {
+        var cats = (li.getAttribute('data-cats') || '').split(' ');
+        var match = on.length === 0 || on.some(function (k) { return cats.indexOf(k) > -1; });
+        li.hidden = !match;
+        if (match) shown++;
+      });
+      count.textContent = on.length === 0
+        ? '顯示全部 ' + items.length + ' 話'
+        : '顯示 ' + shown + ' / ' + items.length + ' 話';
+      if (empty) empty.hidden = shown !== 0;
+    }
+
+    bar.addEventListener('click', function (e) {
+      var btn = e.target.closest('button[data-filter]');
+      if (!btn) return;
+      btn.setAttribute('aria-pressed', btn.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+      apply();
+    });
+
+    if (reset) reset.addEventListener('click', function () {
+      bar.querySelectorAll('[aria-pressed="true"]').forEach(function (b) {
+        b.setAttribute('aria-pressed', 'false');
+      });
+      apply();
+    });
+  })();
+</script>
+
+</body>
+</html>

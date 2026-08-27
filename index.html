@@ -3,190 +3,443 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>苦命兔 QA 日誌</title>
+
+  <title>苦命兔 Kuming Rabbit — AI QA Lab</title>
+  <meta name="description" content="一個 QA 把兩個 AI agent 放進真實測試流程的實驗紀錄：11 步 workflow、共用規則檔、知識沉澱與驗證機制，以及十五話翻車故事。">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="苦命兔 Kuming Rabbit — AI QA Lab">
+  <meta property="og:title" content="苦命兔 Kuming Rabbit — AI QA Lab">
+  <meta property="og:description" content="我不是只用 AI 產 test case，而是在建一套可以被驗證、治理、持續改善的 AI-Assisted QA Workflow。">
+  <meta property="og:url" content="https://hiyamusic0920-byte.github.io/kuming-rabbit/">
+  <meta property="og:image" content="https://hiyamusic0920-byte.github.io/kuming-rabbit/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="苦命兔睡著了，旁邊的終端機一直印 sleep()，估計還要跑 14 小時 23 分。">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..800&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&family=Noto+Serif+TC:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="home-page">
-  <main class="home-shell">
-    <h1>苦命兔 QA 日誌</h1>
-    <p class="subtitle">一位 QA、一隻兔子，以及兩個 AI Agent 的真實故事。</p>
-    <a class="hero-cta" href="ep01.html">從第 1 話開始 →</a>
-    <nav class="site-section comic-main-section" aria-labelledby="episodes-title">
-      <h2 id="episodes-title">📖 漫畫正篇</h2>
-      <ul class="episode-list">
-        <li>
-          <a href="ep01.html">
-            <span class="episode-title">第01話：起點，讓AI幫我做測試報告</span>
-            <span class="episode-capability"><strong>能力：</strong>QA 報告自動化</span>
-          </a>
-        </li>
-        <li>
-          <a href="ep02.html">
-            <span class="episode-title">第02話：報告有了，但看完更想哭</span>
-            <span class="episode-capability"><strong>能力：</strong>Ticket Analysis / Context Engineering</span>
-          </a>
-        </li>
-        <li>
-          <a href="ep03.html">
-            <span class="episode-title">第03話：拯救苦命兔大作戰</span>
-            <span class="episode-capability"><strong>能力：</strong>長期知識累積</span>
-          </a>
-        </li>
-        <li>
-          <a href="ep04.html">
-            <span class="episode-title">第04話：苦力怕（Codex）登場！跨 Agent 合作挑戰</span>
-            <span class="episode-capability"><strong>能力：</strong>Multi-Agent Handoff</span>
-          </a>
-        </li>
-        <li>
-          <a href="ep05.html">
-            <span class="episode-title">第05話：我只是叫苦命兔測一張票，牠卻寫了 200 個 E2E……</span>
-            <span class="episode-capability"><strong>能力：</strong>Test Strategy / Prompt Chaining</span>
-          </a>
-        </li>
-        <li>
-          <a href="ep06.html">
-            <span class="episode-title">第06話：苦命兔超努力，無效的那種</span>
-            <span class="episode-capability"><strong>能力：</strong>Flaky Test Governance</span>
-          </a>
-        </li>
-        <li>
-          <a href="ep07.html">
-            <span class="episode-title">第07話：那隻兔子只是聞到怪味道，就順手把整個房間都打掃了</span>
-            <span class="episode-capability"><strong>能力：</strong>Permission Boundary / Safe Automation</span>
-          </a>
-        </li>
-        <li>
-          <a href="ep08.html">
-            <span class="episode-title">第08話：那隻兔子，自從被我罵過一次後……</span>
-            <span class="episode-capability"><strong>能力：</strong>Feedback Loop / Agent Behavior Tuning</span>
-          </a>
-        </li>
-        <li>
-          <a href="ep09.html">
-            <span class="episode-title">第09話：因為苦命兔，我不得不重新檢視工作流程</span>
-            <span class="episode-capability"><strong>能力：</strong>Tacit Knowledge Extraction</span>
-          </a>
-        </li>
-        <li>
-          <a href="ep10.html">
-            <span class="episode-title">第10話：失之毫里，差之千里</span>
-            <span class="episode-capability"><strong>能力：</strong>Requirements Audit</span>
-          </a>
-        </li>
-        <li>
-          <a href="ep11.html">
-            <span class="episode-title">第11話：辯論大賽！苦命兔 VS 苦力怕</span>
-            <span class="episode-capability"><strong>能力：</strong>Cross-Agent Consensus</span>
-          </a>
-        </li>
-        <li>
-          <a href="ep12.html">
-            <span class="episode-title">第12話：苦命兔的秘密小本本</span>
-            <span class="episode-capability"><strong>能力：</strong>Single Source of Truth</span>
-          </a>
-        </li>
-        <li>
-          <a href="ep13.html">
-            <span class="episode-title">第13話：那隻兔子就像渣男</span>
-            <span class="episode-capability"><strong>能力：</strong>Decision Checkpoint Design</span>
-          </a>
-        </li>
-        <li>
-          <a href="ep14.html">
-            <span class="episode-title">第14話：臭兔子！你又偷偷改家規！</span>
-            <span class="episode-capability"><strong>能力：</strong>Traceability / Change Management</span>
-          </a>
-        </li>
-        <li>
-          <a href="ep15.html">
-            <span class="episode-title">第15話：吃你的狗食！</span>
-            <span class="episode-capability"><strong>能力：</strong>Evaluation / Dogfooding</span>
-          </a>
-        </li>
-      </ul>
-      <h3 class="special-title">特別篇</h3>
-      <ul class="episode-list">
-        <li><a href="special01.html">特別篇 01</a></li>
-        <li><a href="special02.html">特別篇 02</a></li>
-        <li><a href="special03.html">特別篇 03</a></li>
+<body>
+
+<a class="skip-link" href="#main">跳到主要內容</a>
+
+<!-- CHROME:HEADER -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">🐰</span>
+      <span class="brand-text">
+        <span class="brand-name">苦命兔 Kuming Rabbit</span>
+        <span class="brand-role">AI QA Lab</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="開啟主導覽">
+      <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18"></path>
+      </svg>
+      <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M5 5l14 14M19 5L5 19"></path>
+      </svg>
+    </button>
+
+    <nav class="site-nav" id="site-nav" aria-label="主導覽">
+      <ul>
+        <li><a href="ai-qa.html">AI QA</a></li>
+        <li><a href="case-studies.html">Case Studies</a></li>
+        <li><a href="diary.html">QA Diary</a></li>
+        <li><a href="about.html">About</a></li>
+        <li class="nav-secondary"><a href="lessons.html">Things AI Got Wrong</a></li>
       </ul>
     </nav>
-    <section class="site-section backstage-section" aria-labelledby="backstage-title">
-      <h2 id="backstage-title">🎁 幕後花絮</h2>
-      <p class="section-intro">故事看完了嗎？接著認識創作背景，或走進漫畫背後真正運作的 AI QA 系統。</p>
-      <div class="backstage-grid">
-        <a class="backstage-card" href="about.html">
-          <span class="backstage-card-icon" aria-hidden="true">🐰</span>
-          <h3>關於這個 AI QA Portfolio</h3>
-          <p>故事背景、創作動機，以及這份作品集想記錄的事。</p>
-          <span class="backstage-card-cta">查看幕後故事 →</span>
-        </a>
-        <a class="backstage-card" href="architecture.html">
-          <span class="backstage-card-icon" aria-hidden="true">🔧</span>
-          <h3>苦命兔的秘密基地</h3>
-          <p>打開幕後設定集，看看漫畫角色與真實 AI QA 系統如何對應。</p>
-          <span class="backstage-card-cta">進入秘密基地 →</span>
-        </a>
-        <a class="backstage-card" href="portfolio/">
-          <span class="backstage-card-icon" aria-hidden="true">🧪</span>
-          <h3>AI QA 技術文章</h3>
-          <p>閱讀 AI QA Pipeline、測試流程、Agent 治理與品質驗證的長文整理。</p>
-          <span class="backstage-card-cta">進入 Portfolio →</span>
-        </a>
+  </div>
+</header>
+<!-- /CHROME:HEADER -->
+
+<main id="main">
+
+  <!-- ── 1. Hero ─────────────────────────────────────────── -->
+  <section class="hero lab-shell" aria-labelledby="hero-title">
+    <div class="hero-grid">
+      <div>
+        <p class="lab-eyebrow">An AI QA Lab</p>
+        <!-- AI‑Assisted 用的是不斷行連字號（U+2011）：瀏覽器預設會在連字號後折行，
+             會把它斷成「AI-」「Assisted QA Workflow」。這不是強制斷行，只是不讓專有名詞被拆開。 -->
+        <h1 id="hero-title">我不是只用 AI 產 test case，而是在建一套可以被驗證、治理、持續改善的 AI‑Assisted QA Workflow</h1>
+        <p class="hero-support">
+          兩個 AI agent、一份共用規則檔、十五話翻車紀錄。這裡記錄這套系統怎麼從真實的失敗長出來的。
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="ai-qa.html#workflow">這套 workflow 怎麼跑</a>
+          <a class="btn btn-secondary" href="lessons.html">看 AI 做錯了什麼 →</a>
+        </div>
       </div>
-    </section>
-    <section class="site-section capability-categories" aria-labelledby="capability-categories-title">
-      <h2 id="capability-categories-title">🧭 能力分類</h2>
-      <p class="capability-intro">如果你想快速理解這份作品集的技術重點，這裡將 15 話故事整理成五個 AI Native QA 能力面向。</p>
-      <div class="category-grid">
-        <article class="category-card">
-          <h3>QA 交付自動化</h3>
-          <p class="category-summary">把需求理解、測試執行、證據收集與稽核報告串成可重複交付的流程。</p>
-          <p class="category-methods"><strong>方法 / 關鍵字：</strong>Ticket Analysis、Playwright、pytest、QA / UAT PDF、Dogfooding</p>
-          <p class="category-episodes-label">相關話數</p>
-          <div class="category-episodes">
-            <a href="ep01.html" aria-label="讓 AI 幫我做測試報告">01</a><a href="ep02.html" aria-label="報告有了，但看完更想哭">02</a><a href="ep05.html" aria-label="200 個 E2E">05</a><a href="ep15.html" aria-label="吃你的狗食">15</a>
-          </div>
-        </article>
-        <article class="category-card">
-          <h3>測試工程化</h3>
-          <p class="category-summary">決定值得自動化的測試層級，控制 flaky test，並建立安全的執行邊界。</p>
-          <p class="category-methods"><strong>方法 / 關鍵字：</strong>Test Strategy、POM、retry / stop rules、Permission Boundary</p>
-          <p class="category-episodes-label">相關話數</p>
-          <div class="category-episodes">
-            <a href="ep03.html" aria-label="拯救苦命兔大作戰">03</a><a href="ep05.html" aria-label="200 個 E2E">05</a><a href="ep06.html" aria-label="苦命兔超努力，無效的那種">06</a><a href="ep07.html" aria-label="順手把整個房間打掃了">07</a>
-          </div>
-        </article>
-        <article class="category-card">
-          <h3>AI Agent 治理</h3>
-          <p class="category-summary">讓多個 Agent 在共用規則、權限與決策節點下協作，而不是各自自由發揮。</p>
-          <p class="category-methods"><strong>方法 / 關鍵字：</strong>Multi-Agent Handoff、Consensus、Feedback Loop、Governance、Audit Gate</p>
-          <p class="category-episodes-label">相關話數</p>
-          <div class="category-episodes">
-            <a href="ep04.html" aria-label="跨 Agent 合作挑戰">04</a><a href="ep08.html" aria-label="被罵過一次後">08</a><a href="ep11.html" aria-label="辯論大賽">11</a><a href="ep12.html" aria-label="秘密小本本">12</a><a href="ep13.html" aria-label="那隻兔子就像渣男">13</a><a href="ep14.html" aria-label="偷偷改家規">14</a>
-          </div>
-        </article>
-        <article class="category-card">
-          <h3>知識系統設計</h3>
-          <p class="category-summary">把 QA 的隱性經驗轉成可搜尋、可追蹤、可被不同 Agent 重複使用的知識。</p>
-          <p class="category-methods"><strong>方法 / 關鍵字：</strong>Single Source of Truth、Registry、Requirements Audit、Change Log</p>
-          <p class="category-episodes-label">相關話數</p>
-          <div class="category-episodes">
-            <a href="ep03.html" aria-label="拯救苦命兔大作戰">03</a><a href="ep09.html" aria-label="重新檢視工作流程">09</a><a href="ep10.html" aria-label="失之毫里，差之千里">10</a><a href="ep11.html" aria-label="辯論大賽">11</a><a href="ep12.html" aria-label="秘密小本本">12</a><a href="ep14.html" aria-label="偷偷改家規">14</a>
-          </div>
-        </article>
-        <article class="category-card">
-          <h3>評估與持續改善</h3>
-          <p class="category-summary">用失敗案例、回顧與評估框架驗證流程改善是否真的產生效果。</p>
-          <p class="category-methods"><strong>方法 / 關鍵字：</strong>Retro、Eval Framework、Dogfooding、Decision Checkpoint</p>
-          <p class="category-episodes-label">相關話數</p>
-          <div class="category-episodes">
-            <a href="ep06.html" aria-label="苦命兔超努力，無效的那種">06</a><a href="ep13.html" aria-label="那隻兔子就像渣男">13</a><a href="ep15.html" aria-label="吃你的狗食">15</a>
-          </div>
-        </article>
+
+      <figure class="hero-rabbit">
+        <img src="assets/thumbs/hero-rabbit.webp" width="600" height="388" alt="苦命兔睡著了，身邊的終端機一直印出 sleep(600)，預估還要跑 14 小時 23 分，桌上的紙條寫著「再睡五秒⋯應該就好了⋯」">
+        <figcaption>苦命兔，本站的失敗敘事者。<span class="cap-src">（第 06 話）</span></figcaption>
+      </figure>
+    </div>
+
+    <!--
+      Currently investigating：Lab Notebook 的 current research question。
+      不是 status component——沒有日期、沒有 last updated。
+      整個 <dl> 可以直接刪除，Hero 版面不會壞（它靠自己的 border-top 分隔）。
+    -->
+    <dl class="hero-question">
+      <dt>Currently investigating</dt>
+      <dd>Can I trust an AI agent’s “done”?</dd>
+    </dl>
+  </section>
+
+  <!-- ── 2. What I'm Building ────────────────────────────── -->
+  <section class="lab-section lab-shell" aria-labelledby="building-title">
+    <p class="lab-eyebrow">What I'm building</p>
+    <h2 id="building-title">一套 QA workflow，四個部分。都在真實工作裡跑。</h2>
+
+    <ol class="build-list">
+      <li>
+        <span class="build-num">01</span>
+        <div class="build-body">
+          <h3>Workflow</h3>
+          <p>11 步主線：從一張票到符合稽核標準的 PDF。固定交付物，可變測試深度。</p>
+          <a class="link-arrow" href="ai-qa.html#workflow">看細節 →</a>
+        </div>
+        <p class="status status-live">上線中</p>
+      </li>
+      <li>
+        <span class="build-num">02</span>
+        <div class="build-body">
+          <h3>Governance</h3>
+          <p>兩個 agent 共用一份規則檔。哪些檔案不能動、哪些操作要先問、哪些情況必須停下來回報，全部寫死。</p>
+          <a class="link-arrow" href="ai-qa.html#governance">看細節 →</a>
+        </div>
+        <p class="status status-live">上線中</p>
+      </li>
+      <li>
+        <span class="build-num">03</span>
+        <div class="build-body">
+          <h3>Knowledge</h3>
+          <p>把只存在腦袋裡的判斷變成 repo 裡可搜尋的東西。Agent 可換，repo 才是真理來源。</p>
+          <a class="link-arrow" href="ai-qa.html#knowledge">看細節 →</a>
+        </div>
+        <p class="status status-ongoing">持續擴充</p>
+      </li>
+      <li>
+        <span class="build-num">04</span>
+        <div class="build-body">
+          <h3>Evaluation</h3>
+          <p>把翻車過的舊票用新流程重跑，確認改善是真的產生效果，不是自我感覺良好。</p>
+          <a class="link-arrow" href="ai-qa.html#evaluation">看細節 →</a>
+        </div>
+        <p class="status status-ongoing">進行中</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ── 3. AI QA Workflow ──────────────────────────────── -->
+  <section class="lab-section lab-shell" aria-labelledby="workflow-title">
+    <p class="lab-eyebrow">The workflow</p>
+    <h2 id="workflow-title">一張票怎麼流過去，以及哪幾步我一定要自己簽。</h2>
+    <p class="lab-intro">
+      十一步主線。AI 執行絕大部分，但有三個節點它不能自己過——標 ◆ 的那三個。
+    </p>
+
+    <ol class="flow">
+      <li><span class="flow-mark" aria-hidden="true"></span><span class="flow-num">01</span><span class="flow-name">採集</span><span class="flow-actor">AI · 人審閱</span></li>
+      <li class="flow-decision"><span class="flow-mark" aria-hidden="true">◆</span><span class="flow-num">02</span><span class="flow-name">Test Plan</span><span class="flow-actor">我定範圍</span></li>
+      <li class="flow-decision"><span class="flow-mark" aria-hidden="true">◆</span><span class="flow-num">03</span><span class="flow-name">Test Cases</span><span class="flow-actor">我審過才算</span></li>
+      <li><span class="flow-mark" aria-hidden="true"></span><span class="flow-num">04</span><span class="flow-name">Feature</span><span class="flow-actor">AI</span></li>
+      <li><span class="flow-mark" aria-hidden="true"></span><span class="flow-num">05</span><span class="flow-name">Explore</span><span class="flow-actor">AI · 真實瀏覽器</span></li>
+      <li><span class="flow-mark" aria-hidden="true"></span><span class="flow-num">06</span><span class="flow-name">POM</span><span class="flow-actor">AI</span></li>
+      <li><span class="flow-mark" aria-hidden="true"></span><span class="flow-num">07</span><span class="flow-name">BDD Steps</span><span class="flow-actor">AI</span></li>
+      <li><span class="flow-mark" aria-hidden="true"></span><span class="flow-num">08</span><span class="flow-name">pytest</span><span class="flow-actor">AI · 自動收證</span></li>
+      <li class="flow-decision"><span class="flow-mark" aria-hidden="true">◆</span><span class="flow-num">09</span><span class="flow-name">Report</span><span class="flow-actor">我定稿</span></li>
+      <li><span class="flow-mark" aria-hidden="true"></span><span class="flow-num">10</span><span class="flow-name">Worklog</span><span class="flow-actor">AI</span></li>
+      <li><span class="flow-mark" aria-hidden="true"></span><span class="flow-num">11</span><span class="flow-name">沉澱知識</span><span class="flow-actor">AI · 回饋 registry</span></li>
+    </ol>
+
+    <p class="flow-terminal">QA / UAT PDF <span>→ 交給稽核方</span></p>
+
+    <p class="flow-legend">
+      <b>◆ = 人類必須決策，AI 不得自行通過。</b><br>三個節點：測試範圍、測試案例、報告定稿。
+    </p>
+
+    <a class="link-arrow" href="ai-qa.html#workflow">看完整的 11 步，每步的輸入與輸出 →</a>
+  </section>
+
+  <!-- ── 4. Selected Case Studies ───────────────────────── -->
+  <section class="lab-section lab-shell" aria-labelledby="cases-title">
+    <div class="lab-section-head">
+      <div>
+        <p class="lab-eyebrow">Selected case studies</p>
+        <h2 id="cases-title">做出來的東西，以及當初為什麼要做。</h2>
       </div>
-    </section>
-  </main>
+      <a class="lab-more" href="case-studies.html">全部案例 →</a>
+    </div>
+
+    <article class="case-primary">
+      <p class="case-kicker">Requirement → Test</p>
+      <h3>一句需求可以讀出三種欄位數量</h3>
+      <dl class="case-facts">
+        <div>
+          <dt>問題</dt>
+          <dd>票上寫「新增平日／假日客房住用數及收入欄位」。光是我自己就讀出三種意思——2 個欄位、3 個欄位、4 個欄位。而我當時已經有 Test Case Audit，但 review 的時候沒有拆解需求，直接放過去了。</dd>
+        </div>
+        <div>
+          <dt>做法</dt>
+          <dd>在開始設計測試之前先做一次 Requirements Audit，檢查四件事：是否存在多種解讀、是否缺少定義、是否有隱含規則、是否有需要確認的地方。</dd>
+        </div>
+        <div>
+          <dt>結果</dt>
+          <dd>誤解在第一步被攔下來。以前是一路帶到「需求理解 → 寫 TC → 寫腳本 → 跑自動化 → 出報告 → 全部重來」，現在停在第一步。</dd>
+        </div>
+      </dl>
+      <p class="case-meta">
+        <span>出處</span><a href="ep10.html">第 10 話 →</a>
+        <span>能力　Requirements Audit · Test Case Review</span>
+      </p>
+    </article>
+
+    <div class="case-secondary">
+      <article class="case-card">
+        <p class="case-kicker">Cross-agent consensus</p>
+        <h3>兩個 AI 個性不一樣，讓牠們吵完反而撿到寶</h3>
+        <p>一個習慣用減法、一個習慣用加法。我讓牠們辯論「規則越來越肥怎麼辦」，最後收出一套文件分類規則。</p>
+        <p class="case-meta"><span>出處</span><a href="ep11.html">第 11 話 →</a></p>
+      </article>
+      <article class="case-card">
+        <p class="case-kicker">Stop rules</p>
+        <h3>一直重試不是解法，是把不穩定包進更多等待時間</h3>
+        <p>測試失敗，牠就加 sleep、加 wait，越修越慢越不穩。後來我補的不是修法，是停止條件。</p>
+        <p class="case-meta"><span>出處</span><a href="ep06.html">第 06 話 →</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── 5. Things AI Got Wrong ─────────────────────────── -->
+  <section class="lab-section lab-shell" aria-labelledby="wrong-title">
+    <div class="lab-section-head">
+      <div>
+        <p class="lab-eyebrow">Things AI got wrong</p>
+        <h2 id="wrong-title">這些失敗塑造了這套系統。每一條都還在規則裡。</h2>
+      </div>
+      <a class="lab-more" href="lessons.html">全部失敗紀錄 →</a>
+    </div>
+
+    <ol class="ledger">
+      <li>
+        <div class="ledger-part">
+          <p class="ledger-label">Failure</p>
+          <h3 class="ledger-failure">我只想要幾支測試腳本，牠開始窮舉所有排列組合。一張票變成數百個測試情境，整個 repo 像被千軍萬馬輾過。</h3>
+        </div>
+        <div class="ledger-part">
+          <p class="ledger-label">Mechanism</p>
+          <p class="ledger-mechanism">先跑 test-plan 定範圍，再把一個巨大的 prompt 拆成多個可觀察的步驟——出問題時才知道是哪一步壞的。</p>
+        </div>
+        <div class="ledger-part">
+          <p class="ledger-label">Learning</p>
+          <p class="ledger-learning">我從來沒告訴牠：哪些情境值得變成 E2E。</p>
+          <p class="ledger-source"><a href="ep05.html">第 05 話 →</a></p>
+        </div>
+      </li>
+
+      <li>
+        <div class="ledger-part">
+          <p class="ledger-label">Failure</p>
+          <h3 class="ledger-failure">測試一失敗，牠就加 sleep、加 wait，再加 sleep、再加 wait。原本要解決 flaky test，最後變成把不穩定包進更多等待時間裡。</h3>
+        </div>
+        <div class="ledger-part">
+          <p class="ledger-label">Mechanism</p>
+          <p class="ledger-mechanism">三條停止條件寫進家規：retry 三次就標成 flaky 並停下；不准直接改腳本，要先分析五種可能原因；修正後第一次失敗就停，交人判斷。</p>
+        </div>
+        <div class="ledger-part">
+          <p class="ledger-label">Learning</p>
+          <p class="ledger-learning">AI 需要的不只是目標，還需要停止條件。測試通過不一定代表測試變好，有時候只是問題被掩蓋了。</p>
+          <p class="ledger-source"><a href="ep06.html">第 06 話 →</a></p>
+        </div>
+      </li>
+
+      <li>
+        <div class="ledger-part">
+          <p class="ledger-label">Failure</p>
+          <h3 class="ledger-failure">牠發現一些看起來不太合理的東西，於是決定幫忙整理。該刪的刪了，不該刪的也刪了，沒刪的全被搬到不知道哪裡去。而牠是真心想幫忙。</h3>
+        </div>
+        <div class="ledger-part">
+          <p class="ledger-label">Mechanism</p>
+          <p class="ledger-mechanism">老實說這一話沒有什麼厲害的解決方案，因為那個階段我根本不知道該怎麼解。我唯一能做的是一直補家規——哪些檔案不能動、哪些資料夾不能整理、哪些修改要先問。看到新的坑，補一條規則。現在回頭看，很像在玩打地鼠。</p>
+        </div>
+        <div class="ledger-part">
+          <p class="ledger-label">Learning</p>
+          <p class="ledger-learning">AI 最大的風險不是做不到，是做到超過你的預期。有些規則不是為了讓它更強，是為了限制它的行動範圍。</p>
+          <p class="ledger-source"><a href="ep07.html">第 07 話 →</a></p>
+        </div>
+      </li>
+
+      <li>
+        <div class="ledger-part">
+          <p class="ledger-label">Failure</p>
+          <h3 class="ledger-failure">牠很有自信地跟我說「之後看到就會自動觸發」。我相信了，而且身為 QA 的我居然沒有測試。隔天同樣的情況再次發生，根本沒有觸發。</h3>
+        </div>
+        <div class="ledger-part">
+          <p class="ledger-label">Mechanism</p>
+          <p class="ledger-mechanism">規則存在 ≠ 規則會被引用 ≠ 規則會被遵守 ≠ agent 知道下一步該怎麼做。所以要設計決策節點，讓它在重要時刻停下來，而不是自己猜。</p>
+        </div>
+        <div class="ledger-part">
+          <p class="ledger-label">Learning</p>
+          <p class="ledger-learning">知識管理和決策執行是兩件不同的事。規則再多，沒有在正確的時機被想起來，也只是文件。</p>
+          <p class="ledger-source"><a href="ep13.html">第 13 話 →</a></p>
+        </div>
+      </li>
+
+      <li>
+        <div class="ledger-part">
+          <p class="ledger-label">Failure</p>
+          <h3 class="ledger-failure">同樣的錯誤、同樣的規則、同樣的經驗，每天重新教一次，每天重新踩一次。我一開始以為是 prompt 太長，後來以為是 context 太肥。</h3>
+        </div>
+        <div class="ledger-part">
+          <p class="ledger-label">Mechanism</p>
+          <p class="ledger-mechanism">第一版治理機制三件事：長期知識庫（重複出現的知識記下來）、回饋機制（做錯不只修結果，把經驗留下）、明確的禁止行為清單（不是教它怎麼成功，是告訴它哪些事不准做）。</p>
+        </div>
+        <div class="ledger-part">
+          <p class="ledger-label">Learning</p>
+          <p class="ledger-learning">問題不是 token，是它每次都在重複學習同一件事。</p>
+          <p class="ledger-source"><a href="ep03.html">第 03 話 →</a></p>
+        </div>
+      </li>
+    </ol>
+
+    <figure class="rabbit-aside">
+      <blockquote>「AI 很努力。但如果方向錯了，牠只是更有效率地製造新的問題。」</blockquote>
+      <figcaption>第 06 話 · 苦命兔超努力，無效的那種</figcaption>
+    </figure>
+  </section>
+
+  <!-- ── 6. Selected QA Diary ───────────────────────────── -->
+  <section class="lab-section lab-shell" aria-labelledby="diary-title">
+    <div class="lab-section-head">
+      <div>
+        <p class="lab-eyebrow">QA Diary</p>
+        <h2 id="diary-title">十五話漫畫，記錄這套系統怎麼從「我只是懶」長成現在的樣子。</h2>
+      </div>
+      <a class="lab-more" href="diary.html">全部 15 話 + 特別篇 →</a>
+    </div>
+    <p class="lab-intro">不知道從哪開始的話，這四話最好：</p>
+
+    <ul class="diary-grid">
+      <li>
+        <a class="diary-card" href="ep01.html">
+          <img src="assets/thumbs/ep01.webp" width="480" height="360" alt="第 01 話的第一格" loading="lazy">
+          <span class="diary-no">第 01 話</span>
+          <h3>起點，讓 AI 幫我做測試報告</h3>
+          <span class="diary-for">想按順序看</span>
+        </a>
+      </li>
+      <li>
+        <a class="diary-card" href="ep07.html">
+          <img src="assets/thumbs/ep07.webp" width="480" height="360" alt="第 07 話的第一格" loading="lazy">
+          <span class="diary-no">第 07 話</span>
+          <h3>只是聞到怪味道，就順手把整個房間都打掃了</h3>
+          <span class="diary-for">想看失控現場</span>
+        </a>
+      </li>
+      <li>
+        <a class="diary-card" href="ep11.html">
+          <img src="assets/thumbs/ep11.webp" width="480" height="360" alt="第 11 話的第一格" loading="lazy">
+          <span class="diary-no">第 11 話</span>
+          <h3>辯論大賽！苦命兔 VS 苦力怕</h3>
+          <span class="diary-for">想看兩個 AI 怎麼收斂</span>
+        </a>
+      </li>
+      <li>
+        <a class="diary-card" href="ep15.html">
+          <img src="assets/thumbs/ep15.webp" width="480" height="360" alt="第 15 話的第一格" loading="lazy">
+          <span class="diary-no">第 15 話</span>
+          <h3>吃你的狗食！</h3>
+          <span class="diary-for">想看怎麼驗證改善有效</span>
+        </a>
+      </li>
+    </ul>
+
+    <p class="diary-tail"><a class="btn btn-secondary" href="ep01.html">從第 01 話開始讀 →</a></p>
+  </section>
+
+  <!-- ── 7. About / Explore further ─────────────────────── -->
+  <section class="about-strip lab-shell" aria-labelledby="about-title">
+    <h2 id="about-title" class="lab-eyebrow">About</h2>
+    <p>
+      我是 Sunny，OwlTing 的 QA Engineer，做 PMS 與訂房系統。這個網站是我把 AI agent 放進真實 QA 工作流程的實驗紀錄——包含跑得起來的部分，也包含翻車的部分。
+    </p>
+    <p class="about-actions">
+      <a class="link-arrow" href="about.html">關於我與這個專案 →</a>
+      <a class="link-arrow" href="lessons.html">Things AI Got Wrong →</a>
+    </p>
+  </section>
+
+</main>
+
+<!-- CHROME:FOOTER -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <p class="footer-brand">苦命兔 Kuming Rabbit · AI QA Lab</p>
+      <p class="footer-tagline">一個 QA 把兩個 AI agent 放進真實測試流程的實驗紀錄。</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="ai-qa.html">AI QA</a></li>
+      <li><a href="case-studies.html">Case Studies</a></li>
+      <li><a href="diary.html">QA Diary</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="lessons.html">Things AI Got Wrong</a></li>
+      <li><a href="https://github.com/hiyamusic0920-byte/kuming-rabbit">GitHub</a></li>
+    </ul>
+    <p class="footer-meta">Sunny · QA Engineer / AI Native QA Explorer</p>
+  </div>
+</footer>
+<!-- /CHROME:FOOTER -->
+
+<!-- CHROME:NAVJS -->
+<script>
+  // 手機漢堡選單。展開後焦點進選單、Esc 關閉並把焦點還給觸發按鈕。
+  (function () {
+    var toggle = document.querySelector('.nav-toggle');
+    var nav = document.getElementById('site-nav');
+    if (!toggle || !nav) return;
+
+    function setOpen(open) {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? '關閉主導覽' : '開啟主導覽');
+      nav.setAttribute('data-open', String(open));
+    }
+
+    toggle.addEventListener('click', function () {
+      var open = toggle.getAttribute('aria-expanded') === 'true';
+      setOpen(!open);
+      if (!open) {
+        var first = nav.querySelector('a');
+        if (first) first.focus();
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      setOpen(false);
+      toggle.focus();
+    });
+
+    // 從手機寬度放大到桌機時，把展開狀態收掉，避免桌機殘留 data-open
+    var wide = window.matchMedia('(min-width: 900px)');
+    wide.addEventListener('change', function (e) {
+      if (e.matches) setOpen(false);
+    });
+  })();
+</script>
+<!-- /CHROME:NAVJS -->
+
 </body>
 </html>
