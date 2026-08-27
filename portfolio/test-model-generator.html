@@ -21,7 +21,7 @@
       <p class="subtitle">問題不是 Test Case 不夠多，而是可能性太多</p>
       <div class="article-meta">
         <time datetime="2026-08-27">2026.08.27</time>
-        <span>約 12 分鐘閱讀</span>
+        <span>約 16 分鐘閱讀</span>
       </div>
     </header>
 
@@ -105,13 +105,14 @@ Run again</code></pre>
       <p>光是假設每次測試只考慮：</p>
       <pre><code>5 種 Environment
 ×
-5 種 Installation State
+5 種 Dependency State
 ×
 30 個 API
 ×
 5 種 Input State</code></pre>
       <p>就已經有 3,750 個基本組合。</p>
-      <p>這甚至還沒有把 API 彼此的呼叫順序、前後狀態、Dependency 算進去。</p>
+      <p>而這還只挑了四個維度。</p>
+      <p>設定檔寫錯、API 彼此的呼叫順序、前後狀態，全都還沒算進去。</p>
       <p>一旦開始考慮這些關係，測試空間只會繼續膨脹。</p>
       <p>這時候問題已經不是：</p>
       <blockquote>
@@ -160,6 +161,16 @@ Build Test Model
 AI explores the model
 ↓
 Generate Test Cases</code></pre>
+      <p>這兩個詞後面會一直出現，先把差別講清楚：</p>
+      <pre><code>Test Model
+＝ 資料
+維度、值、狀態、API 之間的關係
+
+Generator
+＝ 規則
+拿這份資料，推導出該測哪些組合</code></pre>
+      <p>Model 描述受測物件長什麼樣子。</p>
+      <p>Generator 決定要從裡面挑什麼出來測。</p>
       <p>這裡的 Test Case Generator 不是一句：</p>
       <blockquote>
         <p>幫我產生完整的 Test Case。</p>
@@ -197,7 +208,7 @@ Generate Test Cases</code></pre>
       <blockquote>
         <p><strong>有哪些因素會改變系統行為？</strong></p>
       </blockquote>
-      <p>例如 SDK 可能有：</p>
+      <p>以那個 SDK 為例，我第一版是這樣寫的：</p>
       <pre><code>Environment
 ├── OS
 ├── Runtime Version
@@ -222,6 +233,7 @@ Input
 ├── Boundary
 ├── Missing
 └── Wrong Type</code></pre>
+      <p>看起來很整齊。</p>
       <p>問題來了。</p>
       <p><strong>我們怎麼知道自己這樣分是合理的？</strong></p>
       <p>這時候 MECE 就可以拿來當成一個檢查方法。</p>
@@ -232,17 +244,61 @@ Input
       <p>放進 Test Design 裡，我會把它變成三個問題：</p>
       <ul>
         <li><strong>我現在用什麼維度拆這個問題？</strong></li>
-        <li><strong>同一個維度裡，有沒有重複？</strong></li>
+        <li><strong>同一個維度裡，有沒有重複或混雜？</strong></li>
         <li><strong>有沒有重要的情況，根本沒有被分進來？</strong></li>
       </ul>
-      <p>例如 Dependency State：</p>
-      <pre><code>Dependency State
-├── Missing
+      <p>拿這三個問題回頭檢查上面那張圖，我自己就先不及格了。</p>
+      <p><strong>第一，Installation 底下混了兩個維度。</strong></p>
+      <p>Missing Dependency、Wrong Version 講的是相依套件裝成什麼樣子。</p>
+      <p>Wrong Configuration 講的是設定檔寫成什麼樣子。</p>
+      <p>這兩件事互相獨立。套件可以裝得完全正確，設定還是寫錯。</p>
+      <p>把它們塞在同一層，等於在說「套件對但設定錯」這種情況不存在。</p>
+      <p>但那正是真實世界最常出事的一種。</p>
+      <p><strong>第二，Environment 那格的型別不對。</strong></p>
+      <p>Installation、Usage、Input 底下列的是<strong>值</strong>。</p>
+      <p>Environment 底下列的 OS、Runtime Version、Hardware 是<strong>三個子維度</strong>。</p>
+      <p>一個列值、一個列維度，混在同一張圖上，後面拿它們相乘就會算錯。</p>
+      <p>拆完之後長這樣：</p>
+      <pre><code>Environment
+├── macOS
+├── Ubuntu
+├── Windows
+├── Container
+└── CI Runner
+
+Dependency State
 ├── Correct Version
-└── Wrong Version</code></pre>
+├── Missing
+├── Wrong Version
+├── Partially Installed
+└── Conflicting Package
+
+Configuration State
+├── Valid
+├── Missing Required Field
+├── Invalid Value
+└── Pointing to Wrong Resource
+
+Usage
+├── Normal Sequence
+├── Skip Step
+├── Wrong Order
+├── Duplicate Call
+├── Retry After Failure
+└── Concurrent Call
+
+Input
+├── Valid
+├── Invalid
+├── Boundary
+├── Missing
+└── Wrong Type</code></pre>
+      <p>從四個維度變成五個。</p>
+      <p>多出來的那一個不是為了讓圖好看。</p>
+      <p>而是原本有一整塊組合，我根本看不見。</p>
       <p>我們不是在宣稱：</p>
       <blockquote>
-        <p>這三種狀態已經包含世界上所有 Bug。</p>
+        <p>這些狀態已經包含世界上所有 Bug。</p>
       </blockquote>
       <p>而是先建立一個<strong>可以討論、可以檢查、可以持續補充的測試空間</strong>。</p>
       <p>這件事情在 AI 加入之後反而更重要。</p>
@@ -256,6 +312,14 @@ Input
       <blockquote>
         <p><strong>有沒有一整塊測試空間，AI 從頭到尾根本沒想到？</strong></p>
       </blockquote>
+      <p>而這件事是可以數的。</p>
+      <p>只要每一條 Test Case 都標回它來自哪個維度、哪個值，就能直接列出來：</p>
+      <pre><code>Input = Boundary                        →  88 條
+Dependency State = Conflicting Package  →  41 條
+Usage = Concurrent Call                 →   2 條
+Dependency State = Partially Installed  →   0 條
+Configuration State = Invalid Value     →   0 條</code></pre>
+      <p>哪一格被打爛、哪一格是零，一眼就看得出來。</p>
       <p>所以建立 Test Model 的目的，不是讓分類看起來漂亮。</p>
       <p>而是讓我們開始有辦法回答：</p>
       <blockquote>
@@ -386,15 +450,15 @@ Initialize → Load Model → Release → Run</code></pre>
       <p>這就是 Generator 開始出現的地方。</p>
       <p>接著才進入 Combination。</p>
       <p>例如 <code>Run</code> 同時受到三個維度影響：</p>
-      <pre><code>Installation State
+      <pre><code>Dependency State
         ×
 API Sequence
         ×
 Input State</code></pre>
-      <p>假設：</p>
-      <pre><code>Installation State = 5
-API Sequence        = 6
-Input State         = 5</code></pre>
+      <p>對回前面那張圖：</p>
+      <pre><code>Dependency State = 5
+API Sequence     = 6
+Input State      = 5</code></pre>
       <p>完整組合就是 150 種。</p>
       <p>我們仍然不需要全部測。</p>
       <p>可以先用 Constraints 排除根本不成立的組合，再根據不同的測試目的，例如：</p>
@@ -407,6 +471,14 @@ Input State         = 5</code></pre>
         <li>Error Recovery</li>
       </ul>
       <p>挑出值得驗證的交叉點。</p>
+      <p>但還有一個條件很容易被漏掉：<strong>這個組合架不架得起來。</strong></p>
+      <p>「裝一組互相衝突的套件版本」、「Release 之後再 Run」——光是把環境擺成那個樣子的成本，常常比想出這條 Case 還高一個量級。</p>
+      <p>所以挑選的時候要同時看兩件事：</p>
+      <pre><code>這條 Case 值多少？  ← Risk
+架起來要花多少？    ← Setup Cost</code></pre>
+      <p>高風險又便宜的，先做。</p>
+      <p>高風險但很貴的，要嘛想辦法讓它變便宜，例如寫一支能一鍵造出壞環境的腳本；要嘛就誠實承認這一輪不測，並且記下來。</p>
+      <p>沒記下來的話，過三個月沒有人分得出來，那塊到底是「決定不測」還是「忘了測」。</p>
       <p>整個 Generator 的流程就會變成：</p>
       <pre><code>API / SDK Spec
       ↓
@@ -424,6 +496,44 @@ Select by Coverage / Risk
       ↓
 Generate Test Cases</code></pre>
       <p><strong>Test Case 是這套 Generator 的 output，而不是起點。</strong></p>
+
+      <hr>
+
+      <h2>產得出 Case，不代表判得出對錯</h2>
+      <p>到這裡為止，Generator 解決的都是同一個問題：</p>
+      <blockquote>
+        <p><strong>要測哪些組合？</strong></p>
+      </blockquote>
+      <p>但還有一個問題完全沒被解決：</p>
+      <blockquote>
+        <p><strong>這個組合跑出來，我怎麼知道它是對的？</strong></p>
+      </blockquote>
+      <p>例如剛剛那條：</p>
+      <pre><code>未 Initialize → 直接 Run</code></pre>
+      <p>系統<strong>應該</strong>回什麼？</p>
+      <p>丟一個明確的錯誤碼？直接 crash？還是靜默回一個空結果？</p>
+      <p>spec 通常不會寫。</p>
+      <p>這件事很現實。</p>
+      <p>Generator 一個晚上可以產 300 條 Case，但如果每一條的預期結果都是空的，QA 還是得一條一條想。</p>
+      <p>人工瓶頸沒有消失，只是從上游搬到下游。</p>
+      <p>所以預期結果必須在 Test Model 階段就一起標，而不是等 Case 產完才想。</p>
+      <p>我會把它分成三類：</p>
+      <pre><code>Specified
+spec 明確寫了應該發生什麼
+→ 直接當斷言
+
+Baseline
+spec 沒寫，但系統現在的行為是已知的
+→ 先把現況錄下來當基準線
+→ 之後只驗「有沒有變」
+
+Unknown
+spec 沒寫，現況看起來也不合理
+→ 這條不是 Test Case
+→ 是一個要拿去問 PM 或 RD 的問題</code></pre>
+      <p>第三類其實是整套流程的意外收穫。</p>
+      <p>一條「連預期結果都定不出來」的組合，往往就是規格真的有洞的地方。</p>
+      <p>以前這種洞，要等到上線後被使用者踩到才會浮出來。</p>
 
       <hr>
 
@@ -470,6 +580,35 @@ Relation 有沒有 Evidence？
       <blockquote>
         <p><strong>AI 自己出題，再自己告訴你自己考了 100 分。</strong></p>
       </blockquote>
+      <p>不過這裡要誠實一點。</p>
+      <p>「回到 Source 重新檢查」只擋掉了一半的問題。</p>
+      <p>它擋掉的是推理被污染——Auditor 不會因為看過 Generator 的答案，就順著它的邏輯往下想。</p>
+      <p>但它擋不掉另一半：<strong>共同盲區。</strong></p>
+      <p>Auditor 讀的是同一份 spec，用的是同一個模型。</p>
+      <p>同一句話它一樣看不懂，同一個隱含假設它一樣沒想到。</p>
+      <p>所以「Auditor 沒抓到任何問題」這個結果，其實沒有資訊量。</p>
+      <p>你分不出來是真的沒問題，還是兩邊一起瞎。</p>
+      <p>要讓 Audit 真的有價值，Auditor 必須拿到 Generator 沒有的東西：</p>
+      <pre><code>歷史 Bug 清單
+實際執行結果
+客服回報 / 使用者實際操作紀錄
+程式碼本身</code></pre>
+      <p>只要有一項是 Generator 看不到的，Audit 才算真的從另一個角度看同一件事。</p>
+
+      <hr>
+
+      <h2>Approved Model 會過期</h2>
+      <p>還有一個代價要先講清楚。</p>
+      <p>Approved Model 一旦被人審過、簽過，它就變成一份會被信任的文件。</p>
+      <p>問題是 spec 會改。</p>
+      <p>spec 一改，那些 Relation 底下的 Evidence 就過期了。</p>
+      <p>如果沒有人負責重審，第二個 sprint 之後，你會有一份沒人敢用、但大家還是一直在引用的 Model。</p>
+      <p>那比沒有 Model 更糟，因為錯誤會被當成事實往下傳。</p>
+      <p>所以 Model 要當成程式碼在管：</p>
+      <pre><code>進版控，看得到 diff
+每一條 Relation 帶「證據來源 + 最後確認日期」
+spec 有異動時，列出受影響的 Relation 清單，要人重新確認</code></pre>
+      <p>這件事不做，前面那套 Generator 撐不過三個月。</p>
 
       <hr>
 
@@ -609,6 +748,15 @@ Recommended Experiments</code></pre>
         <p><strong>AI 能不能從真實 Spec 建出一份 QA 認為可用的 Test Model Draft？</strong></p>
       </blockquote>
       <p>如果連 Model 都建不好，後面的 Test Case 根本不用談。</p>
+      <p>不過「可用」這兩個字沒辦法量。</p>
+      <p>實驗跑完，如果結論只有「感覺還行」，那就不叫實驗。</p>
+      <p>所以我會把它換成三個可以數的數字：</p>
+      <pre><code>QA 改了幾個維度、幾條 Relation？     ← 越少越好
+AI 漏掉幾條我本來就知道的 Relation？  ← 越少越好
+AI 掰了幾條根本不存在的 Relation？    ← 這個最致命</code></pre>
+      <p>第三個數字如果高，代表 Generator 現在產的東西不能信。</p>
+      <p>那就要先回頭修「每條 Relation 都必須標 Evidence 和 Status」這條規則，而不是急著往下跑 Test Case。</p>
+      <p>下一輪的目標很單純：這三個數字要往下掉。</p>
       <p>如果可以，再驗證第二件事：</p>
       <blockquote>
         <p><strong>從 Approved Model 產生的 Test Case，有沒有找到人工原本沒想到、但合理的重要 Combination？</strong></p>
