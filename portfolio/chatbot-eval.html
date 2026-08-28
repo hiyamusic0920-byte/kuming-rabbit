@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Chatbot 怎麼測？從無限輸入到可驗證的 Eval｜苦命兔 QA 日誌</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="home-page">
+  <main class="home-shell about-shell article-shell">
+    <nav class="breadcrumb" aria-label="麵包屑">
+      <a href="../index.html">首頁</a>
+      <span aria-hidden="true">›</span>
+      <a href="index.html">AI QA Portfolio</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">Chatbot Eval</span>
+    </nav>
+
+    <header class="article-hero">
+      <h1>AI Chatbot 怎麼測？從無限輸入到可驗證的 Eval</h1>
+      <p class="subtitle">出得出題，不代表判斷得出對錯。三層判定，以及承認自己現在還判斷不了的那一格</p>
+      <div class="article-meta">
+        <time datetime="2026-08-27">2026.08.27</time>
+        <span>約 16 分鐘閱讀</span>
+      </div>
+    </header>
+
+    <nav class="article-top-nav" aria-label="文章導覽">
+      <a href="index.html">← 返回 Portfolio</a>
+      <a href="test-model-generator.html">上一篇：從無限組合建立 Test Model</a>
+      <span class="article-nav-disabled">下一篇：Coming Soon</span>
+    </nav>
+
+    <article class="article-content">
+      <p>之前在做 AI 客服機器人自動化測試時，我卡過兩個問題。</p>
+      <p>第一個是：</p>
+      <blockquote>
+        <p><strong>使用者什麼都可能說，我到底要準備哪些 Test Case？</strong></p>
+      </blockquote>
+      <p>第二個更麻煩：</p>
+      <blockquote>
+        <p><strong>AI 每次回答的文字都可能不同，我怎麼知道結果到底對不對？</strong></p>
+      </blockquote>
+      <p>後來我真的把這兩件事做成了一套自動化 Eval。</p>
+      <p>換成測試的講法，就是這兩題：</p>
+      <blockquote>
+        <p><strong>Test Input 怎麼設計？</strong></p>
+      </blockquote>
+      <p>以及：</p>
+      <blockquote>
+        <p><strong>Expected Behavior 怎麼驗證？</strong></p>
+      </blockquote>
+      <p>這篇大部分篇幅會花在第二個問題上。</p>
+
+      <hr>
+
+      <h2>問題一：使用者什麼都可能說，Test Input 怎麼設計？</h2>
+      <p>假設今天要測的是一個可以幫旅客查房的 AI 客服。</p>
+      <p>使用者可能說：</p>
+      <blockquote>
+        <p>明天有房嗎？</p>
+      </blockquote>
+      <p>也可能說：</p>
+      <blockquote>
+        <p>8/15 想住兩晚。</p>
+      </blockquote>
+      <p>或者：</p>
+      <blockquote>
+        <p>下禮拜六還有房？</p>
+      </blockquote>
+      <p>甚至：</p>
+      <blockquote>
+        <p>我下個月想帶女朋友出去玩，你們那時候還有房嗎？</p>
+      </blockquote>
+      <p>自然語言最大的麻煩就是：</p>
+      <blockquote>
+        <p><strong>你永遠列不完。</strong></p>
+      </blockquote>
+      <p>這時候最直覺的方法可能是：</p>
+      <blockquote>
+        <p>AI，幫我產 500 個使用者可能會問的問題。</p>
+      </blockquote>
+      <p>AI 當然做得到。</p>
+      <p>問題是，這 500 題到底 Cover 了什麼？</p>
+      <p>假設裡面有：</p>
+      <pre><code>明天有房嗎？
+請問明天還有空房嗎？
+想問一下明天有沒有房間？
+明天可以訂嗎？
+請問明天還能入住嗎？</code></pre>
+      <p>看起來有五題。</p>
+      <p>但本質上可能都在測同一件事：</p>
+      <blockquote>
+        <p>模型能不能理解「明天」這個相對日期？</p>
+      </blockquote>
+      <p>所以第一個改變是：</p>
+      <blockquote>
+        <p><strong>不要先產 Prompt。</strong></p>
+      </blockquote>
+      <p>先決定：</p>
+      <blockquote>
+        <p><strong>我到底要驗證 Chatbot 的什麼行為？</strong></p>
+      </blockquote>
+
+      <h2>Test Case 不是從 Prompt 開始長出來的</h2>
+      <p>我當時先去讀被測系統本身。</p>
+      <p>包含 Chatbot 的程式、System Prompt、Tool 定義和既有 Business Rule。</p>
+      <p>然後先抽出它應該遵守的行為。例如查房流程裡有幾條很重要：</p>
+      <ul>
+        <li>句子裡有足夠的日期資訊，就應該查房，不要重複追問已知資訊。</li>
+        <li>完全沒有日期，才需要詢問日期。</li>
+        <li>缺少不是 Tool 必填的資訊，不應該因此阻塞查詢。</li>
+        <li>房況只能根據這一輪 Tool Result 回答，沒查就不能自己說有房或沒房。</li>
+        <li>過去日期、無效日期、Prompt Injection 等異常輸入，不確定就確認，不准腦補。</li>
+      </ul>
+      <p>這時候 Test Design 的問題就從：</p>
+      <blockquote>
+        <p>使用者可能說什麼？</p>
+      </blockquote>
+      <p>變成：</p>
+      <blockquote>
+        <p><strong>我要從哪些角度攻擊這些規則？</strong></p>
+      </blockquote>
+
+      <h2>那 Chatbot 的 Model 要怎麼拆？</h2>
+      <p>拆維度的方法我寫在 <a href="test-model-generator.html">Test Model 那篇</a>：維度、值、MECE 三問、覆蓋要能數。這裡不重講，直接看它套在 Chatbot 上長什麼樣。</p>
+      <p>我最後拆成三組互相獨立的維度：</p>
+      <pre><code>說了什麼（語意內容）
+├── 日期表達
+├── 人數 / 房型
+├── 資訊完整度
+└── 查詢對象（房況 / 知識 / 個資）
+
+怎麼講的（表達品質）
+├── 正常
+├── 錯字 / 注音
+├── 超長或超短
+└── 夾雜英數符號
+
+想幹什麼（行為意圖）
+├── 正常查詢
+├── 閒聊 / 無關
+└── 攻擊（Prompt Injection）</code></pre>
+      <p>這裡最容易犯的，正好是我在 Test Model 那篇講過的那個錯：把「怎麼講的」跟「說了什麼」塞進同一層。</p>
+      <p>因為錯字可以出現在任何一種日期表達上。</p>
+      <p>「明天有房嗎」可以打錯，「8/15 想住兩晚」也可以打錯。</p>
+      <p>兩者是相乘的關係，不是並列的選項。</p>
+      <p>如果把它們放同一層，等於在說「日期講對但字打錯」這種情況不存在。而那正是真實使用者最常出現的樣子。</p>
+      <p>分開之後，「表達品質」才會變成一個可以獨立被測、也可以獨立被數的維度。這就是題庫裡輸入耐受性那 9 題的來源。</p>
+      <p>維度拆完，才往下拆值。例如「日期表達」：</p>
+      <pre><code>日期表達
+├── 相對日期：明天
+├── 絕對日期：8 月 15 日
+├── 星期：下週六
+├── 模糊日期：這個週末
+├── 過去日期
+└── 無效日期</code></pre>
+      <p>到這一步，AI 才真正適合進場。</p>
+      <p>如果我要測的是：</p>
+      <blockquote>
+        <p>日期表達 × 相對日期</p>
+      </blockquote>
+      <p>我可以讓 AI 幫忙產生不同的人類說法：</p>
+      <pre><code>明天有房嗎？
+我想明天住一晚。
+明晚還有空房嗎？
+想問一下明天還訂得到嗎？</code></pre>
+      <p>AI 很擅長做這件事。</p>
+      <p>但順序不能反過來。</p>
+      <blockquote>
+        <p><strong>先決定我要測哪一種行為，再讓 AI 幫我產生這個行為的自然語言 Variation。</strong></p>
+      </blockquote>
+
+      <h2>每一題都必須回答：「這題到底想證明什麼？」</h2>
+      <p>我當時還多加了一個很簡單的限制：</p>
+      <blockquote>
+        <p><strong>每一條 Test Case 都必須有 Test Intent。</strong></p>
+      </blockquote>
+      <p>例如：</p>
+      <blockquote>
+        <p>明天晚上兩個人</p>
+      </blockquote>
+      <p>這題真正要驗證的不是「AI 看不看得懂中文」。</p>
+      <p>而是：</p>
+      <ul>
+        <li>「明天」能不能正確理解成隔日入住。</li>
+        <li>這個情境是否被理解成一晚。</li>
+        <li>「兩個人」雖然出現在句子裡，但不應該被誤解析成日期或住宿天數。</li>
+        <li>日期資訊已經足夠時，應該進入查房流程。</li>
+      </ul>
+      <p>這件事情很重要。</p>
+      <p>因為 AI 很容易幫你大量產生：</p>
+      <pre><code>明天有房嗎？
+明天還有房嗎？
+請問明天有空房嗎？
+明天可以住嗎？</code></pre>
+      <p>如果四題的 Test Intent 完全一樣，就要開始問：</p>
+      <blockquote>
+        <p>這四題真的增加 Coverage 了嗎？</p>
+      </blockquote>
+      <p>所以我現在會把 Test Intent 看成一個很便宜的 Gate：</p>
+      <blockquote>
+        <p><strong>如果連「這題到底想證明什麼」都講不出來，就先不要把它放進題庫。</strong></p>
+      </blockquote>
+
+      <h2>一條 Chatbot Test Case，實際長什麼樣？</h2>
+      <p>做到這裡，前面的概念其實都可以塞回同一個 Test Case。</p>
+      <p>概念上會長得像這樣：</p>
+      <pre><code>- id: INT-01
+  layer: intent
+  desc: "相對日：明天晚上兩個人"
+
+  intent: >
+    驗證「明天」是否正確理解為隔日，
+    並避免把「兩個人」誤解析為日期或住宿天數。
+
+  repeat: 3
+
+  turns:
+    - user: "明天晚上兩個人"
+
+      expect:
+        tool_called: getRoomAvailability
+        reply_includes:
+          - "{re:today+1}"
+
+      judge:
+        criteria: >
+          是否理解為「明天入住、一晚」，
+          且沒有把「兩個人」誤當日期或天數。</code></pre>
+      <p>這一條 Case 裡，其實已經同時存在兩件事情。</p>
+      <p>上半部：</p>
+      <blockquote>
+        <p>我為什麼要出這題？</p>
+      </blockquote>
+      <p>下半部：</p>
+      <blockquote>
+        <p>跑完之後，我要拿什麼證據判斷它的行為？</p>
+      </blockquote>
+      <p>而第二件事，比我原本想像的麻煩很多。</p>
+
+      <hr>
+
+      <h2>問題二：AI 的回答不固定，Expected Behavior 怎麼驗證？</h2>
+      <p>傳統自動化測試很習慣：</p>
+      <pre><code>Actual == Expected</code></pre>
+      <p>但 Chatbot 很難這樣做。</p>
+      <p>例如：</p>
+      <blockquote>
+        <p>好的，我幫您查詢明天的房況。</p>
+      </blockquote>
+      <p>和：</p>
+      <blockquote>
+        <p>沒問題，以下是明天可以入住的房型。</p>
+      </blockquote>
+      <p>文字完全不同。</p>
+      <p>行為卻可能都是正確的。</p>
+      <p>所以 Chatbot 的 Expected Result 不能只是：</p>
+      <blockquote>
+        <p>「回答正確。」</p>
+      </blockquote>
+      <p>這句對自動化幾乎沒有幫助。</p>
+      <p>這裡要跟 Test Model 那篇分清楚一件事。那篇處理的是預期結果<strong>定不定得出來</strong>，分成 Specified、Baseline、Unknown。spec 有寫的直接當斷言，沒寫但現況已知的先錄成基準線，連現況都不合理的那一條不是 Test Case，是要拿去問 PM 的問題。</p>
+      <p>這篇處理的是下一關。假設規格已經寫得很清楚：</p>
+      <blockquote>
+        <p>「使用者說明天，查房日期就應該是明天。」</p>
+      </blockquote>
+      <p>很好，我知道正確答案是什麼了。</p>
+      <p>但下一個問題是：</p>
+      <blockquote>
+        <p><strong>我要去哪裡看它到底拿哪一天去查房？</strong></p>
+      </blockquote>
+      <p>如果 API 根本沒有把 Tool Arguments 回傳給我，就算我知道正確答案，也還是驗不了。</p>
+      <p>所以「知道正確答案」跟「我有辦法驗證它」，其實是兩件事。</p>
+      <p>所以要把 Expected Behavior 拆開。例如同一題可以問：</p>
+      <ul>
+        <li>有沒有呼叫查房 Tool？</li>
+        <li>回覆裡的日期是不是正確？</li>
+        <li>有沒有洩漏不該出現的內部資訊？</li>
+        <li>有沒有正確理解整句話的語意？</li>
+      </ul>
+      <p>這些問題的判定方式，其實不一樣。</p>
+
+      <h2>第一層：機器能直接判斷的，就直接判斷</h2>
+      <p>例如：</p>
+      <blockquote>
+        <p>有沒有呼叫 getRoomAvailability？</p>
+      </blockquote>
+      <p>這沒有什麼語意模糊空間。</p>
+      <p>有就是有，沒有就是沒有。</p>
+      <p>直接 Assert。</p>
+      <p>同樣地，某些明確的固定輸出、狀態或禁止出現的資訊，都應該優先用 deterministic assertion。</p>
+      <blockquote>
+        <p><strong>不要因為被測物是 AI，就連原本可以精準判斷的東西也交給另一個 AI。</strong></p>
+      </blockquote>
+
+      <h2>第二層：不能直接判斷，就找可以觀察的 Evidence</h2>
+      <p>這裡反而是我當時遇到的一個很實際的限制。</p>
+      <p>理想上，我最想驗證的是：</p>
+      <blockquote>
+        <p>Chatbot 呼叫 Tool 時，checkInDate 到底是不是 tomorrow？</p>
+      </blockquote>
+      <p>也就是直接看：</p>
+      <pre><code>tool_args.checkInDate</code></pre>
+      <p>但當時使用的 endpoint 沒有把 Tool Arguments 回傳給測試端。</p>
+      <p>所以我其實驗不到。</p>
+      <p>怎麼辦？</p>
+      <p>退一步。</p>
+      <p>如果今天是 8/4，而 Chatbot 回答：</p>
+      <blockquote>
+        <p>明天（8/5）還有以下房型……</p>
+      </blockquote>
+      <p>那至少可以從 Response 裡確認它有沒有正確複述出 8/5。</p>
+      <p>所以當時會用類似：</p>
+      <pre><code>reply_includes:
+  - "{re:today+1}"</code></pre>
+      <p>去找 Response 裡的日期。</p>
+      <p>但這裡有一個很重要的差別。</p>
+      <p>Chatbot 最後回答「8/5 有房」，只能證明它嘴巴說的是 8/5。</p>
+      <p>但我真正想知道的是：</p>
+      <blockquote>
+        <p><strong>它剛剛拿去查房的日期，到底是不是 8/5？</strong></p>
+      </blockquote>
+      <p>這兩件事不能畫上等號。</p>
+      <p>所以目前這個結果只能當佐證，還不能算直接驗證 Tool Argument。</p>
+      <p>這種情況不能假裝自己已經驗到了。</p>
+      <p>所以我另外保留了一種狀態：</p>
+      <blockquote>
+        <p><strong>PENDING</strong></p>
+      </blockquote>
+      <p>意思不是「這題 Fail」，也不是「這題 Pass」，而是：</p>
+      <blockquote>
+        <p><strong>我知道自己想驗什麼，但現在的系統還沒有提供足夠的 Observability 讓我驗。</strong></p>
+      </blockquote>
+      <p>這跟 Test Model 那篇的 Unknown 其實是同一種動作，只是洞開在不同地方。</p>
+      <p>Unknown 是<strong>規格</strong>有洞：沒人講得出正確行為是什麼。</p>
+      <p>PENDING 是<strong>可觀察性</strong>有洞：正確行為很清楚，但系統不給我證據。</p>
+      <p>兩個都在做同一件事。不要因為想讓報表變綠，就把「不知道」寫成「通過」。</p>
+      <p>我現在反而覺得這是整套 Eval 很重要的一部分。</p>
+      <blockquote>
+        <p><strong>知道自己判斷不了什麼，比硬把所有東西標成 PASS 更重要。</strong></p>
+      </blockquote>
+
+      <h2>第三層：真的只能靠語意判斷，才考慮 LLM Judge</h2>
+      <p>還有一些問題，不管怎麼寫 Regex 都很難判斷。</p>
+      <p>例如：</p>
+      <blockquote>
+        <p>Chatbot 是否正確理解「明天入住一晚」，而且沒有把「兩個人」錯當成兩晚？</p>
+      </blockquote>
+      <p>這才是 LLM Judge 適合處理的地方。</p>
+      <p>但也不能只是把回答丟給另一個 AI：</p>
+      <blockquote>
+        <p>你覺得它答得好不好？請打 1～5 分。</p>
+      </blockquote>
+      <p>Judge 一樣需要明確的 Criteria。例如：</p>
+      <blockquote>
+        <p>是否正確理解為「明天入住、一晚」，且沒有把「兩個人」誤當成日期或住宿天數？</p>
+      </blockquote>
+      <p>這跟 Test Intent 其實是一體兩面：</p>
+      <ul>
+        <li><strong>Test Intent</strong> 回答：我為什麼出這題？</li>
+        <li><strong>Judge Criteria</strong> 回答：什麼結果才符合這題原本想驗證的行為？</li>
+      </ul>
+      <p>不過我當時這一層其實還沒有正式打開。</p>
+      <p>Judge 的 interface 和每題 criteria 已經留好了，但 provider 當時仍然是 none。</p>
+      <p>所以需要 Semantic Judge 的結果不會假裝成 PASS，而是：</p>
+      <blockquote>
+        <p><strong>REVIEW</strong></p>
+      </blockquote>
+      <p>等待人工複核，或未來真正接上 Judge。</p>
+      <p>這跟 PENDING 又不一樣。</p>
+      <p>有兩種「我現在不能寫 PASS」。</p>
+      <p>第一種：</p>
+      <blockquote>
+        <p>我想看 Tool 傳了什麼日期，但系統根本不給我看。</p>
+      </blockquote>
+      <p>→ PENDING</p>
+      <p>第二種：</p>
+      <blockquote>
+        <p>東西我都看得到，但這個回答的語意到底算不算對，目前還需要人來判斷。</p>
+      </blockquote>
+      <p>→ REVIEW</p>
+      <p>一個是沒證據可以判。</p>
+      <p>一個是有東西可以判，但目前還需要人判。</p>
+      <p>所以 PENDING 比較接近 Testability / Observability gap；REVIEW 則是 Semantic Evaluation 還沒有自動化。</p>
+      <p>三層合起來，判定策略長這樣：</p>
+      <pre><code>Expected Behavior
+│
+├─ 機器可以直接判斷嗎？
+│    → Assert
+│      tool_called / state
+│
+├─ 用模式比對可以判斷嗎？
+│    → Regex
+│      禁用詞 / 日期字串 / 格式
+│
+├─ 語意可以判斷嗎？
+│    → LLM Judge + Criteria
+│      provider 未開 → REVIEW
+│
+└─ 都判斷不了
+     → PENDING
+       留下缺口，不叫 AI 猜</code></pre>
+      <p>REVIEW 掛在 Judge 那條線上，判斷得出來，只是這一層還沒開。</p>
+      <p>PENDING 掛在所有線都走不通的最底下，沒有證據可以判斷。</p>
+
+      <h2>所以不是所有結果都只有 PASS / FAIL</h2>
+      <p>做到這裡，就會發現 Chatbot Eval 如果只有 PASS / FAIL，其實不太夠。</p>
+      <p>我最後把結果分成這幾種：</p>
+      <div class="setting-table-wrap">
+        <table class="setting-table">
+          <thead>
+            <tr><th>狀態</th><th>意義</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>PASS</td><td>已有足夠證據，行為符合預期</td></tr>
+            <tr><td>FAIL</td><td>已有足夠證據，Chatbot 行為不符合預期</td></tr>
+            <tr><td>ERROR</td><td>Harness、Fixture、網路或 Judge 本身出錯</td></tr>
+            <tr><td>FLAKY</td><td>同一題多次執行結果不一致</td></tr>
+            <tr><td>PENDING</td><td>想驗，但目前缺乏足夠的可測性／Observability</td></tr>
+            <tr><td>SKIP</td><td>測試前置條件不存在</td></tr>
+            <tr><td>REVIEW</td><td>有明確判定 Criteria，但目前需要人工／Semantic Judge 複核</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>這些狀態乍看只是報告分類。</p>
+      <p>但它們其實是在保護 Eval 的可信度。</p>
+      <p>例如我要測：</p>
+      <blockquote>
+        <p>PMS 有房時，Chatbot 是否正確回答有房？</p>
+      </blockquote>
+      <p>首先就得 Seed 一個「確定有房」的測試狀態。</p>
+      <p>如果 Seed 根本沒成功，那這一題不能算 Chatbot FAIL。</p>
+      <p>因為被測系統根本沒有在正確的前置條件下被測到。</p>
+      <p>同樣地：</p>
+      <ul>
+        <li>Judge API 掛掉，不等於 Chatbot 答錯。</li>
+        <li>沒有 Tool Args 可以觀察，也不等於它一定帶對。</li>
+      </ul>
+      <blockquote>
+        <p><strong>自動化 Eval 不只要知道什麼時候 Pass，也要知道自己什麼時候沒有資格下結論。</strong></p>
+      </blockquote>
+
+      <h2>AI 還有另一個問題：它會飄</h2>
+      <p>我當時測的是接近真實聊天流程的 endpoint。</p>
+      <p>有一個很現實的限制：</p>
+      <blockquote>
+        <p><strong>測試端拿不到 temperature 這個旋鈕。</strong></p>
+      </blockquote>
+      <p>所以我沒辦法說：</p>
+      <blockquote>
+        <p>測試時把 temperature 設成 0，讓它每次都回答一樣。</p>
+      </blockquote>
+      <p>既然壓不下來，那就換個方向：</p>
+      <blockquote>
+        <p><strong>量它到底有多不穩定。</strong></p>
+      </blockquote>
+      <p>所以對容易浮動的案例，我加上：</p>
+      <pre><code>repeat: 3</code></pre>
+      <p>同一題跑三次。如果：</p>
+      <pre><code>Run 1 → PASS
+Run 2 → PASS
+Run 3 → FAIL</code></pre>
+      <p>不是採多數決算 PASS。</p>
+      <p>而是標成：</p>
+      <blockquote>
+        <p><strong>FLAKY</strong></p>
+      </blockquote>
+      <p>因為對 AI 系統來說：</p>
+      <blockquote>
+        <p>「有時候答對」本身就是一個值得被看見的品質訊號。</p>
+      </blockquote>
+
+      <h2>我沒有一開始就把題庫灌滿</h2>
+      <p>整個 Eval Pipeline 設計完，也不是馬上開始大量產題。</p>
+      <p>第一輪只挑了 10 題 Vertical Slice。</p>
+      <p>刻意從不同測試面向挑代表案例，先確認：</p>
+      <ul>
+        <li>題目真的送得出去嗎？</li>
+        <li>多輪 Conversation 組得對嗎？</li>
+        <li>Assertion 判斷得準嗎？</li>
+        <li>相對日期能穩定處理嗎？</li>
+        <li>Fixture 能不能建立測試狀態？</li>
+        <li>Report 能不能看出失敗原因？</li>
+      </ul>
+      <p>為什麼是縱切而不是橫鋪：</p>
+      <pre><code>先寬後深
+  Case        ██████
+  Execution   ████
+  Evidence    ██
+  Evaluation  ?
+  Report      ?
+
+先深後寬
+  Case        █
+  Execution   █
+  Evidence    █
+  Evaluation  █
+  Report      █</code></pre>
+      <p>上面那個是 500 題全躺在最上層，下面能不能判斷還不知道。</p>
+      <p>下面那個是 10 題，一路走到 Report，判斷不了的地方當場現形。</p>
+      <blockquote>
+        <p><strong>題庫的寬度不值錢，Pipeline 的深度才值錢。</strong></p>
+      </blockquote>
+      <p>而那條要先打通的 Pipeline，每一站各自在確認一件事：</p>
+      <pre><code>Test Case
+  └ 題目送得出去嗎？
+      ↓
+Execution
+  └ 多輪組得對？
+    Fixture 建得起來？
+      ↓
+Evidence
+  └ 拿到什麼可觀察的東西？
+    tool_args？還是只有 reply？
+      ↓
+Evaluation
+  └ 判斷得準嗎？
+    Assert / Regex / Judge
+      ↓
+Report
+  └ 看得出為什麼失敗嗎？</code></pre>
+      <p>Evidence 那一站就是前面卡住的地方。tool_args 拿不到，只能退到 reply，所以那條斷言最後標 PENDING。</p>
+      <p>整條路真的跑得通，才開始擴充題庫。</p>
+      <p>最後才長成 55 題。這是實際跑完之後，報告裡的分層彙總：</p>
+      <figure class="article-figure" style="margin:26px 0;max-width:100%;">
+        <img src="../assets/chatbot-eval-layer-summary.png" alt="Eval 報告的分層彙總表：11 個測試面向、各面向案例數與結果，其中商業一致性 2 題因為缺 seed 標為略過。" loading="lazy" width="1707" height="1025" style="display:block;width:100%;max-width:100%;height:auto;border:1px solid #ead8c2;border-radius:14px;">
+        <figcaption>報告直接把「略過（缺 seed）」跟「通過」並列，沒有混成同一個數字。</figcaption>
+      </figure>
+      <p>這張表就是 Test Model 那篇說的「覆蓋要能數」，只是換成 Chatbot 的維度。</p>
+      <p>哪一格被打爛、哪一格只有兩題，一眼看得出來。</p>
+      <p>而且它多了一欄結果。商業一致性那 2 題是略過，不是通過，因為 seed 沒建起來。</p>
+      <p>如果報告只給一個總通過數，這兩題就會被吃掉。</p>
+      <p>這個順序後來證明很重要。</p>
+      <p>因為如果一開始就讓 AI 幫我生 500 題，最後才發現：</p>
+      <ul>
+        <li>Tool Args 根本拿不到。</li>
+        <li>Fixture 不穩。</li>
+        <li>Semantic Result 還沒有可靠的 Judge。</li>
+      </ul>
+      <p>那我得到的不是 500 個自動化 Test Case。</p>
+      <p>而是 500 個等待 QA 人工確認的問題。</p>
+
+      <hr>
+
+      <h2>AI Chatbot Eval 其實沒有那麼神秘</h2>
+      <p>一開始看到自然語言，我很容易覺得：</p>
+      <blockquote>
+        <p>使用者什麼都可能講，這到底怎麼測？</p>
+      </blockquote>
+      <p>回頭看，我當時其實只做了兩件事。</p>
+      <p>第一件：</p>
+      <blockquote>
+        <p><strong>不要叫 AI 隨便出題。先告訴它我要測哪一種能力，再讓它幫我變化使用者的說法。</strong></p>
+      </blockquote>
+      <p>第二件：</p>
+      <blockquote>
+        <p><strong>不要看到 Chatbot 就什麼都交給另一個 AI 判。能直接 Assert 的就 Assert，真的只能判語意的，才交給 Judge。</strong></p>
+      </blockquote>
+      <p>至於現在根本看不到、判不了的東西？</p>
+      <p>就承認還判不了。</p>
+      <p>留成 PENDING，再決定要不要為了它改系統、補可測性。</p>
+      <p>我現在反而覺得，這是整套 Eval 裡最重要的設計。</p>
+      <p>因為一套測試真正可信的地方，是知道 AI 到底是怎麼判斷，人類才有機會介入與改善。</p>
+    </article>
+
+    <nav class="article-bottom-nav" aria-label="文章前後篇導覽">
+      <a href="index.html">← 返回 Portfolio</a>
+      <a href="test-model-generator.html">上一篇：從無限組合建立 Test Model</a>
+      <span class="article-nav-disabled">下一篇：Coming Soon</span>
+    </nav>
+  </main>
+  <footer class="site-footer">苦命兔 QA 日誌 · AI QA Portfolio</footer>
+</body>
+</html>

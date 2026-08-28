@@ -1291,6 +1291,27 @@ a { color: var(--structure); text-underline-offset: 3px; }
 
 .article-content code { font-family: var(--f-mono); font-size: 0.92rem; }
 
+/* .article-figure 來自 main（那兩篇長文的內文圖）。原本寫死 #ead8c2 / #8c7467，
+   在這裡接回 token，否則深色模式下圖片會頂著一條奶油色邊、圖說是咖啡色。 */
+.article-figure {
+  margin: 26px 0;
+}
+
+.article-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+}
+
+.article-figure figcaption {
+  margin-top: 10px;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
 .article-content hr { margin: 36px 0; border: 0; border-top: 1px solid var(--rule); }
 
 .home-shell h2 { margin: 28px 0 16px; color: var(--ink); font-family: var(--f-display); font-size: 1.25rem; }
