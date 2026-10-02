@@ -6,168 +6,8 @@
   <title>六年半 QA 重點工作成果｜苦命兔 QA 日誌</title>
   <meta name="description" content="Owlnest 旅宿管理系統六年半的 QA 重點工作：交付品質、自動化測試、產品知識庫與 AI 導入成果。">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
-<style>
-/* 站內導覽（麵包屑）與兩版報告並排，供 kuming-rabbit 站內使用 */
-.crumb{max-width:960px;margin:0 auto 24px;font-size:13px;color:var(--muted)}
-.crumb a{color:var(--accent);text-decoration:none}
-.crumb a:hover,.crumb a:focus-visible{text-decoration:underline}
-.crumb span{margin:0 6px}
-.report-pair{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
-.report-pair .shot img{background:#fff}
-.report-pair .tagline{font-size:12px;font-weight:700;letter-spacing:.06em;align-self:flex-start;padding:2px 8px;border-radius:999px}
-.report-pair .qa .tagline{background:var(--accent-soft);color:var(--accent)}
-.report-pair .uat .tagline{background:var(--warm-soft);color:var(--warm)}
-@media (max-width:760px){.report-pair{grid-template-columns:1fr}}
-</style>
-<style>
-/* Layout: single reading column (max 960px), report order = 結論 → 上線前品質 → AI 成果 → 下一步 */
-:root{
-  --bg:#f5f7f6; --surface:#ffffff; --fg:#17201d; --muted:#5d6b66; --line:#dfe6e3;
-  --accent:#0f6e64; --accent-soft:#e3f1ee; --warm:#9a4a12; --warm-soft:#f6e9df;
-  --good:#1d7a3a; --warn:#a86500; --warn-soft:#fbf1df; --bad:#b4261c;
-  --f-body:"Noto Sans TC",-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
-  --f-num:"IBM Plex Mono",ui-monospace,Menlo,monospace;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#101614; --surface:#18201e; --fg:#e6ecea; --muted:#9aa8a3; --line:#2a3532;
-  --accent:#4fc3b2; --accent-soft:#17312d; --warm:#e0904f; --warm-soft:#33241a;
-  --good:#5fcf7f; --warn:#e7b04f; --warn-soft:#332917; --bad:#f07468; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#101614; --surface:#18201e; --fg:#e6ecea; --muted:#9aa8a3; --line:#2a3532;
-  --accent:#4fc3b2; --accent-soft:#17312d; --warm:#e0904f; --warm-soft:#33241a;
-  --good:#5fcf7f; --warn:#e7b04f; --warn-soft:#332917; --bad:#f07468; color-scheme:dark}
-*{box-sizing:border-box}
-body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.7;padding:40px 16px 64px}
-.wrap{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
-h1,h2,h3{margin:0;text-wrap:balance;line-height:1.3}
-h1{font-size:clamp(26px,4vw,34px);font-weight:900;letter-spacing:.01em}
-h2{font-size:22px;font-weight:700}
-h3{font-size:16px;font-weight:700}
-p{margin:0}
-.num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
-.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:500}
-.muted{color:var(--muted)}
-header{display:flex;flex-direction:column;gap:10px;border-bottom:2px solid var(--fg);padding-bottom:20px}
-header .meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted)}
+<link rel="stylesheet" href="../assets/portfolio/qa-summary/page.css">
 
-.thesis{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:24px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.thesis div{display:flex;flex-direction:column;gap:6px;min-width:0}
-.thesis .big{font-size:30px;font-weight:600;color:var(--accent);line-height:1.1}
-.thesis .big small{font-size:15px;color:var(--muted);font-weight:500}
-.thesis p{font-size:14px}
-
-section{display:flex;flex-direction:column;gap:18px}
-.sec-head{display:flex;flex-direction:column;gap:4px}
-.sec-head .lead{color:var(--muted);max-width:65ch}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px;display:flex;flex-direction:column;gap:14px;min-width:0}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-
-/* before/after pairs */
-.ba{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.ba .item{border-top:3px solid var(--accent);padding-top:10px;display:flex;flex-direction:column;gap:2px;min-width:0}
-.ba .lbl{font-size:13px;color:var(--muted)}
-.ba .val{font-size:22px;font-weight:600;line-height:1.2}
-.ba .from{font-size:13px;color:var(--muted)}
-
-/* bars */
-.bars{display:flex;flex-direction:column;gap:8px}
-.bar{display:grid;grid-template-columns:44px 1fr 56px;gap:10px;align-items:center;font-size:13px}
-.track{height:18px;background:var(--line);border-radius:3px;overflow:hidden}
-.fill{height:100%;background:var(--warm);border-radius:3px;min-width:3px}
-.bar.now .fill{background:var(--accent)}
-.bar .v{text-align:right}
-
-.tbl-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
-th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
-th{font-size:12px;color:var(--muted);font-weight:500;letter-spacing:.04em}
-th:first-child,td:first-child{text-align:left}
-tr.hl td{background:var(--accent-soft);font-weight:600}
-.src{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 6px;margin-left:6px;font-weight:500}
-.note{font-size:13px;color:var(--muted)}
-
-/* AI funnel compare */
-.funnel{display:grid;grid-template-columns:110px repeat(4,1fr);gap:0;font-size:14px;min-width:560px}
-.funnel>div{padding:12px 10px;border-bottom:1px solid var(--line);text-align:right}
-.funnel .h{font-size:12px;color:var(--muted);text-align:right}
-.funnel .rowlbl{text-align:left;font-weight:700}
-.funnel .h:first-child{text-align:left}
-.funnel .cell b{font-size:20px;font-weight:600;display:block;line-height:1.2}
-.funnel .cell span{font-size:12px;color:var(--muted)}
-.funnel .r44{background:var(--accent-soft)}
-.funnel .r44 b{color:var(--accent)}
-
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.kpi{border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:4px;min-width:0;background:var(--surface)}
-.kpi .q{font-size:13px;font-weight:700}
-.kpi .en{font-size:11px;color:var(--muted);letter-spacing:.06em}
-.kpi .chg{font-size:20px;font-weight:600;line-height:1.3}
-.kpi p{font-size:13px;color:var(--muted)}
-.up{color:var(--good)}
-
-ul.plain{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:8px}
-ul.plain li{max-width:70ch}
-ul.plain b{font-weight:700}
-
-.next{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.next .card{background:var(--warn-soft);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
-.next .tag{font-size:11px;font-weight:700;color:var(--warn);letter-spacing:.08em}
-.next p{font-size:14px}
-
-footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
-
-@media (max-width:760px){
-  .thesis,.grid2,.next{grid-template-columns:1fr}
-  .ba,.kpis{grid-template-columns:1fr 1fr}
-}
-.shot{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
-.shot img{display:block;width:100%;border:1px solid var(--line);border-radius:8px}
-.shot figcaption{font-size:13px;color:var(--muted)}
-.layers{display:flex;flex-direction:column;gap:0}
-.layer{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
-.layer:last-child{border-bottom:0}
-.layer .ln{font-weight:700;font-size:14px}
-.layer .ln span{display:block;font-size:11px;color:var(--muted);letter-spacing:.08em;font-weight:500}
-.layer p{font-size:14px;max-width:70ch}
-.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.metric{border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0;background:var(--surface)}
-.metric .q{font-weight:700;font-size:15px}
-.metric .dir{font-size:12px;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:999px;align-self:flex-start;background:var(--accent-soft);color:var(--accent)}
-.metric .vals{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-.metric .vals b{font-size:24px;font-weight:600}
-.metric .vals span{font-size:13px;color:var(--muted)}
-.metric .st{font-size:12px;font-weight:700}
-.st.ok{color:var(--good)} .st.hold{color:var(--warn)}
-.metric p{font-size:13px;color:var(--muted)}
-@media (max-width:760px){.metrics{grid-template-columns:1fr}.layer{grid-template-columns:1fr;gap:4px}}
-</style>
-<style>
-.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-@media (max-width:1000px){.pillars{grid-template-columns:repeat(2,1fr)}}
-.pillar{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:8px;min-width:0;text-decoration:none;color:inherit}
-.pillar:hover,.pillar:focus-visible{border-color:var(--accent);outline:none}
-.pillar .no{font-family:var(--f-num);font-size:12px;color:var(--accent);font-weight:600;letter-spacing:.08em}
-.pillar h3{font-size:18px}
-.pillar .big{font-family:var(--f-num);font-size:24px;font-weight:600;color:var(--accent);line-height:1.2}
-.pillar p{font-size:14px;color:var(--muted)}
-.term{font-size:13px;color:var(--muted);background:var(--accent-soft);border-radius:8px;padding:12px 14px;max-width:none}
-.term b{color:var(--fg)}
-.stack{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.stack .it{border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:4px;min-width:0}
-.stack .it h3{font-size:15px}
-.stack .it p{font-size:14px;color:var(--muted)}
-.evo{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}
-.evo .st{flex:1 1 200px;border-left:3px solid var(--line);padding:4px 0 4px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
-.evo .st.now{border-left-color:var(--accent)}
-.evo .st b{font-size:15px}
-.evo .st span{font-size:13px;color:var(--muted)}
-.prog{display:flex;height:14px;border-radius:4px;overflow:hidden;background:var(--line)}
-.prog i{display:block;height:100%}
-.prog .p1{background:var(--accent)} .prog .p2{background:var(--warn)}
-.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted)}
-.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px;background:var(--c)}
-@media (max-width:760px){.pillars,.stack{grid-template-columns:1fr}}
-</style>
 </head>
 <body>
 <nav class="crumb" aria-label="麵包屑">
@@ -311,6 +151,12 @@ footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);paddin
         </figure>
       </div>
     </div>
+
+    <div class="panel">
+      <h3>框架細節</h3>
+      <p>分層架構、selector 怎麼管、測試資料策略、執行穩定性的三條防線與報告管線，另外寫成一頁給同樣做自動化測試的人看。</p>
+      <p><a class="pillar" style="display:inline-block;padding:14px 18px" href="automation-framework.html">看自動化測試框架 →</a></p>
+    </div>
   </section>
 
   <!-- 03 -->
@@ -408,7 +254,6 @@ footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);paddin
 
   <footer>資料來源：交付效能儀表板（PR 確認表、GitHub 進版紀錄、Jira 上線票）與 AI Trace Dashboard（Sprint 42、Sprint 44 trace 與看板資料）。</footer>
 </div>
-
 
 </body>
 </html>
